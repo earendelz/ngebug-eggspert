@@ -17,7 +17,7 @@ class GudangController extends Controller
         $userId = Auth::id();
         $gudangs = Gudang::where('id_peternak', $userId)->get();
         return view('gudang.index', compact('gudangs'));
-    }
+     }
 
     /**
      * Show the form for creating a new resource.
@@ -61,7 +61,7 @@ class GudangController extends Controller
     {
         $gudang = Gudang::findOrFail($id);
         return view('gudang.show', compact('gudang'));
-    }
+     }
 
     /**
      * Show the form for editing the specified resource.
