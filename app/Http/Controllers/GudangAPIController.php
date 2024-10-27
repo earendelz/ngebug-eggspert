@@ -12,6 +12,7 @@ class GudangAPIController extends Controller
         $gudang = Gudang::all();    
         return response()->json($gudang);
     }
+    
     public function store(Request $request){
         $gudang = new Gudang();
         $gudang->name = $request->name; 
