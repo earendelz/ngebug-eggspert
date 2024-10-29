@@ -11,8 +11,9 @@ class ProductAPIController extends Controller
 {
     public function index()
     {
-        $userId = Auth::id();
-        $products = Product::where('id_peternak', $userId)->get();
+        // $userId = Auth::id();
+        $products = Product::all();
+        // $products = Product::where('id_peternak', $userId)->get();
         return response()->json($products);
     }
 
@@ -32,7 +33,7 @@ class ProductAPIController extends Controller
             'capacity' => $request->capacity,
             'chicken_count' => $request->chicken_count,
             'chicken_breed' => $request->chicken_breed,
-            'id_peternak' => $userId,
+            'id_peternak' => $request -> id_peternak,
         ]);
 
         return response()->json($product, 201);

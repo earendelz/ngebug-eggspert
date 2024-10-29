@@ -18,13 +18,13 @@ class LaporanAyamAPIController extends Controller
     // Menyimpan laporan ayam baru
     public function store(Request $request)
     {
-        $request->validate([
-            'chicken_count' => 'required|integer',
-            'date' => 'required|date',
-            'live_chicken_count' => 'required|integer',
-            'dead_chicken_count' => 'required|integer',
-            'user_id' => 'required|exists:users,id', // Mengganti id_peternak dengan user_id
-        ]);
+        // $request->validate([
+        //     'chicken_count' => 'required|integer',
+        //     'date' => 'required|date',
+        //     'live_chicken_count' => 'required|integer',
+        //     'dead_chicken_count' => 'required|integer',
+        //     'user_id' => 'required|exists:users,id', // Mengganti id_peternak dengan user_id
+        // ]);
 
         $laporanAyam = new LaporanAyam();
         $laporanAyam->chicken_count = $request->chicken_count;
