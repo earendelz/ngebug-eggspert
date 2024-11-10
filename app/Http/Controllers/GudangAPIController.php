@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
 use App\Models\Gudang;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class GudangAPIController extends Controller
@@ -50,6 +51,13 @@ class GudangAPIController extends Controller
     public function destroy(string $id){
         Gudang::destroy($id);
         return response()-> json(['message'=>'Deleted']);
+    }
+
+    public function getByUsername(string $username) {
+        $user = User::where('username', $username)->first();
+        $gudang = Gudang::where('id_peternak', $user->id)->get();
+        return response()-> json($gudang);
+
     }
     
 }
