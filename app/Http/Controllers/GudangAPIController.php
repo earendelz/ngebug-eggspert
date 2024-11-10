@@ -52,13 +52,6 @@ class GudangAPIController extends Controller
         Gudang::destroy($id);
         return response()-> json(['message'=>'Deleted']);
     }
-
-    public function getByUsername(string $username) {
-        $user = User::where('username', $username)->first();
-        $gudang = Gudang::where('id_peternak', $user->id)->get();
-        return response()-> json($gudang);
-
-    }
     
 }
 
