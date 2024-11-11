@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\AuthController;
 
+
 use App\Models\User;
 use Illuminate\Http\Request;
 
