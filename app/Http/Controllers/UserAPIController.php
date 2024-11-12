@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,7 +23,7 @@ class UserAPIController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function register(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
@@ -47,7 +48,7 @@ class UserAPIController extends Controller
             'email' => $request->email,
             'alamat' => $request->alamat,
         ]);
-
+        
         return response()->json(['success' => true, 'data' => $newUser], 201);
 
     }
@@ -132,10 +133,22 @@ class UserAPIController extends Controller
             return response()->json(['message' => 'Invalid login credentials'], 401);
         }
 
-        $user = Auth::user();
+        // $user = Auth::user();
+        $user = User::where('username', $request->username)->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['status' => Response::HTTP_UNAUTHORIZED, 'message' => 'Invalid credentials']);
+        } else {
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'message' => 'Login success',
+            'data' => [
+                'token' => $token,
+                'user' => $user,
+            ]
+        ]);
+        }
     }
 
     // Logout a user
