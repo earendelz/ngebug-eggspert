@@ -7,6 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -14,19 +16,30 @@ class AuthController extends Controller
         return view('login');
     }
 
-    public function signIn(Request $request) {
-        $credentials = $request->only('username' ,'password');
+    // public function login(Request $request) {
+    //     $validated = $request->validate([
+    //         'username' => 'required|string',
+    //         'password' => 'required|string',
+    //     ]);
+        
+    //     $data = [
+    //         'username' => $validated['username'],
+    //         'password' => $validated['password']
+    //     ];
 
-        if(Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            return redirect()->intended('products')->with('success', 'Selamat datang!');
-        }
-
-        \Log::warning('Login attempt failed for:', $credentials);
-        return redirect()->back()->withErrors(['username' => 'Username atau password salah.']);
-
-    }
+    //     $response = Http::post('http://127.0.0.1:8000/api/login', $data);
+    //     if ($response -> successful()){
+    //         $responseData = $response->json();
+    //         $token = $responseData['data']['token'];   
+    //         Session::put('auth_token', $token);
+    //         return redirect()->route('kandang-ayam');
+    //     } else {
+    //         return response()->json([
+    //             'message' => 'wrong password',
+    //             'error' => $response->json(),
+    //         ], 400);
+    //         }
+    // }
 
     public function logout(Request $request) {
         Auth::logout();

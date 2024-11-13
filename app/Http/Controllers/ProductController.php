@@ -5,15 +5,32 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $userId = Auth::id();
-        $products = Product::where('id_peternak', $userId)->get();
-        return view("products.index", compact("products"));
+        if (Auth::check()) {
+            // Make the API request to the protected route with the Bearer token
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . Session::get('auth_token'),  // Using token stored in session
+            ])->get('http://127.0.0.1:8000/api/products');
+    
+            // Handle API response
+            if ($response->successful()) {
+                $data = $response->json();
+                return view('kandang_ayam', compact('data'));  // Return the view with the data
+            } else {
+                // Handle API error (e.g., token expired or invalid)
+                Session::forget('auth_token');
+                return redirect('/login')->with('error', 'Your session has expired. Please login again.');
+            }
+        } else {
+            return redirect('/login');  // Redirect to login if the user is not authenticated
+        }
     }
 
     public function create()

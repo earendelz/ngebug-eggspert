@@ -1,0 +1,135 @@
+/* button {
+    /* border:none;
+    color:purple
+} */
+li{
+    list-style-type: none;
+    height:10%;
+}
+
+.card {
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    color:#61431F;
+}
+
+.card-text{
+    color:#AE7B3D;
+}
+
+.main-content {
+    margin-left: 280px;
+    padding: 20px;
+}
+
+#notif:active{
+    color:#E59D2A;
+}
+
+a {
+    text-decoration: none;
+}
+
+.nav-link{
+    color: #AE7B3D;
+}
+
+.nav img{
+    margin-right: 5%;
+}
+
+.sidebar {
+    width: 200px;
+    color: #fff;
+    box-sizing: border-box;
+    position: fixed; 
+    text-align: center;
+}
+
+tbody, thead {
+    background-color: #F7E2BF;
+    border-radius: 0.375rems;
+}
+
+
+/* Target the per-page select dropdown */
+.simple-datatables .datatable-selector {
+    background-color: #AE7B3D; /* Change to your desired background color */
+    color: white; /* Change to your desired text color */
+    border: 1px solid #ccc; /* Adjust border color */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px; /* Add some padding */
+}
+
+.datatable-selector{
+
+    background-color: #F7E2BF; /* Change to your desired background color */
+    color: black; /* Change to your desired text color */
+    border: 1px solid #ccc; /* Adjust border color */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px; /* Add some padding */
+}
+
+.datatable-selector:hover{
+    background-color: #AE7B3D;
+    color: white;
+}
+
+.datatable-pagination{
+    background-color: #F7E2BF;
+    border: 1px solid #ccc; /* Adjust border color */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px; /* Add some padding */
+    
+}
+
+.datatable-pagination-list-item-link {
+    background-color: #AE7B3D;
+}
+.datatable-active {
+    background-color: #AE7B3D;
+}
+
+.datatable-pagination-list-item-link:hover{
+    background-color: #AE7B3D;
+}
+
+
+.header{
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: 280px;
+    text-align: justify;
+}
+.sidebar a{
+    display: flex;
+    align-items: center; 
+    text-decoration: none;
+}
+
+.navbar 
+
+.sidebar button{
+    /* border: none;  */
+    /* background: transparent;  */
+    display: flex; 
+    align-items: center;
+}
+.sidebar img {
+    width: 24px; 
+    height: 24px;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: var(--bs-nav-pills-link-active-color);
+    background-color: #E59D2A;
+}
+
+.nav-link:hover{
+    color: var(--bs-nav-pills-link-active-color);
+    background-color: #E59D2A;
+}
+
