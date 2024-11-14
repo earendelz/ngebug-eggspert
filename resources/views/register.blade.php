@@ -19,7 +19,7 @@
             <div class="col-md-4">
             <form class="login-form mt-5 p-4 bg-white shadow rounded" id="loginForm">
                 @csrf
-                <h2 class="text-center mb-4">Login</h2>
+                <h2 class="text-center mb-4">Register</h2>
                 <img src="assets/LogoEggspertApp.png" id="logo">
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -28,6 +28,18 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="nama">Nama</label>
+                    <input type="text" class="form-control" id="nama" name="nama" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="alamat">Alamat</label>
+                    <input type="text" class="form-control" id="alamat" name="alamat" required>
                 </div>
                 <button id="buttonLogin" type="submit" class="btn btn-primary btn-block">Login</button>
                 <p class="text-center mt-3">Not registered? <a href="#">Create an account</a></p>
@@ -47,24 +59,11 @@
                         },
                         success: function(response) {
                             if (response.status === 200) {
-                                // Send the credentials to /redirecting to attempt login and pass auth middleware
-                                $.ajax({
-                                    url: "/redirecting", // Redirecting route
-                                    type: "POST",
-                                    data: {
-                                        "_token": $("meta[name='csrf-token']").attr("content"), // CSRF token
-                                        "username": $('#username').val(),
-                                        "password": $("#password").val()
-                                    },
-                                    success: function(redirectResponse) {
-                                        // If authentication is successful, redirect to /beranda
-                                        window.location.href = "/beranda";
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error('Redirecting failed:', xhr.responseText);
-                                        alert("Redirect failed, please try again.");
-                                    }
-                                });
+                                
+                                // Token stored in cookie or localStorage (for API calls), if needed
+                                localStorage.setItem('auth_token', response.data.token); // Store token if using for API calls
+                                // Redirect user to a protected page
+                                window.location.href = "/beranda";
                             } else {
                                 alert("Login failed: " + response.message);
                             }

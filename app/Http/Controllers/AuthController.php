@@ -16,31 +16,39 @@ class AuthController extends Controller
         return view('login');
     }
 
-    // public function login(Request $request) {
-    //     $validated = $request->validate([
-    //         'username' => 'required|string',
-    //         'password' => 'required|string',
-    //     ]);
-        
-    //     $data = [
-    //         'username' => $validated['username'],
-    //         'password' => $validated['password']
-    //     ];
+    public function redirecting(Request $request){
 
-    //     $response = Http::post('http://127.0.0.1:8000/api/login', $data);
-    //     if ($response -> successful()){
-    //         $responseData = $response->json();
-    //         $token = $responseData['data']['token'];   
-    //         Session::put('auth_token', $token);
-    //         return redirect()->route('kandang-ayam');
-    //     } else {
-    //         return response()->json([
-    //             'message' => 'wrong password',
-    //             'error' => $response->json(),
-    //         ], 400);
-    //         }
-    // }
+          // Validate the incoming request
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
+        // Attempt to authenticate the user using the provided credentials
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password,
+        ];
+
+        if (Auth::attempt($credentials)) {
+            // If successful, the user is logged in via session
+            // Session-based authentication is now active, so the user can pass the 'auth' middleware
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Authenticated successfully. Redirecting...',
+            ]);
+        }
+
+        // If authentication fails, return a response indicating failure
+        return response()->json([
+            'status' => 401,
+            'message' => 'Authentication failed, please check your credentials.',
+        ]);
+
+       
+    }
+    
     public function logout(Request $request) {
         Auth::logout();
 

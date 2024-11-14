@@ -16,10 +16,12 @@ use Illuminate\Http\Request;
 
 // Route::post('/login', [AuthController::class, 'login'])->name('actionLogin');
 Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/redirecting', [AuthController::class, 'redirecting'])->name('redirecting');
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
-});
-Route::resource('/product',ProductController::class);
+    Route::resource('/kandang-ayam',ProductController::class);
+}
 
 
