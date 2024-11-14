@@ -20,7 +20,7 @@ li{
 }
 
 .main-content {
-    margin-left: 280px;
+    margin-left: 240px;
     padding: 20px;
 }
 
@@ -101,7 +101,7 @@ tbody, thead {
     flex: 1;
     padding: 20px;
     box-sizing: border-box;
-    margin-left: 280px;
+    margin-left: 240px;
     text-align: justify;
 }
 .sidebar a{

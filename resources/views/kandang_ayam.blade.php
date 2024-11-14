@@ -15,7 +15,7 @@
 
 <body>
   <header class="sidebar">
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-light" style="width: 280px; height: 100vh;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-light shadow" style="width: 240px; height: 100vh;">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <img src="../assets/sidebar/logo_eggspert.svg " style="height: 10vh; width: 10vh;">
         <span class="fs-4" style="color: #E59D2A; padding-left: 10px;">Eggspert</span>
@@ -98,7 +98,7 @@
 
   <!-- Navbar -->
   <header class="header">
-    <nav class="navbar navbar-expand-lg bg-light rounded">
+    <nav class="navbar navbar-expand-lg bg-light rounded shadow">
       <div class="container-fluid">
         <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>BERANDA</b></span> </a>
         <!-- searchbar, keanya gausah kali ya? -->
@@ -149,17 +149,17 @@
 
 
   <div class="main-content">
-    <div class="card bg-light">
+    <div class="card bg-light shadow">
       <div class="card-body">
         <table id="myTable" class="display rounded bg-light">
           <thead>
             <tr>
-              <th>Column 1</th>
-              <th>Column 2</th>
-              <th>Column 3</th>
-              <th>Column 4</th>
-              <th>Column 5</th>
-              <th>Column 6</th>
+              <th>ID</th>
+              <th>NAMA KANDANG</th>
+              <th>KAPASITAS</th>
+              <th>TERAKHIR DIUBAH</th>
+              <th>STATUS PAKAN</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -192,10 +192,10 @@
                         <tr>
                             <td>${autoIncrement}</td>
                             <td>${product.name}</td>
-                            <td>${product.name}</td>
                             <td>${product.capacity}</td>
                             <td>${product.chicken_count}</td>
-                            <td>${product.chicken_breed}</td>
+                            <td>${product.name}</td>
+                            <td>button</td>
                         </tr>
                     `;
                     $('#myTable tbody').append(row); // Append the row to the table body

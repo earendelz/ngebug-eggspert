@@ -10,7 +10,7 @@
 </head>
 <body>
   <header class="sidebar">
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-light" style="width: 280px; height: 100vh;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-light shadow" style="width: 280px; height: 100vh;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
           <img src="../assets/sidebar/logo_eggspert.svg " style="height: 10vh; width: 10vh;">
           <span class="fs-4" style="color: #E59D2A; padding-left: 10px;">Eggspert</span>
@@ -91,7 +91,7 @@
 
   <!-- Navbar -->
   <header class="header">
-    <nav class="navbar navbar-expand-lg bg-light rounded">
+    <nav class="navbar navbar-expand-lg bg-light rounded shadow">
         <div class="container-fluid">
           <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>BERANDA</b></span> </a>
           <!-- searchbar, keanya gausah kali ya? -->
