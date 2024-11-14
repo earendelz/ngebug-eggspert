@@ -21,7 +21,7 @@ Route::put("/users/{id}", [UserAPIController::class, 'update']);
 Route::delete("/users/{id}", [UserAPIController::class, 'destroy']);
 
 Route::post('/register', [UserAPIController::class, 'register'])->name('register');
-Route::post('/login', [UserAPIController::class, 'login'])->name('login');
+Route::post('/login', [UserAPIController::class, 'login'])->name('actionLogin');
 Route::post('/logout', [UserAPIController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function(){

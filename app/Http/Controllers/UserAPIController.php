@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -49,8 +50,8 @@ class UserAPIController extends Controller
             'email' => $request->email,
             'alamat' => $request->alamat,
         ]);
-        
-        if($newUser){
+
+        if ($newUser) {
             $token = $newUser->createToken('eggspert-app')->plainTextToken;
             return response()->json([
                 'status' => Response::HTTP_OK,
@@ -59,14 +60,12 @@ class UserAPIController extends Controller
                     'token' => $token,
                     'user' => $newUser,
                 ]
-            ],201);
-        
-        }else{
+            ], 201);
+        } else {
             return response()->json([
                 'message' => "Something went wrong!"
-            ],500);
+            ], 500);
         }
-
     }
 
     /**
@@ -111,7 +110,7 @@ class UserAPIController extends Controller
         }
 
         $user->username = $request->username;
-        if($request->filled('password')) {
+        if ($request->filled('password')) {
             $user->password = bcrypt($request->password);
         }
         $user->nama = $request->nama;
@@ -134,8 +133,7 @@ class UserAPIController extends Controller
         }
 
         User::destroy($id);
-        return response()-> json(['success' => true, 'message'=>'User Deleted Successfully']);
-
+        return response()->json(['success' => true, 'message' => 'User Deleted Successfully']);
     }
 
     public function login(Request $request)
@@ -145,23 +143,33 @@ class UserAPIController extends Controller
             'password' => 'required',
         ]);
 
-        // $user = Auth::user();
-        $user = User::where('username', $request->username)->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['status' => Response::HTTP_UNAUTHORIZED, 'message' => 'Invalid credentials']);
-        } else {
-        $token = $user->createToken('eggspert-app')->plainTextToken;
+        // Retrieve credentials from request
+        $credentials = $request->only('username', 'password');
 
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'Login success',
-            'data' => [
-                'token' => $token,
-                'user' => $user,
-            ]
-        ]);
+        if (Auth::attempt($credentials)) {
+            // Generate token
+            $token = Auth::user()->createToken('eggspert-app')->plainTextToken;
+#kemungkinannya gara gara ngirim tiga token
+            // Return a successful response with token
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'message' => 'Login successful',
+                'data' => [
+                    'token' => $token,
+                    'user' => Auth::user(),
+                ]
+            ])
+            ->cookie('user_token', $token, 60, null, null, false, true)
+            ;  // Send token in cookie
         }
+
+        // If authentication fails
+        return response()->json([
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'message' => 'Invalid credentials',
+        ], Response::HTTP_UNAUTHORIZED);
     }
+
 
     // Logout a user
     public function logout(Request $request)
@@ -169,5 +177,4 @@ class UserAPIController extends Controller
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Logged out successfully']);
     }
-
 }

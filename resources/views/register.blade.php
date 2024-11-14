@@ -1,78 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Daftar Akun</title>
-        <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    </head>
-    <body class="bg-primary">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Registration</h3> <img  src="assets/img/LogoEggspertApp.png" style="display: block;margin-left: auto;margin-right: auto;width: 50%;"></div>
-                                    <div class="card-body">
-                                        @if ($errors->any())
-                                            <div>
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
-                                        <form method="POST" action="{{ route('register') }}">
-                                            @csrf
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputUsername" name="username" type="text" placeholder="username" />
-                                                <label for="inputUsername">Username</label>
-                                            </div>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputPassword" name="password" type="password" placeholder="Password" />
-                                                <label for="inputPassword">Password</label>
-                                            </div>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="password_confirmation" name="password_confirmation" type="password" placeholder="Konfirmasi Password" />
-                                                <label for="password_confirmation">Konfirmasi Password</label>
-                                            </div>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputNama" name="nama" type="text" placeholder="Nama Lengkap" />
-                                                <label for="nama">Nama Lengkap</label>
-                                            </div>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputEmail" name="email" type="email" placeholder="Email" />
-                                                <label for="email">Email</label>
-                                            </div>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputAlamat" name="alamat" type="text" placeholder="Alamat" />
-                                                <label for="alamat">Alamat</label>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-center mt-4 mb-0">
-                                                <button type="submit" class="btn btn-primary">Daftar</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer text-center py-3">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-            <div id="layoutAuthentication_footer">
-                
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>Login Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center vh-100">
+            <div class="col-md-4">
+            <form class="login-form mt-5 p-4 bg-white shadow rounded" id="loginForm">
+                @csrf
+                <h2 class="text-center mb-4">Register</h2>
+                <img src="assets/LogoEggspertApp.png" id="logo">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="nama">Nama</label>
+                    <input type="text" class="form-control" id="nama" name="nama" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="alamat">Alamat</label>
+                    <input type="text" class="form-control" id="alamat" name="alamat" required>
+                </div>
+                <button id="buttonLogin" type="submit" class="btn btn-primary btn-block">Login</button>
+                <p class="text-center mt-3">Not registered? <a href="#">Create an account</a></p>
+            </form>
+
+            <script>
+                $('#loginForm').on('submit', function(event) {
+                    event.preventDefault(); // Prevent the default form submission
+
+                    $.ajax({
+                        url: "{{ route('actionLogin') }}", // Route to login
+                        type: "POST",
+                        data: {
+                            "_token": $("meta[name='csrf-token']").attr("content"), // CSRF token
+                            "username": $('#username').val(), // Username
+                            "password": $("#password").val() // Password
+                        },
+                        success: function(response) {
+                            if (response.status === 200) {
+                                
+                                // Token stored in cookie or localStorage (for API calls), if needed
+                                localStorage.setItem('auth_token', response.data.token); // Store token if using for API calls
+                                // Redirect user to a protected page
+                                window.location.href = "/beranda";
+                            } else {
+                                alert("Login failed: " + response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', xhr.responseText);
+                            alert("An error occurred. Please try again.");
+                        }
+                    });
+                });
+            </script>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional for this simple page) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
 </html>
