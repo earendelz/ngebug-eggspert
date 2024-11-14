@@ -5,9 +5,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class UserAPIController extends Controller
 {
@@ -17,7 +18,7 @@ class UserAPIController extends Controller
     public function index()
     {
         $users = User::all();
-        return response()->json(['success' => true, 'data' => $users]); 
+        return response()->json(['success' => true, 'data' => $users]);
     }
 
     /**
@@ -40,7 +41,7 @@ class UserAPIController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
-        
+
         $newUser = User::create([
             'username' => $request->username,
             'password' => bcrypt($request->password),
@@ -114,10 +115,10 @@ class UserAPIController extends Controller
             $user->password = bcrypt($request->password);
         }
         $user->nama = $request->nama;
-        $user->email = $request->email; 
+        $user->email = $request->email;
         $user->alamat = $request->alamat;
         $user->save();
-    
+
         return response()->json(['success' => true, 'data' => $user]);
     }
 

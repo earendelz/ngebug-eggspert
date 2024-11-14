@@ -13,36 +13,45 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::insert([
-            'nama' => 'Faiq',
-            'username' => 'faiq',
-            'password' => bcrypt('123'),
-            'email' => 'faiq@gmail.com',
-            'alamat' => 'Bogor',
-        ]);
+        // Using firstOrCreate to avoid duplicate entries based on unique columns
+        User::firstOrCreate(
+            ['email' => 'faiq@gmail.com'], // Check if the email already exists
+            [
+                'nama' => 'Faiq',
+                'username' => 'faiq',
+                'password' => bcrypt('123'),
+                'alamat' => 'Bogor',
+            ]
+        );
 
-        User::insert([
-            'nama' => 'Farrel',
-            'username' => 'farrel',
-            'password' => bcrypt('123'),
-            'email' => 'farrel@gmail.com',
-            'alamat' => 'Bogor',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'farrel@gmail.com'], // Check if the email already exists
+            [
+                'nama' => 'Farrel',
+                'username' => 'farrel',
+                'password' => bcrypt('123'),
+                'alamat' => 'Bogor',
+            ]
+        );
 
-        User::insert([
-            'nama' => 'Rafii',
-            'username' => 'rafii',
-            'password' => bcrypt('123'),
-            'email' => 'pii@gmail.com',
-            'alamat' => 'Bogor',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'pii@gmail.com'], // Check if the email already exists
+            [
+                'nama' => 'Rafii',
+                'username' => 'rafii',
+                'password' => bcrypt('123'),
+                'alamat' => 'Bogor',
+            ]
+        );
 
-        User::insert([
-            'nama' => 'Faris',
-            'username' => 'faris',
-            'password' => bcrypt('123'),
-            'email' => 'faris@gmail.com',
-            'alamat' => 'Bogor',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'faris@gmail.com'], // Check if the email already exists
+            [
+                'nama' => 'Faris',
+                'username' => 'faris',
+                'password' => bcrypt('123'),
+                'alamat' => 'Bogor',
+            ]
+        );
     }
 }
