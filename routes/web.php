@@ -22,6 +22,6 @@ Route::post('/redirecting', [AuthController::class, 'redirecting'])->name('redir
 Route::middleware(['auth'])->group(function(){
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
     Route::resource('/kandang-ayam',ProductController::class);
-}
+});
 
 
