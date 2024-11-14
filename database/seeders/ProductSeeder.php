@@ -38,7 +38,7 @@ class ProductSeeder extends Seeder
         ]);
 
         Product::insert([
-            'name' => 'Kandang 1',
+            'name' => 'Kandang 3',
             'capacity' => 50,
             'chicken_count' => 23,
             'chicken_breed' => 'Plymouth Rock',
@@ -48,7 +48,7 @@ class ProductSeeder extends Seeder
         ]);
 
         Product::insert([
-            'name' => 'Kandang 1',
+            'name' => 'Kandang 4',
             'capacity' => 55,
             'chicken_count' => 43,
             'chicken_breed' => 'Sussex',
@@ -58,7 +58,7 @@ class ProductSeeder extends Seeder
         ]);
 
         Product::insert([
-            'name' => 'Kandang 1',
+            'name' => 'Kandang 5',
             'capacity' => 56,
             'chicken_count' => 40,
             'chicken_breed' => 'Silkie',
@@ -68,7 +68,7 @@ class ProductSeeder extends Seeder
         ]);
 
         Product::insert([
-            'name' => 'Kandang 2',
+            'name' => 'Kandang 6',
             'capacity' => 56,
             'chicken_count' => 45,
             'chicken_breed' => 'Cochin',
