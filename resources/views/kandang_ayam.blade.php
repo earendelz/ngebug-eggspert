@@ -9,6 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <title>Eggspert</title>
 </head>
 
@@ -127,7 +128,11 @@
               <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user" style="text-decoration: none; color: black;"><b>Rusdi</b></a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light">
-                  <li><a class="dropdown-item" href="#">Tes</a></li>
+                <li><form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">Logout</button>
+                                    </form>
+                                </li>
                   <li><a class="dropdown-item" href="#">Tes</a></li>
                   <li><a class="dropdown-item" href="#">Tes</a></li>
                 </ul>
@@ -158,23 +163,29 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($kandangs as $kandang)
-
-            <tr>
-              <td>{{$loop -> iteration}}</td>
-              <td>{{$kandang -> name}}</td>
-              <td>{{$kandang -> capacity}}</td>
-              <td>{{$kandang -> chicken_count}}</td>
-              <td>{{$kandang -> chicken_breed}}</td>
-              <td>button</td>
-            </tr>
-
-            @endforeach
+            
           </tbody>
         </table>
       </div>
     </div>
   </div>
+  <script>
+    var userId = @json(Auth::id());
+  $.ajax({
+    url: "{{route('kandang.index')}}" + '/' + userId, // Your protected API route
+    type: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+    },
+    success: function(response) {
+        console.log('Data:', response);
+    },
+    error: function(xhr, status, error) {
+        console.error('Error:', xhr.responseText);
+        alert("Failed to fetch data.");
+    }
+});
+</script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/simple-datatables@9.2.1/dist/umd/simple-datatables.js"></script>

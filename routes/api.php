@@ -20,7 +20,7 @@ Route::get("/users/{id}", [UserAPIController::class, 'show']);
 Route::put("/users/{id}", [UserAPIController::class, 'update']);
 Route::delete("/users/{id}", [UserAPIController::class, 'destroy']);
 
-Route::post('/register', [UserAPIController::class, 'register'])->name('register');
+Route::post('/register', [UserAPIController::class, 'register'])->name('actionRegister');
 Route::post('/login', [UserAPIController::class, 'login'])->name('actionLogin');
 Route::post('/logout', [UserAPIController::class, 'logout'])->middleware('auth:sanctum');
 
@@ -43,4 +43,4 @@ Route::apiResource('panen_telur', PanenTelurAPIController::class); //general rou
 Route::get('panen_telur/kandang/{id_kandang}', [PanenTelurAPIController::class, 'getByKandang']); //get panen telur by id kandang
 Route::get('panen_telur/namaKandang/{name}', [PanenTelurAPIController::class, 'getByNamaKandang']); //get panen telur by nama kandang
 
-Route::apiResource('kandang', ProductAPIController::class); //general route kandang (products)
+Route::apiResource('kandang', ProductAPIController::class)->name('kandangAPI'); //general route kandang (products)

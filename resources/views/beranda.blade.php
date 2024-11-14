@@ -24,49 +24,49 @@
             </a>
           </li>
           <li>
-            <a href="/html/kandang_ayam.html" class="nav-link">
+            <a href="{{route('kandang-ayam-dashboard')}}" class="nav-link">
                 <img src="../assets/sidebar/kandang_ayam.svg" class="nav-img" alt="Kandang Ayam">
               Kandang Ayam
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+            <a href="{{route('gudang-telur-dashboard')}}" class="nav-link">
                 <img src="../assets/sidebar/gudang_telur.svg" class="nav-img" alt="Gudang Telur">
               Gudang Telur
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+            <a href="{{route('panen-telur-dashboard')}}" class="nav-link">
                 <img src="../assets/sidebar/panen_telur.svg" class="nav-img" alt="Panen Telur">
               Panen Telur
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+            <a href="{{route('penjualan-telur-dashboard')}} class="nav-link">
                 <img src="../assets/sidebar/penjualan_telur.svg" class="nav-img" alt="Penjualan Telur">
               Penjualan Telur
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+            <a href="{{route('penjualan-ayam-dashboard')}} class="nav-link">
                 <img src="../assets/sidebar/penjualan_ayam.svg" class="nav-img" alt="Penjualan Ayam">
               Penjualan Ayam
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+            <a href="{{route('vaksinasi-ayam-dashboard')}}" class="nav-link">
                 <img src="../assets/sidebar/vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
               Vaksinasi Ayam
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+            <a href="{{route('laporan-ayam-dashboard')}}" class="nav-link">
                 <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
               Laporan Ayam
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+            <a href="{{route('laporan-gudang-dashboard')}}" class="nav-link">
                 <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
               Laporan Gudang
             </a>
@@ -121,7 +121,11 @@
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user" style="text-decoration: none; color: black;"><b>Rusdi</b></a>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light">    
-                                <li><a class="dropdown-item" href="#">Tes</a></li>
+                                <li><form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">Logout</button>
+                                    </form>
+                                </li>
                                 <li><a class="dropdown-item" href="#">Tes</a></li>
                                 <li><a class="dropdown-item" href="#">Tes</a></li>
                             </ul>

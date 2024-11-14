@@ -30,7 +30,7 @@
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <button id="buttonLogin" type="submit" class="btn btn-primary btn-block">Login</button>
-                <p class="text-center mt-3">Not registered? <a href="#">Create an account</a></p>
+                <p class="text-center mt-3">Not registered? <a href="{{route('register')}}">Create an account</a></p>
             </form>
 
             <script>
@@ -47,6 +47,7 @@
                         },
                         success: function(response) {
                             if (response.status === 200) {
+                                localStorage.setItem('bearer_token', response.data.token); // Store the Bearer token in localStorage
                                 // Send the credentials to /redirecting to attempt login and pass auth middleware
                                 $.ajax({
                                     url: "/redirecting", // Redirecting route

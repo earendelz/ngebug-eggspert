@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
@@ -50,12 +51,31 @@ class AuthController extends Controller
     }
     
     public function logout(Request $request) {
-        Auth::logout();
+         // For session-based authentication (web)
+         if (Auth::check()) {
+            Auth::logout(); // Logs out the user
+            $request->session()->invalidate(); // Invalidate the session
+            $request->session()->regenerateToken(); // Regenerate CSRF token to prevent session fixation attacks
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-    
-        return redirect()->route('login')->with('success', 'Anda telah logout.');
+            // Optionally, return a success message or redirect
+            return response()->json(['message' => 'Logged out successfully.'], 200);
+        }
+
+        // For Sanctum API token logout
+        if ($request->user()) {
+            // Revoke the user's token
+            $request->user()->tokens->each(function ($token) {
+                $token->delete();
+            });
+
+            // Optionally, you can log the user out of the session as well (if they are logged in via session)
+            Auth::logout();
+
+            return view('login');
+        }
+
+        // If no user is authenticated, return an error
+        return response()->json(['message' => 'No authenticated user to log out.'], 400);
     }
 
     public function register() {
