@@ -170,22 +170,51 @@
     </div>
   </div>
   <script>
-    var userId = @json(Auth::id());
-  $.ajax({
-    url: "{{route('kandang.index')}}" + '/' + userId, // Your protected API route
-    type: 'GET',
-    headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
-    },
-    success: function(response) {
-        console.log('Data:', response);
-    },
-    error: function(xhr, status, error) {
-        console.error('Error:', xhr.responseText);
-        alert("Failed to fetch data.");
-    }
-});
+    var userId = @json(Auth::id()); // Get the user ID from the server-side variable
+    $.ajax({
+        url: "{{ route('kandang.index') }}" + '/' + userId, // Your protected API route with the userId
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+        },
+        success: function(response) {
+            console.log('Response:', response); // Log the entire response to verify its structure
+
+            // Clear the table body before inserting new rows
+            $('#myTable tbody').empty();
+
+            // Check if the response is an array (which it should be based on your response)
+            if (Array.isArray(response)) {
+              let autoIncrement = 1;
+                response.forEach(function(product) {
+                    // Dynamically generate the table row for each product
+                    var row = `
+                        <tr>
+                            <td>${autoIncrement}</td>
+                            <td>${product.name}</td>
+                            <td>${product.name}</td>
+                            <td>${product.capacity}</td>
+                            <td>${product.chicken_count}</td>
+                            <td>${product.chicken_breed}</td>
+                        </tr>
+                    `;
+                    $('#myTable tbody').append(row); // Append the row to the table body
+                    autoIncrement++;
+                  });
+            } else {
+                // If response is not an array, show an error message
+                alert('Unexpected response format. Expected an array of products.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', xhr.responseText);
+            alert("Failed to fetch data.");
+        }
+    });
 </script>
+
+
+
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/simple-datatables@9.2.1/dist/umd/simple-datatables.js"></script>

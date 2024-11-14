@@ -26,6 +26,8 @@ Route::post('/logout', [UserAPIController::class, 'logout'])->middleware('auth:s
 
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource("gudangku", GudangAPIController::class);
+
+    
 });
 
 Route::apiResource("user", UserAPIController::class);

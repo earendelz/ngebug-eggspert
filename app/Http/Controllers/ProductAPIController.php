@@ -41,8 +41,8 @@ class ProductAPIController extends Controller
 
     public function show($id)
     {
-        $product = Product::where('id_peternak', $id)->firstOrFail();
-        return response()->json($product);
+        $products = Product::where('id_peternak', $id)->get();
+        return response()->json($products);
     }
 
     public function update(Request $request, $id)
