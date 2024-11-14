@@ -18,4 +18,13 @@ class Product extends Model
         'chicken_breed',
         'id_peternak',
     ];
+
+    /**
+     * Relasi dengan PanenTelur
+     */
+    public function panenTelur()
+    {
+        return $this->hasMany(PanenTelur::class, 'id_kandang');
+    }
 }
+
