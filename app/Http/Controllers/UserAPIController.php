@@ -49,8 +49,23 @@ class UserAPIController extends Controller
             'email' => $request->email,
             'alamat' => $request->alamat,
         ]);
-
-        return response()->json(['success' => true, 'data' => $newUser], 201);
+        
+        if($newUser){
+            $token = $newUser->createToken('eggspert-app')->plainTextToken;
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'message' => 'Registration success',
+                'data' => [
+                    'token' => $token,
+                    'user' => $newUser,
+                ]
+            ],201);
+        
+        }else{
+            return response()->json([
+                'message' => "Something went wrong!"
+            ],500);
+        }
 
     }
 
@@ -130,16 +145,12 @@ class UserAPIController extends Controller
             'password' => 'required',
         ]);
 
-        if (!Auth::attempt($request->only('username', 'password'))) {
-            return response()->json(['message' => 'Invalid login credentials'], 401);
-        }
-
         // $user = Auth::user();
         $user = User::where('username', $request->username)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['status' => Response::HTTP_UNAUTHORIZED, 'message' => 'Invalid credentials']);
         } else {
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('eggspert-app')->plainTextToken;
 
         return response()->json([
             'status' => Response::HTTP_OK,

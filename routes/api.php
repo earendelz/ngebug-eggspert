@@ -24,8 +24,10 @@ Route::post('/register', [UserAPIController::class, 'register'])->name('register
 Route::post('/login', [UserAPIController::class, 'login'])->name('login');
 Route::post('/logout', [UserAPIController::class, 'logout'])->middleware('auth:sanctum');
 
+Route::middleware(['auth:sanctum'])->group(function(){
+    Route::apiResource("gudangku", GudangAPIController::class);
+});
 
-Route::apiResource("gudangku", GudangAPIController::class);
 Route::apiResource("user", UserAPIController::class);
 Route::apiResource('vaksinasi', VaksinasiAPIController::class);
 
