@@ -30,6 +30,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('panen_telur');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');  // Disable foreign key checks
+
+        Schema::dropIfExists('panen_telurs');  // Drop the 'panen_telurs' table
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');  // Re-enable foreign key checks
     }
 };
