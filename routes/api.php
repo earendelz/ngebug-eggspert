@@ -26,7 +26,9 @@ Route::post('/logout', [UserAPIController::class, 'logout'])->middleware('auth:s
 
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource("gudangku", GudangAPIController::class);
-
+    Route::apiResource("kandangku", ProductAPIController::class);
+    Route::apiResource("pakanku", PakanAPIController::class);
+    Route::apiResource("rasayamku", RasAyamAPIController::class);
     
 });
 
@@ -45,4 +47,3 @@ Route::apiResource('panen_telur', PanenTelurAPIController::class); //general rou
 Route::get('panen_telur/kandang/{id_kandang}', [PanenTelurAPIController::class, 'getByKandang']); //get panen telur by id kandang
 Route::get('panen_telur/namaKandang/{name}', [PanenTelurAPIController::class, 'getByNamaKandang']); //get panen telur by nama kandang
 
-Route::apiResource('kandang', ProductAPIController::class)->name('kandangAPI'); //general route kandang (products)

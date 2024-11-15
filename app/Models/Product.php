@@ -17,6 +17,7 @@ class Product extends Model
         'chicken_count',
         'chicken_breed',
         'id_peternak',
+        'status_kandang',
     ];
 
     /**

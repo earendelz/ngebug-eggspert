@@ -11,9 +11,8 @@ class ProductAPIController extends Controller
 {
     public function index()
     {
-        // $userId = Auth::id();
-        $products = Product::all();
-        // $products = Product::where('id_peternak', $userId)->get();
+        $userId = Auth::id();
+        $products = Product::where('id_peternak', $userId)->get();
         return response()->json($products);
     }
 
@@ -26,6 +25,7 @@ class ProductAPIController extends Controller
             'capacity' => 'required|integer',
             'chicken_count' => 'required|integer',
             'chicken_breed' => 'required|string|max:255',
+            'status_kandang' => 'required|in:tersedia,tidak tersedia',
         ]);
 
         $product = Product::create([
@@ -33,7 +33,8 @@ class ProductAPIController extends Controller
             'capacity' => $request->capacity,
             'chicken_count' => $request->chicken_count,
             'chicken_breed' => $request->chicken_breed,
-            'id_peternak' => $request -> id_peternak,
+            'status_kandang' => $request->status_kandang,
+            'id_peternak' => $userId,
         ]);
 
         return response()->json($product, 201);
@@ -54,6 +55,7 @@ class ProductAPIController extends Controller
             'capacity' => 'required|integer',
             'chicken_count' => 'required|integer',
             'chicken_breed' => 'required|string|max:255',
+            'status_kandang' => 'required|in:tersedia,tidak tersedia',
         ]);
 
         $product->update($validated);

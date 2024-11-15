@@ -9,5 +9,8 @@ class Pakan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['jenis_pakan'];
+    protected $fillable = [
+        'jenis_pakan',
+        'id_peternak',
+    ];
 }
