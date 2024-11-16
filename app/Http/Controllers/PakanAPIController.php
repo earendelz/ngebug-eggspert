@@ -9,11 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class PakanAPIController extends Controller
 {
-<<<<<<< Updated upstream
-    /**
-=======
+
      /**
->>>>>>> Stashed changes
      * GET all pakan
      */
     public function index()
@@ -30,10 +27,6 @@ class PakanAPIController extends Controller
     {
         $userId = Auth::id();
 
-<<<<<<< Updated upstream
-        // Validasi input
-=======
->>>>>>> Stashed changes
         $request->validate([
             'jenis_pakan' => 'required|string|max:255',
         ]);
@@ -51,25 +44,6 @@ class PakanAPIController extends Controller
     /**
      * GET pakan by jenis_pakan
      */
-<<<<<<< Updated upstream
-    // public function getByJenisPakan($jenis_pakan)
-    // {
-    //     $pakan = Pakan::where('jenis_pakan', $jenis_pakan)->get();
-
-    //     // Jika tidak ada pakan yang ditemukan
-    //     if ($pakan->isEmpty()) {
-    //         return response()->json(['message' => 'Pakan dengan jenis tersebut tidak ditemukan'], 404);
-    //     }
-
-    //     return response()->json($pakan);
-    // }
-
-    /**
-     * GET pakan by id
-     */
-=======
-
->>>>>>> Stashed changes
     public function show($id)
     {
         $pakan = Pakan::where('id', $id)->get();

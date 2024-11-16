@@ -21,21 +21,6 @@ class ProductAPIController extends Controller
     {
         $userId = Auth::id();
 
-<<<<<<< Updated upstream
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'capacity' => 'required|integer',
-            'chicken_count' => 'required|integer',
-            'chicken_breed' => 'required|string|max:255',
-        ]);
-
-        $product = Product::create([
-            'name' => $request->name,
-            'capacity' => $request->capacity,
-            'chicken_count' => $request->chicken_count,
-            'chicken_breed' => $request->chicken_breed,
-            'id_peternak' => $request -> id_peternak,
-=======
         $request->validate([
             'nama' => 'required|string|max:255|unique:products',
             'jenis_kandang' => 'required|string|max:255',
@@ -56,7 +41,6 @@ class ProductAPIController extends Controller
             'id_pakan' => $request->id_pakan,
             'id_peternak' => $request->id_peternak,
             'status_pakan' => $request->status_pakan,
->>>>>>> Stashed changes
         ]);
 
         return response()->json($product, 201);
@@ -73,12 +57,6 @@ class ProductAPIController extends Controller
         $product = Product::findOrFail($id);
 
         $validated = $request->validate([
-<<<<<<< Updated upstream
-            'name' => 'required|string|max:255',
-            'capacity' => 'required|integer',
-            'chicken_count' => 'required|integer',
-            'chicken_breed' => 'required|string|max:255',
-=======
             'nama' => $request->nama,
             'jenis_kandang' => $request->jenis_kandang,
             'kapasitas' => $request->kapasitas,
@@ -87,7 +65,6 @@ class ProductAPIController extends Controller
             'id_pakan' => $request->id_pakan,
             'id_peternak' => $request->id_peternak,
             'status_pakan' => $request->status_pakan,
->>>>>>> Stashed changes
         ]);
 
         $product->update($validated);
