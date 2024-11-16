@@ -10,7 +10,7 @@
 </head>
 <body>
   <header class="sidebar">
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-light" style="width: 280px; height: 100vh;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-light shadow" style="width: 240px; height: 100vh;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
           <img src="../assets/sidebar/logo_eggspert.svg " style="height: 10vh; width: 10vh;">
           <span class="fs-4" style="color: #E59D2A; padding-left: 10px;">Eggspert</span>
@@ -24,68 +24,63 @@
             </a>
           </li>
           <li>
-            <a href="/html/kandang_ayam.html" class="nav-link">
+          {{-- {{route('kandang-ayam-dashboard')}} --}}
+            <a href="{{route('kandang-ayam-dashboard.index')}}" class="nav-link">
                 <img src="../assets/sidebar/kandang_ayam.svg" class="nav-img" alt="Kandang Ayam">
               Kandang Ayam
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+          {{-- {{route('gudang-telur-dashboard')}} --}}
+            <a href="" class="nav-link">
                 <img src="../assets/sidebar/gudang_telur.svg" class="nav-img" alt="Gudang Telur">
               Gudang Telur
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+          {{-- {{route('panen-telur-dashboard')}} --}}
+            <a href="" class="nav-link">
                 <img src="../assets/sidebar/panen_telur.svg" class="nav-img" alt="Panen Telur">
               Panen Telur
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+          {{-- {{route('penjualan-telur-dashboard')}} --}}
+            <a href="" class="nav-link">
                 <img src="../assets/sidebar/penjualan_telur.svg" class="nav-img" alt="Penjualan Telur">
               Penjualan Telur
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+          {{-- {{route('penjualan-ayam-dashboard')}} --}}
+            <a href="" class="nav-link">
                 <img src="../assets/sidebar/penjualan_ayam.svg" class="nav-img" alt="Penjualan Ayam">
               Penjualan Ayam
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+          {{-- {{route('vaksinasi-ayam-dashboard')}} --}}
+            <a href="" class="nav-link">
                 <img src="../assets/sidebar/vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
               Vaksinasi Ayam
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+          {{-- {{route('laporan-ayam-dashboard')}} --}}
+            <a href="" class="nav-link">
                 <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
               Laporan Ayam
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link">
+          {{-- {{route('laporan-gudang-dashboard')}} --}}
+            <a href="" class="nav-link">
                 <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
               Laporan Gudang
             </a>
           </li>
         </ul>
         <hr>
-        <div class="dropdown">
-          <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-            <strong>mdo</strong>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-          </ul>
-        </div>
       </div>
   </header>
 
@@ -121,9 +116,54 @@
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user" style="text-decoration: none; color: black;"><b>Rusdi</b></a>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light">    
-                                <li><a class="dropdown-item" href="#">Tes</a></li>
-                                <li><a class="dropdown-item" href="#">Tes</a></li>
-                                <li><a class="dropdown-item" href="#">Tes</a></li>
+                              <li><a class="dropdown-item" href="#">Profile</a></li>
+                              <li><a class="dropdown-item" href="#">Setting</a></li>
+                                <li><form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item logout-btn" id="logoutButton">Logout</button>
+                                    </form>
+                                    <script>
+                                    $(document).ready(function() {
+                                      $('#logoutButton').click(function(e) {
+                                          e.preventDefault(); // Prevent default form submission
+
+                                          // First AJAX request: Logout the user (destroy session)
+                                          $.ajax({
+                                              url: "{{ route('logout') }}", // Laravel logout route to delete session
+                                              type: 'POST',
+                                              data: {
+                                                  _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+                                              },
+                                              success: function(response) {
+                                                  console.log("Session destroyed, now logging out from API...");
+
+                                                  // Second AJAX request: API logout (invalidate the token)
+                                                  $.ajax({
+                                                      url: "{{route('actionLogout')}}", // The route for API logout
+                                                      type: 'POST',
+                                                      headers: {
+                                                          'Authorization': 'Bearer ' + localStorage.getItem('api_token') // Attach the token
+                                                      },
+                                                      success: function(apiResponse) {
+                                                          console.log("Logged out from API successfully.");
+                                                          // Redirect the user after both logouts are successful
+                                                          window.location.href = '/'; // Or any other page, e.g., login page
+                                                      },
+                                                      error: function(xhr, status, error) {
+                                                          console.error('Error logging out from API:', error);
+                                                          // Handle API logout error (e.g., show an error message)
+                                                      }
+                                                  });
+                                              },
+                                              error: function(xhr, status, error) {
+                                                  console.error('Error logging out from session:', error);
+                                                  // Handle session logout error (e.g., show an error message)
+                                              }
+                                          });
+                                      });
+                                  });
+</script>
+                                </li>
                             </ul>
                         </li>
                     </div>

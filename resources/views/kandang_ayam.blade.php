@@ -7,6 +7,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css">
 
   <title>Eggspert</title>
@@ -22,7 +23,7 @@
       <hr>
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-          <a href="/html/beranda.html" class="nav-link">
+          <a href="{{route('beranda')}}" class="nav-link">
             <img src="../assets/sidebar/beranda.svg" class="nav-img" alt="Beranda">
             Beranda
           </a>
@@ -149,12 +150,12 @@
         <table id="myTable" class="display rounded bg-light">
           <thead>
             <tr>
-              <th>Column 1</th>
-              <th>Column 2</th>
-              <th>Column 3</th>
-              <th>Column 4</th>
-              <th>Column 5</th>
-              <th>Column 6</th>
+              <th>ID</th>
+              <th>NAMA KANDANG</th>
+              <th>KAPASITAS</th>
+              <th>TERAKHIR DIUBAH</th>
+              <th>STATUS PAKAN</th>
+              <th>OPSI</th>
             </tr>
           </thead>
           <tbody>
@@ -175,9 +176,61 @@
       </div>
     </div>
   </div>
+  <script>
+    var userId = @json(Auth::id()); // Get the user ID from the server-side variable
+    $.ajax({
+        url: "{{ route('kandangku.index') }}" + '/' + userId, // Your protected API route with the userId
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+        },
+        success: function(response) {
+            console.log('Response:', response); // Log the entire response to verify its structure
+
+            // Clear the table body before inserting new rows
+            $('#myTable tbody').empty();
+
+            // Check if the response is an array (which it should be based on your response)
+            if (Array.isArray(response)) {
+              let autoIncrement = 1;
+                response.forEach(function(product) {
+                    // Dynamically generate the table row for each product
+                    var row = `
+                        <tr>
+                            <td>${autoIncrement}</td>
+                            <td>${product.name}</td>
+                            <td>${product.chicken_count}/${product.capacity}</td>
+                            <td>${product.updated_at}</td>
+                            <td>${product.status_kandang}</td>
+                            <td>
+                              <a>
+                              <img src="../assets/edit_button.svg">
+                              <img src="../assets/delete_button.svg">
+                              </a>
+                            </td>
+                        </tr>
+                    `;
+                    $('#myTable tbody').append(row); // Append the row to the table body
+                    autoIncrement++;
+                  });
+            } else {
+                // If response is not an array, show an error message
+                alert('Unexpected response format. Expected an array of products.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', xhr.responseText);
+            alert("Failed to fetch data.");
+        }
+    });
+</script>
+
+
+
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/simple-datatables@9.2.1/dist/umd/simple-datatables.js"></script>
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
   <script src="../js/sidebar.js"></script>
   <script src="../js/table.js"></script>
 </body>

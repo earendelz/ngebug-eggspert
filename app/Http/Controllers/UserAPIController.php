@@ -174,7 +174,9 @@ class UserAPIController extends Controller
     // Logout a user
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->user()->tokens->each(function($token) {
+            $token->delete();
+        });
         return response()->json(['message' => 'Logged out successfully']);
     }
 }
