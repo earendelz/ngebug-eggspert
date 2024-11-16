@@ -37,10 +37,10 @@ Route::apiResource('vaksinasi', VaksinasiAPIController::class);
 Route::apiResource('laporan-gudang', LaporanGudangAPIController::class);
 Route::get('laporan-gudang/getByNama/{nama_laporan_gudang}', [LaporanGudangAPIController::class, 'getByNamaLaporanGudang']);
 
-Route::apiResource('pakan', PakanAPIController::class); //general route pakan
-Route::get('pakan/getByJenis/{jenis_pakan}', [PakanAPIController::class, 'getByJenisPakan']); //get pakan by jenis pakan
+// Route::apiResource('pakan', PakanAPIController::class); //general route pakan
+// Route::get('pakan/getByJenis/{jenis_pakan}', [PakanAPIController::class, 'getByJenisPakan']); //get pakan by jenis pakan
 
-Route::apiResource('ras_ayam', RasAyamAPIController::class); //genera; route ras ayam
+Route::apiResource('ras_ayam', RasAyamAPIController::class); //general route ras ayam
 
 Route::apiResource('panen_telur', PanenTelurAPIController::class); //general route panen telur
 Route::get('panen_telur/kandang/{id_kandang}', [PanenTelurAPIController::class, 'getByKandang']); //get panen telur by id kandang

@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints(); // Matikan kunci asing
+
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->integer('capacity');
-            $table->integer('chicken_count');
-            $table->string('chicken_breed');
+            $table->string('nama')->unique();
+            $table->string('jenis_ayam');
+            $table->integer('kapasitas');
+            $table->integer('jumlah_ayam');
+            $table->boolean('status_pakan');
+            $table->unsignedBigInteger('id_ras_ayam');
+            $table->unsignedBigInteger('id_pakan');
             $table->unsignedBigInteger('id_peternak');
 
             $table->foreign('id_peternak')
@@ -25,8 +30,23 @@ return new class extends Migration
                     ->onDelete('no action')
                     ->onUpdate('no action');
 
+            $table->foreign('id_ras_ayam')
+                    ->references('id')
+                    ->on('ras_ayams')
+                    ->onDelete('no action')
+                    ->onUpdate('no action');
+
+            $table->foreign('id_pakan')
+                    ->references('id')
+                    ->on('pakans')
+                    ->onDelete('no action')
+                    ->onUpdate('no action');
+
             $table->timestamps();
+
         });
+
+        Schema::enableForeignKeyConstraints();  // Aktifkan kembali
     }
 
     /**
