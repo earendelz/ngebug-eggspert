@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('jumlah_ayam');
             $table->unsignedBigInteger('id_ras_ayam');
             $table->unsignedBigInteger('id_pakan');
-            $table->boolean('status_pakan');
+            $table->string('status_pakan');
             $table->unsignedBigInteger('id_peternak');
 
             $table->foreign('id_peternak')
