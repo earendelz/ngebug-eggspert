@@ -22,21 +22,12 @@ return new class extends Migration
             $table->integer('jumlah_ayam');
             $table->unsignedBigInteger('id_ras_ayam');
             $table->unsignedBigInteger('id_pakan');
-            $table->unsignedBigInteger('id_peternak');
             $table->string('status_pakan');
+            $table->unsignedBigInteger('id_peternak');
+
             $table->foreign('id_peternak')
                     ->references('id')
                     ->on('users')
-                    ->onDelete('no action')
-                    ->onUpdate('no action');
-            $table->foreign('id_ras_ayam')
-                    ->references('id')
-                    ->on('ras_ayams')
-                    ->onDelete('no action')
-                    ->onUpdate('no action');
-            $table->foreign('id_pakan')
-                    ->references('id')
-                    ->on('pakans')
                     ->onDelete('no action')
                     ->onUpdate('no action');
 
