@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('jenis_kandang');
             $table->integer('kapasitas');
             $table->integer('jumlah_ayam');
-            $table->boolean('status_pakan');
             $table->unsignedBigInteger('id_ras_ayam');
             $table->unsignedBigInteger('id_pakan');
+            $table->boolean('status_pakan');
             $table->unsignedBigInteger('id_peternak');
 
             $table->foreign('id_peternak')
