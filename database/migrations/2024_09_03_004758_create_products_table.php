@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
         Schema::disableForeignKeyConstraints(); // Matikan kunci asing
 
         Schema::create('products', function (Blueprint $table) {
@@ -21,12 +25,25 @@ return new class extends Migration
             $table->integer('jumlah_ayam');
             $table->unsignedBigInteger('id_ras_ayam');
             $table->unsignedBigInteger('id_pakan');
+<<<<<<< Updated upstream
             $table->string('status_pakan');
+=======
+>>>>>>> Stashed changes
             $table->unsignedBigInteger('id_peternak');
-
+            $table->string('status_pakan');
             $table->foreign('id_peternak')
                     ->references('id')
                     ->on('users')
+                    ->onDelete('no action')
+                    ->onUpdate('no action');
+            $table->foreign('id_ras_ayam')
+                    ->references('id')
+                    ->on('ras_ayams')
+                    ->onDelete('no action')
+                    ->onUpdate('no action');
+            $table->foreign('id_pakan')
+                    ->references('id')
+                    ->on('pakans')
                     ->onDelete('no action')
                     ->onUpdate('no action');
 
@@ -45,8 +62,12 @@ return new class extends Migration
             $table->timestamps();
 
         });
+<<<<<<< Updated upstream
 
         Schema::enableForeignKeyConstraints();  // Aktifkan kembali
+=======
+        Schema::enableForeignKeyConstraints(); 
+>>>>>>> Stashed changes
     }
 
     /**

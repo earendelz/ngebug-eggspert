@@ -12,12 +12,14 @@ class Product extends Model
     protected $table = 'products';
 
     protected $fillable = [
-        'name',
-        'capacity',
-        'chicken_count',
-        'chicken_breed',
+        'nama',
+        'jenis_kandang',
+        'kapasitas',
+        'jumlah_ayam',
+        'id_ras_ayam',
+        'id_pakan',
         'id_peternak',
-        'status_kandang',
+        'status_pakan',
     ];
 
     /**
