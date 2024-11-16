@@ -38,21 +38,21 @@ class RasAyamAPIController extends Controller
     public function show(string $id)
     {
 
-        $rasAyam = RasAyam::where('id_peternak', $id)->get();
+        $rasAyam = RasAyam::where('id', $id)->get();
         return response()->json($rasAyam);
     }
 
-    public function getByJenisRasAyam($nama_ras_ayam)
-    {
-        $rasAyam = RasAyam::where('nama_ras_ayam', $nama_ras_ayam)->get();
+    // public function getByJenisRasAyam($nama_ras_ayam)
+    // {
+    //     $rasAyam = RasAyam::where('nama_ras_ayam', $nama_ras_ayam)->get();
 
-        // Jika tidak ada ras ayam yang ditemukan
-        if ($rasAyam->isEmpty()) {
-            return response()->json(['message' => 'Ras ayam dengan jenis tersebut tidak ditemukan'], 404);
-        }
+    //     // Jika tidak ada ras ayam yang ditemukan
+    //     if ($rasAyam->isEmpty()) {
+    //         return response()->json(['message' => 'Ras ayam dengan jenis tersebut tidak ditemukan'], 404);
+    //     }
 
-        return response()->json($rasAyam);
-    }
+    //     return response()->json($rasAyam);
+    // }
 
     public function update(Request $request, $id)
     {

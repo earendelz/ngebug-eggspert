@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class PakanAPIController extends Controller
 {
+    /**
+     * GET all pakan
+     */
     public function index()
     {
         $userId = Auth::id();
@@ -16,44 +19,55 @@ class PakanAPIController extends Controller
         return response()->json($pakan);
     }
 
+    /**
+     * POST create new pakan
+     */
     public function store(Request $request)
     {
-
         $userId = Auth::id();
 
-        $validated = $request->validate([
+        // Validasi input
+        $request->validate([
             'jenis_pakan' => 'required|string|max:255',
         ]);
 
+        // Simpan data pakan baru
         $pakan = Pakan::create([
             'jenis_pakan' => $request->jenis_pakan,
             'id_peternak' => $userId,
         ]);
-        
-        return response()->json($pakan);
+
+        // Kembalikan respon dengan data yang baru dibuat
+        return response()->json($pakan, 201);
     }
 
     /**
      * GET pakan by jenis_pakan
      */
-    public function getByJenisPakan($jenis_pakan)
+    // public function getByJenisPakan($jenis_pakan)
+    // {
+    //     $pakan = Pakan::where('jenis_pakan', $jenis_pakan)->get();
+
+    //     // Jika tidak ada pakan yang ditemukan
+    //     if ($pakan->isEmpty()) {
+    //         return response()->json(['message' => 'Pakan dengan jenis tersebut tidak ditemukan'], 404);
+    //     }
+
+    //     return response()->json($pakan);
+    // }
+
+    /**
+     * GET pakan by id
+     */
+    public function show($id)
     {
-        $pakan = Pakan::where('jenis_pakan', $jenis_pakan)->get();
-
-        // Jika tidak ada pakan yang ditemukan
-        if ($pakan->isEmpty()) {
-            return response()->json(['message' => 'Pakan dengan jenis tersebut tidak ditemukan'], 404);
-        }
-
+        $pakan = Pakan::where('id', $id)->get();
         return response()->json($pakan);
     }
 
-    public function show(string $id)
-    {
-        $pakan = Pakan::where('id_peternak', $id)->get();
-        return response()->json($pakan);
-    }
-
+    /**
+     * PUT update pakan by id
+     */
     public function update(Request $request, $id)
     {
         $pakan = Pakan::findOrFail($id);
@@ -65,8 +79,11 @@ class PakanAPIController extends Controller
         $pakan->update($validated);
 
         return response()->json($pakan);
-    }
 
+    }
+    /**
+     * DELETE pakan by id
+     */
     public function destroy($id)
     {
         $pakan = Pakan::findOrFail($id);
