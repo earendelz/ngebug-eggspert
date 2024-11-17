@@ -133,3 +133,8 @@ tbody, thead {
     background-color: #E59D2A;
 }
 
+#buttonTambah {
+    border: none;
+    color: white;
+    background-color: #E59D2A
+}

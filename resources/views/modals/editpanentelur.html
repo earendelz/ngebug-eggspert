@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Panen Telur</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Flatpickr CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <style>
+
+    .modal-content {
+      border: 2px solid #AE7B3D;
+      border-radius: 10px;
+    }
+    .form-label {
+      color: #AE7B3D;
+    }
+    .btn-primary {
+      background-color: #AE7B3D;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #A86F2D;
+    }
+    input[type="radio"] {
+    appearance: none;
+    border: 2px solid #d3d3d3; 
+    border-radius: 50%; 
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    }
+    input[type="text"] {
+      border: 1px solid #AE7B3D;
+      border-radius: 13px;
+    }
+    input[type="radio"][value="nonaktif"]:checked {
+        background-color: red;
+        border-color: red;
+    }
+    input[type="radio"][value="tersedia"]:checked {
+        background-color: green;
+        border-color: green;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="container text-center mt-5">
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#formPanenTelurModal">
+      Edit Laporan Panen Telur
+    </button>
+  </div>
+
+  <div class="modal fade" id="formPanenTelurModal" tabindex="-1" aria-labelledby="formPanenTelurLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="formPanenTelurLabel" style="color: #AE7B3D;">Edit Laporan Panen Telur</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="namaPanenTelur" class="form-label">Nama Laporan Panen Telur</label>
+              <input type="text" class="form-control" id="namaPanenTelur" placeholder="Masukkan laporan panen telur">
+            </div>
+            <div class="mb-3">
+              <label for="jumlahPanenTelur" class="form-label">Jumlah Telur</label>
+              <input type="text" class="form-control" id="jumlahPanenTelur" placeholder="Masukkan jumlah panen telur">
+            </div>
+            <div class="mb-3">
+              <label for="tanggalPanenTelur" class="form-label">Tanggal Panen Telur</label>
+              <input type="text" class="form-control" id="tanggalPanenTelur" placeholder="Pilih tanggal">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Status Panen Telur</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="statusPanenTelur" id="tersedia" value="tersedia">
+                  <label class="form-check-label" for="aktif" style="color: #AE7B3D;">Tersedia</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="statusPanenTelur" id="nonaktif" value="nonaktif">
+                  <label class="form-check-label" for="nonaktif" style="color: #AE7B3D;">Nonaktif</label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Cancel</button>
+          <button type="button" class="btn btn-primary">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    
+    flatpickr("#tanggalPanenTelur", {
+      dateFormat: "m/d/Y",
+      allowInput: true 
+    });
+  </script>
+</body>
+</html>

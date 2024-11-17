@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Laporan Gudang</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Flatpickr CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <style>
+
+    .modal-content {
+      border: 2px solid #AE7B3D;
+      border-radius: 10px;
+    }
+    .form-label {
+      color: #AE7B3D;
+    }
+    .btn-primary {
+      background-color: #AE7B3D;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #A86F2D;
+    }
+    input[type="radio"] {
+    appearance: none;
+    border: 2px solid #d3d3d3; 
+    border-radius: 50%; 
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    }
+    input[type="text"] {
+      border: 1px solid #AE7B3D;
+      border-radius: 13px;
+    }
+    input[type="radio"][value="mati"]:checked {
+        background-color: red;
+        border-color: red;
+    }
+    input[type="radio"][value="hidup"]:checked {
+        background-color: green;
+        border-color: green;
+    }
+    select.form-select {
+        width: 50%;
+        border: 1px solid #AE7B3D;
+        border-radius: 13px;
+        color: #333;
+        padding: 5px 10px;
+    }
+
+    select.form-select:focus {
+        outline: none;
+        box-shadow: 0 0 5px #AE7B3D;
+        border-color: #AE7B3D;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="container text-center mt-5">
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#formLaporanGudangModal">
+      Edit Laporan Gudang
+    </button>
+  </div>
+
+  <div class="modal fade" id="formLaporanGudangModal" tabindex="-1" aria-labelledby="formLaporanGudangLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="formLaporanGudangLabel" style="color: #AE7B3D;">Edit Laporan Gudang</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="namaGudang" class="form-label">Nama Gudang</label>
+              <input type="text" class="form-control" id="namaGudang" placeholder="Masukkan nama gudang">
+            </div>
+            <div class="mb-3">
+              <label for="jumlahTelurDilaporkan" class="form-label">Jumlah Telur</label>
+              <input type="text" class="form-control" id="jumlahTelurDilaporkan" placeholder="Masukkan jumlah telur">
+            </div>
+            <div class="mb-3">
+              <label for="tanggalPeristiwaLaporanGudang" class="form-label">Tanggal Peristiwa</label>
+              <input type="text" class="form-control" id="tanggalPeristiwaLaporanGudang" placeholder="Pilih tanggal">
+            </div>
+            <div class="mb-3">
+                <label for="keteranganPeristiwa" class="form-label">Keterangan</label>
+                <select class="form-select" id="keteranganPeristiwa" onchange="toggleManualInput()">
+                  <option value="" selected disabled>Masukkan Keterangan</option>
+                  <option value="pecah">Pecah</option>
+                  <option value="busuk">Busuk</option>
+                  <option value="hilang">Hilang</option>
+                  <option value="lainnya">Lainnya</option>
+                </select>
+                <input type="text" id="keteranganLainnya" class="form-control mt-2" placeholder="Masukkan keterangan lainnya" style="display: none;">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Cancel</button>
+          <button type="button" class="btn btn-primary">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    
+    flatpickr("#tanggalPeristiwaLaporanGudang", {
+      dateFormat: "m/d/Y",
+      allowInput: true 
+    });
+
+    function toggleManualInput() {
+        const select = document.getElementById('keteranganPeristiwa');
+        const manualInput = document.getElementById('keteranganLainnya');
+
+        if (select.value === 'lainnya') {
+        manualInput.style.display = 'block';
+        } else {
+        manualInput.style.display = 'none';
+        manualInput.value = '';
+        }
+    }
+  </script>
+</body>
+</html>
