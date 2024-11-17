@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tambah Vaksinasi Ayam</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Flatpickr CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <style>
+
+    .modal-content {
+      border: 2px solid #AE7B3D;
+      border-radius: 10px;
+    }
+    .form-label {
+      color: #AE7B3D;
+    }
+    .btn-primary {
+      background-color: #AE7B3D;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #A86F2D;
+    }
+    input[type="radio"] {
+    appearance: none;
+    border: 2px solid #d3d3d3; 
+    border-radius: 50%; 
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    }
+    input[type="text"] {
+      border: 1px solid #AE7B3D;
+      border-radius: 13px;
+    }
+    input[type="radio"][value="belumSelesai"]:checked {
+        background-color: red;
+        border-color: red;
+    }
+    input[type="radio"][value="selesai"]:checked {
+        background-color: green;
+        border-color: green;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="container text-center mt-5">
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#formVaksinasiModal">
+      Tambah Vaksinasi
+    </button>
+  </div>
+
+  <div class="modal fade" id="formVaksinasiModal" tabindex="-1" aria-labelledby="formVaksinasiLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="formVaksinasiLabel" style="color: #AE7B3D;">Tambah Vaksinasi Ayam</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="namaVaksinasi" class="form-label">Nama Vaksinasi</label>
+              <input type="text" class="form-control" id="namaVaksinasi" placeholder="Masukkan nama vaksinasi">
+            </div>
+            <div class="mb-3">
+              <label for="jumlahAyamDivaksinasi" class="form-label">Jumlah Ayam Divaksinasi</label>
+              <input type="text" class="form-control" id="jumlahAyamDivaksinasi" placeholder="Masukkan jumlah ayam yang divaksinasi">
+            </div>
+            <div class="mb-3">
+              <label for="tanggalVaksinasiAyam" class="form-label">Tanggal Vaksinasi Ayam</label>
+              <input type="text" class="form-control" id="tanggalVaksinasiAyam" placeholder="Pilih tanggal">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Status Vaksinasi Ayam</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="statusVaksinasi" id="selesai" value="selesai">
+                  <label class="form-check-label" for="selesai" style="color: #AE7B3D;">Selesai</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="statusVaksinasi" id="belumSelesai" value="belumSelesai">
+                  <label class="form-check-label" for="belumSelesai" style="color: #AE7B3D;">Belum Selesai</label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Cancel</button>
+          <button type="button" class="btn btn-primary">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    
+    flatpickr("#tanggalVaksinasiAyam", {
+      dateFormat: "m/d/Y",
+      allowInput: true 
+    });
+  </script>
+</body>
+</html>

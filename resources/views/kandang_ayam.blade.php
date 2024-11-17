@@ -199,7 +199,7 @@
       </div>
     </div>
     <div class="container d-flex justify-content-end">
-      <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#formKandangModal">
+      <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#formKandangModal">
         Tambah Kandang
       </button>
     </div>
