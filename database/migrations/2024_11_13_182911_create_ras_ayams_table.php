@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nama_ras_ayam');
             $table->string('jenis_ayam');
+            $table->unsignedBigInteger('id_peternak');
+            $table->foreign('id_peternak')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
