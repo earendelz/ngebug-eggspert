@@ -23,7 +23,7 @@
       <hr>
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-          <a href="/html/beranda.html" class="nav-link">
+          <a href="{{route('beranda')}}" class="nav-link">
             <img src="../assets/sidebar/beranda.svg" class="nav-img" alt="Beranda">
             Beranda
           </a>
@@ -125,16 +125,57 @@
           <div class="col">
             <div class="col-sm-6">
 
-              <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user" style="text-decoration: none; color: black;"><b>Rusdi</b></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light">
-                <li><form action="{{ route('logout') }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger">Logout</button>
-                                    </form>
-                                </li>
-                  <li><a class="dropdown-item" href="#">Tes</a></li>
-                  <li><a class="dropdown-item" href="#">Tes</a></li>
+            <li class="nav-item dropdown">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user" style="text-decoration: none; color: black;"><b>Rusdi</b></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light">    
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Setting</a></li>
+                  <li><form action="{{ route('logout') }}" method="POST">
+                          @csrf
+                          <button type="submit" class="dropdown-item logout-btn" id="logoutButton">Logout</button>
+                      </form>
+                      <script>
+                      $(document).ready(function() {
+                        $('#logoutButton').click(function(e) {
+                            e.preventDefault(); // Prevent default form submission
+
+                            // First AJAX request: Logout the user (destroy session)
+                            $.ajax({
+                                url: "{{ route('logout') }}", // Laravel logout route to delete session
+                                type: 'POST',
+                                data: {
+                                    _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+                                },
+                                success: function(response) {
+                                    console.log("Session destroyed, now logging out from API...");
+
+                                    // Second AJAX request: API logout (invalidate the token)
+                                    $.ajax({
+                                        url: "{{route('actionLogout')}}", // The route for API logout
+                                        type: 'POST',
+                                        headers: {
+                                            'Authorization': 'Bearer ' + localStorage.getItem('api_token') // Attach the token
+                                        },
+                                        success: function(apiResponse) {
+                                            console.log("Logged out from API successfully.");
+                                            // Redirect the user after both logouts are successful
+                                            window.location.href = '/'; // Or any other page, e.g., login page
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('Error logging out from API:', error);
+                                            // Handle API logout error (e.g., show an error message)
+                                        }
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error logging out from session:', error);
+                                    // Handle session logout error (e.g., show an error message)
+                                }
+                            });
+                        });
+                      });
+                      </script>     
+                  </li>
                 </ul>
               </li>
             </div>
@@ -172,7 +213,7 @@
   <script>
     var userId = @json(Auth::id()); // Get the user ID from the server-side variable
     $.ajax({
-        url: "{{ route('kandang.index') }}" + '/' + userId, // Your protected API route with the userId
+        url: "{{ route('kandangku.index') }}" + '/' + userId, // Your protected API route with the userId
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
