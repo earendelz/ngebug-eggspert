@@ -1,56 +1,74 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Log;
+
+use App\Http\Controllers\Controller;
 use App\Models\Gudang;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GudangAPIController extends Controller
 {
 
     public function index(){
-        $gudang = Gudang::all();    
+
+        $userId = Auth::id();
+        $gudang = Gudang::where('id_peternak', $userId)->get();    
         return response()->json($gudang);
     }
     
-    public function store(Request $request){
-        $gudang = new Gudang();
-        $gudang->name = $request->name; 
-        $gudang->date = $request->date;
-        $gudang->egg_count = $request->egg_count;
-        $gudang->chicken_breed = $request->chicken_breed; 
-        $gudang->id_peternak = $request->id_peternak;
-        $gudang->save();
+    public function store(Request $request)  
+    {
+
+        $userId = Auth::id();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'date' => 'required|date',
+            'egg_count' => 'required|integer',
+            'chicken_breed' => 'required|string|max:255',
+        ]);
+
+        $gudang = Gudang::create([
+            'name' => $request->name,
+            'date' => $request->date,
+            'egg_count' => $request->egg_count,
+            'chicken_breed' => $request->chicken_breed,
+            'id_peternak' => $userId,
+        ]);
+        
         return response()->json($gudang);
     }
 
-    public function show(string $id){
-        $gudang = Gudang::find($id);
+    public function show(string $id)
+    {
+        $gudang = Gudang::where('id_peternak', $id)->get();
         return response()->json($gudang);
     }
 
-    public function update(Request $request, string $id) {
-    
-        // Find the Gudang record
-        $gudang = Gudang::find($id);
-        $gudang->name = $request->name; 
-        $gudang->date = $request->date;
-        $gudang->egg_count = $request->egg_count;
-        $gudang->chicken_breed = $request->chicken_breed; 
-        $gudang->id_peternak = $request->id_peternak;
-    
-        // Save the updated record
-        $gudang->save();
-    
-        // Return the updated record
-        return response()->json([$request]);
+    public function update(Request $request, $id) {
+        
+        $gudang = Gudang::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'date' => 'required|date',
+            'egg_count' => 'required|integer',
+            'chicken_breed' => 'required|string|max:255',
+        ]);
+
+        $gudang->update($validated);
+
+        return response()->json($gudang);
+
     }
     
 
-    public function destroy(string $id){
-        Gudang::destroy($id);
-        return response()-> json(['message'=>'Deleted']);
+    public function destroy(string $id){     
+        $gudang = Gudang::findOrFail($id);
+        $gudang->delete();
+
+        return response()->json(null, 204);
     }
     
 }

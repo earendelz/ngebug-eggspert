@@ -10,12 +10,13 @@
   <link href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <title>Eggspert</title>
 </head>
 
 <body>
   <header class="sidebar">
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-light" style="width: 280px; height: 100vh;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-light shadow" style="width: 240px; height: 100vh;">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <img src="../assets/sidebar/logo_eggspert.svg " style="height: 10vh; width: 10vh;">
         <span class="fs-4" style="color: #E59D2A; padding-left: 10px;">Eggspert</span>
@@ -98,7 +99,7 @@
 
   <!-- Navbar -->
   <header class="header">
-    <nav class="navbar navbar-expand-lg bg-light rounded">
+    <nav class="navbar navbar-expand-lg bg-light rounded shadow">
       <div class="container-fluid">
         <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>BERANDA</b></span> </a>
         <!-- searchbar, keanya gausah kali ya? -->
@@ -125,12 +126,57 @@
           <div class="col">
             <div class="col-sm-6">
 
-              <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user" style="text-decoration: none; color: black;"><b>Rusdi</b></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light">
-                  <li><a class="dropdown-item" href="#">Tes</a></li>
-                  <li><a class="dropdown-item" href="#">Tes</a></li>
-                  <li><a class="dropdown-item" href="#">Tes</a></li>
+            <li class="nav-item dropdown">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user" style="text-decoration: none; color: black;"><b>Rusdi</b></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light">    
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Setting</a></li>
+                  <li><form action="{{ route('logout') }}" method="POST">
+                          @csrf
+                          <button type="submit" class="dropdown-item logout-btn" id="logoutButton">Logout</button>
+                      </form>
+                      <script>
+                      $(document).ready(function() {
+                        $('#logoutButton').click(function(e) {
+                            e.preventDefault(); // Prevent default form submission
+
+                            // First AJAX request: Logout the user (destroy session)
+                            $.ajax({
+                                url: "{{ route('logout') }}", // Laravel logout route to delete session
+                                type: 'POST',
+                                data: {
+                                    _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+                                },
+                                success: function(response) {
+                                    console.log("Session destroyed, now logging out from API...");
+
+                                    // Second AJAX request: API logout (invalidate the token)
+                                    $.ajax({
+                                        url: "{{route('actionLogout')}}", // The route for API logout
+                                        type: 'POST',
+                                        headers: {
+                                            'Authorization': 'Bearer ' + localStorage.getItem('api_token') // Attach the token
+                                        },
+                                        success: function(apiResponse) {
+                                            console.log("Logged out from API successfully.");
+                                            // Redirect the user after both logouts are successful
+                                            window.location.href = '/'; // Or any other page, e.g., login page
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('Error logging out from API:', error);
+                                            // Handle API logout error (e.g., show an error message)
+                                        }
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error logging out from session:', error);
+                                    // Handle session logout error (e.g., show an error message)
+                                }
+                            });
+                        });
+                      });
+                      </script>     
+                  </li>
                 </ul>
               </li>
             </div>
@@ -145,88 +191,26 @@
 
 
   <div class="main-content">
-    <div class="card bg-light">
+    <div class="card bg-light shadow">
       <div class="card-body">
         <table id="myTable" class="display rounded bg-light">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>NAMA KANDANG</th>
-              <th>KAPASITAS</th>
-              <th>TERAKHIR DIUBAH</th>
-              <th>STATUS PAKAN</th>
-              <th>OPSI</th>
+              <th>Column 1</th>
+              <th>Column 2</th>
+              <th>Column 3</th>
+              <th>Column 4</th>
+              <th>Column 5</th>
+              <th>Column 6</th>
             </tr>
           </thead>
           <tbody>
-            @foreach ($kandangs as $kandang)
-
-            <tr>
-              <td>{{$loop -> iteration}}</td>
-              <td>{{$kandang -> name}}</td>
-              <td>{{$kandang -> capacity}}</td>
-              <td>{{$kandang -> chicken_count}}</td>
-              <td>{{$kandang -> chicken_breed}}</td>
-              <td>button</td>
-            </tr>
-
-            @endforeach
+            
           </tbody>
         </table>
       </div>
     </div>
   </div>
-  <script>
-    var userId = @json(Auth::id()); // Get the user ID from the server-side variable
-    $.ajax({
-        url: "{{ route('kandangku.index') }}" + '/' + userId, // Your protected API route with the userId
-        type: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
-        },
-        success: function(response) {
-            console.log('Response:', response); // Log the entire response to verify its structure
-
-            // Clear the table body before inserting new rows
-            $('#myTable tbody').empty();
-
-            // Check if the response is an array (which it should be based on your response)
-            if (Array.isArray(response)) {
-              let autoIncrement = 1;
-                response.forEach(function(product) {
-                    // Dynamically generate the table row for each product
-                    var row = `
-                        <tr>
-                            <td>${autoIncrement}</td>
-                            <td>${product.name}</td>
-                            <td>${product.chicken_count}/${product.capacity}</td>
-                            <td>${product.updated_at}</td>
-                            <td>${product.status_kandang}</td>
-                            <td>
-                              <a>
-                              <img src="../assets/edit_button.svg">
-                              <img src="../assets/delete_button.svg">
-                              </a>
-                            </td>
-                        </tr>
-                    `;
-                    $('#myTable tbody').append(row); // Append the row to the table body
-                    autoIncrement++;
-                  });
-            } else {
-                // If response is not an array, show an error message
-                alert('Unexpected response format. Expected an array of products.');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', xhr.responseText);
-            alert("Failed to fetch data.");
-        }
-    });
-</script>
-
-
-
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/simple-datatables@9.2.1/dist/umd/simple-datatables.js"></script>

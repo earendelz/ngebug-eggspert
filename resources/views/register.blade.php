@@ -16,8 +16,8 @@
 <body>
     <div class="container">
         <div class="row justify-content-center align-items-center vh-100">
-            <div class="col-md-4">
-            <form class="login-form mt-5 p-4 bg-white shadow rounded" id="loginForm">
+            <div class="col-md-4" style="padding-bottom: 5%;">
+            <form class="login-form mt-5 p-4 bg-white shadow rounded" id="registerForm">
                 @csrf
                 <h2 class="text-center mb-4">Register</h2>
                 <img src="assets/LogoEggspertApp.png" id="logo">
@@ -41,21 +41,23 @@
                     <label for="alamat">Alamat</label>
                     <input type="text" class="form-control" id="alamat" name="alamat" required>
                 </div>
-                <button id="buttonLogin" type="submit" class="btn btn-primary btn-block">Login</button>
-                <p class="text-center mt-3">Not registered? <a href="#">Create an account</a></p>
+                <button id="buttonRegister" type="submit" class="btn btn-primary btn-block">Register</button>
             </form>
 
             <script>
-                $('#loginForm').on('submit', function(event) {
+                $('#registerForm').on('submit', function(event) {
                     event.preventDefault(); // Prevent the default form submission
 
                     $.ajax({
-                        url: "{{ route('actionLogin') }}", // Route to login
+                        url: "{{ route('actionRegister') }}", // Route to register
                         type: "POST",
                         data: {
                             "_token": $("meta[name='csrf-token']").attr("content"), // CSRF token
                             "username": $('#username').val(), // Username
-                            "password": $("#password").val() // Password
+                            "password": $("#password").val(), // Password
+                            "nama": $("#nama").val(), // Nama
+                            "email": $("#email").val(), // Email
+                            "alamat": $("#alamat").val() // Alamat
                         },
                         success: function(response) {
                             if (response.status === 200) {
@@ -63,9 +65,9 @@
                                 // Token stored in cookie or localStorage (for API calls), if needed
                                 localStorage.setItem('auth_token', response.data.token); // Store token if using for API calls
                                 // Redirect user to a protected page
-                                window.location.href = "/beranda";
+                                window.location.href = "/login";
                             } else {
-                                alert("Login failed: " + response.message);
+                                alert("Register failed: " + response.message);
                             }
                         },
                         error: function(xhr, status, error) {

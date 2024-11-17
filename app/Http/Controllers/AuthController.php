@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
@@ -15,6 +16,7 @@ class AuthController extends Controller
     public function index() {
         return view('login');
     }
+
     public function redirecting(Request $request){
 
           // Validate the incoming request
@@ -30,6 +32,9 @@ class AuthController extends Controller
         ];
 
         if (Auth::attempt($credentials)) {
+            // If successful, the user is logged in via session
+            // Session-based authentication is now active, so the user can pass the 'auth' middleware
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Authenticated successfully. Redirecting...',
@@ -43,10 +48,6 @@ class AuthController extends Controller
         ]);
 
        
-    }
-
-    public function redirectings(){
-        return('redirect:/login');
     }
     
     public function logout(Request $request) {
@@ -70,12 +71,13 @@ class AuthController extends Controller
             // Optionally, you can log the user out of the session as well (if they are logged in via session)
             Auth::logout();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-    
-        return redirect()->route('login')->with('success', 'Anda telah logout.');
+            return view('login');
+        }
+
+        // If no user is authenticated, return an error
+        return response()->json(['message' => 'No authenticated user to log out.'], 400);
     }
-    }
+
     public function register() {
         return view('register');
     }

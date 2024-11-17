@@ -40,7 +40,7 @@ class LaporanAyamAPIController extends Controller
     // Menampilkan laporan ayam berdasarkan ID
     public function show(string $id)
     {
-        $laporanAyam = LaporanAyam::find($id);
+        $laporanAyam = LaporanAyam::where('id_peternak',$id)->firstOrFail();
         return response()->json($laporanAyam);
     }
 
