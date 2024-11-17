@@ -55,10 +55,11 @@ class ProductAPIController extends Controller
 
     public function update(Request $request, $id)
     {
+        $userId = Auth::id();
         $product = Product::findOrFail($id);
 
         $validated = $request->validate([
-            'nama' => 'required|string|max:255|unique:products',
+            'nama' => 'required|string|max:255|unique:products,nama,' . $id, // Menghindari validasi duplikat nama untuk record yang sama
             'jenis_kandang' => 'required|string|max:255',
             'kapasitas' => 'required|integer|min:1',
             'jumlah_ayam' => 'required|integer|min:1',
@@ -67,6 +68,8 @@ class ProductAPIController extends Controller
             'status_pakan' => 'required|string|max:255',
             'status_kandang' => 'required|string|in:tersedia,tidak tersedia'
         ]);
+
+        $validated['id_peternak'] = $userId;
 
         $product->update($validated);
 
