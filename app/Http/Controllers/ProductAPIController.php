@@ -81,6 +81,6 @@ class ProductAPIController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return response()->json(null, 204);
+        return response()->json('successfully deleted', 204);
     }
 }
