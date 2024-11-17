@@ -51,15 +51,18 @@ class ProductAPIController extends Controller
 
     public function show($id)
     {
-        $product = Product::where('id', $id)->first();
-        return response()->json($product);
+        $products = Product::with(['rasAyam:id,nama_ras_ayam', 'pakan:id,jenis_pakan'])
+                        ->where('id', $id)
+                        ->get();
+        return response()->json($products);
     }
 
     public function update(Request $request, $id)
     {
+
         $userId = Auth::id();
         $product = Product::findOrFail($id);
-
+    try{
         $validated = $request->validate([
             'nama' => 'required|string|max:255|unique:products,nama,' . $id, // Menghindari validasi duplikat nama untuk record yang sama
             'jenis_kandang' => 'required|string|max:255',
@@ -74,9 +77,16 @@ class ProductAPIController extends Controller
         $validated['id_peternak'] = $userId;
 
         $product->update($validated);
-
         return response()->json($product);
-    }
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Log or return the validation error
+        \Log::error('Validation errors: ' . json_encode($e->errors()));
+
+        return response()->json([
+            'errors' => $e->errors()
+        ], 422);
+    };
+}
 
     public function destroy($id)
     {

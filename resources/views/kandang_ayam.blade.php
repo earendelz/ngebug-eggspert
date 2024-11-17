@@ -1,21 +1,21 @@
-
 @include ('modals.tambahkandang')
+@include ('modals.editkandang')
+
 
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css">
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <title>Eggspert</title>
-</head>
-
+  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Eggspert</title>
+  </head>
+  
 <body>
   <header class="sidebar">
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-light shadow" style="width: 240px; height: 100vh;">
@@ -146,7 +146,7 @@
                                         url: "{{route('actionLogout')}}", // The route for API logout
                                         type: 'POST',
                                         headers: {
-                                            'Authorization': 'Bearer ' + localStorage.getItem('api_token') // Attach the token
+                                            'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the token
                                         },
                                         success: function(apiResponse) {
                                             console.log("Logged out from API successfully.");
@@ -206,6 +206,7 @@
       </div>
     </div>
   </div>
+  <!-- import data kandangnya -->
   <script>
     var userId = @json(Auth::id()); // Get the user ID from the server-side variable
     $.ajax({
@@ -236,10 +237,10 @@
                             <td>${product.status_pakan}</td>
                             <td>${product.status_kandang}</td>
                             <td>
-                              <a>
+                              <a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_kandang" class="editKandangBtn" data-id="${product.id}">
                               <img src="../assets/edit_button.svg">
                               </a>
-                              <a>
+                              <a href="#" class="deleteKandangBtn" data-id="${product.id}">
                               <img src="../assets/delete_button.svg">
                               </a>
                             </td>
@@ -258,9 +259,201 @@
             alert("Failed to fetch data.");
         }
     });
+        // Step 2: Fetch and populate modal form when "Edit" is clicked
+  $(document).on('click', '.editKandangBtn', function() {
+    var kandangId = $(this).data('id'); // Get the ID of the kandang to edit
+
+    // Make AJAX request to fetch kandang details
+    $.ajax({
+      url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`, // Adjust URL if needed
+      type: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
+      },
+      success: function(response) {
+        response = response[0];
+        console.log(response);
+        // Step 3: Populate modal with the fetched data
+        $('#idkandang').val(kandangId);
+        $('#enamaKandang').val(response.nama);
+        $('#ekapasitasKandang').val(response.kapasitas);
+        $('#ejumlahAyam').val(response.jumlah_ayam);
+        $('#ejenisKandang').val(response.jenis_kandang);
+        $('#ras_ayam').val(response.ras_ayam.id); // Populate Ras Ayam dropdown
+        $('#pakan').val(response.pakan.id); // Populate Pakan dropdown
+        $('#etanggalPembuatanKandang').val(response.updated_at);
+
+        // Set radio button values
+        $("input[name='estatusPakan'][value='" + response.status_pakan + "']").prop('checked', true);
+        $("input[name='estatusKandang'][value='" + response.status_kandang + "']").prop('checked', true);
+
+        // Open the modal
+      },
+      error: function(xhr, status, error) {
+        console.error('Error fetching kandang data:', error);
+        alert('Error fetching kandang data.');
+      }
+    });
+  });
+
+  // Step 4: Handle form submission for editing kandang
+  $('#editKandangForm').submit(function(e) {
+    e.preventDefault(); // Prevent default form submission
+    var kandangId = $('#idkandang').val(); 
+
+    var formData = {
+      nama: $('#enamaKandang').val(),
+      jenis_kandang: $('#ejenisKandang').val(),
+      kapasitas: parseInt($('#ekapasitasKandang').val()),
+      jumlah_ayam: parseInt($('#ejumlahAyam').val()),
+      id_ras_ayam: parseInt($('#ras_ayam').val()),
+      id_pakan: parseInt($('#pakan').val()),
+      status_pakan: $('input[name="estatusPakan"]:checked').val(),
+      status_kandang: $('input[name="estatusKandang"]:checked').val()
+    };
+
+    var jsonData = JSON.stringify(formData);
+    console.log(jsonData);
+    // Step 5: Send updated data to the server
+    $.ajax({
+      url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`, // Send PUT request to update kandang
+      type: 'PUT',
+      data: formData,
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
+      },
+      success: function(response) {
+        console.log('Kandang updated successfully', response);
+        alert('Kandang updated successfully!');
+        $('#form_edit_kandang').modal('hide'); // Close modal
+        location.reload(); // Refresh the page
+      },
+      error: function(xhr, status, error) {
+        console.error('Error updating kandang:', error);
+        alert('Failed to update kandang.');
+      }
+    });
+  });
   </script>
 
+<!-- ngehapus -->
+<script>
+$(document).on('click', '.deleteKandangBtn', function(event) {
+    event.preventDefault();  // Prevent the default anchor behavior
 
+    // Get the ID of the kandang to delete
+    var kandangId = $(this).data('id');
+
+    // Confirm with the user before deleting
+    if (confirm('Are you sure you want to delete this kandang?')) {
+        // Send AJAX request to delete the kandang
+        $.ajax({
+            url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`,  // Adjust the URL if necessary
+            type: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('bearer_token')  // Include Bearer token if necessary
+            },
+            success: function(response) {
+                // Handle the response after successful deletion
+                console.log('Kandang deleted:', response);
+
+                // Optionally, you can remove the row from the table without reloading
+                $(`a[data-id="${kandangId}"]`).closest('tr').remove();
+                
+                alert('Kandang has been deleted successfully!');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error deleting kandang:', error);
+                alert('Error deleting kandang. Please try again.');
+            }
+        });
+    }
+});
+</script>
+
+<!-- display data ras ayam create -->
+<script>
+            $(document).ready(function() {
+            // Function to fetch and populate Pakan data into the select dropdown
+            function loadRasAyamData() {
+              $.ajax({
+                url: 'http://127.0.0.1:8000/api/rasayamku',  // The API endpoint to fetch pakan data
+                method: 'GET',      // Request method
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+                },
+                success: function(response) {
+                  console.log(response);
+                  if (Array.isArray(response)) {
+                    // Clear any existing options
+                    $('#ras_ayam').empty();
+
+                    // Add a default option (optional)
+                    $('#ras_ayam').append('<option value="">Pilih Ras Ayam</option>');
+
+                    // Loop through the response and append each item to the select
+                    response.forEach(function(ras_ayam) {
+                      // Append each pakan to the select element
+                      $('#ras_ayam').append(`
+                        <option value="${ras_ayam.id}">${ras_ayam.nama_ras_ayam}</option>
+                      `);
+                    });
+                  } else {
+                    console.error('Expected response to be an array');
+                  }
+                },
+                error: function(error) {
+                  console.error('Error fetching pakan data:', error);
+                }
+              });
+            }
+
+            // Call the function to load Pakan data when the page loads
+            loadRasAyamData();
+          });
+          </script>
+
+<!-- Display data pakan ayam create -->
+<script>
+            $(document).ready(function() {
+            // Function to fetch and populate Pakan data into the select dropdown
+            function loadPakanData() {
+              $.ajax({
+                url: 'http://127.0.0.1:8000/api/pakanku',  // The API endpoint to fetch pakan data
+                method: 'GET',      // Request method
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+                },
+                success: function(response) {
+                  console.log(response);
+                  if (Array.isArray(response)) {
+                    // Clear any existing options
+                    $('#pakan').empty();
+
+                    // Add a default option (optional)
+                    $('#pakan').append('<option value="">Pilih Jenis Pakan</option>');
+
+                    // Loop through the response and append each item to the select
+                    response.forEach(function(pakan) {
+                      // Append each pakan to the select element
+                      $('#pakan').append(`
+                        <option value="${pakan.id}">${pakan.jenis_pakan}</option>
+                      `);
+                    });
+                  } else {
+                    console.error('Expected response to be an array');
+                  }
+                },
+                error: function(error) {
+                  console.error('Error fetching pakan data:', error);
+                }
+              });
+            }
+
+            // Call the function to load Pakan data when the page loads
+            loadPakanData();
+          });
+          </script>
 
 <div class="container-fluid d-flex justify-content-end">
   <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_kandang">
