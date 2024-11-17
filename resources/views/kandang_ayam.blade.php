@@ -1,3 +1,6 @@
+
+@include ('modals.tambahkandang')
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -187,8 +190,12 @@
               <th>ID</th>
               <th>NAMA KANDANG</th>
               <th>KAPASITAS</th>
-              <th>TERAKHIR DIUBAH</th>
+              <th>JENIS KANDANG</th>
+              <th>RAS AYAM</th>
+              <th>PAKAN</th>
               <th>STATUS PAKAN</th>
+              <th>STATUS KANDANG</th>
+              <th>TERAKHIR DIUBAH</th>
               <th>OPSI</th>
             </tr>
           </thead>
@@ -197,11 +204,6 @@
           </tbody>
         </table>
       </div>
-    </div>
-    <div class="container d-flex justify-content-end">
-      <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#formKandangModal">
-        Tambah Kandang
-      </button>
     </div>
   </div>
   <script>
@@ -227,11 +229,17 @@
                             <td>${autoIncrement}</td>
                             <td>${product.nama}</td>
                             <td>${product.jumlah_ayam}/${product.kapasitas}</td>
-                            <td>${product.updated_at}</td>
+                            <td>${product.jenis_kandang}</td>
+                            <td>${product.ras_ayam.nama_ras_ayam}</td>
+                            <td>${product.pakan.jenis_pakan}</td>
+                            <td>${product.jenis_kandang}</td>
+                            <td>${product.status_pakan}</td>
                             <td>${product.status_kandang}</td>
                             <td>
                               <a>
                               <img src="../assets/edit_button.svg">
+                              </a>
+                              <a>
                               <img src="../assets/delete_button.svg">
                               </a>
                             </td>
@@ -250,15 +258,19 @@
             alert("Failed to fetch data.");
         }
     });
-</script>
+  </script>
 
 
 
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<div class="container-fluid d-flex justify-content-end">
+  <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_kandang">
+    Tambah Kandang
+  </button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/simple-datatables@9.2.1/dist/umd/simple-datatables.js"></script>
   <script src="../js/sidebar.js"></script>
   <script src="../js/table.js"></script>
 </body>
-
 </html>

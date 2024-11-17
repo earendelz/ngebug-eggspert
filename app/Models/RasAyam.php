@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RasAyam extends Model
 {
 
+
     use HasFactory;
 
     protected $table = 'ras_ayams';

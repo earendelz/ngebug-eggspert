@@ -14,16 +14,7 @@
       border: 2px solid #AE7B3D;
       border-radius: 10px;
     }
-    .form-label {
-      color: #AE7B3D;
-    }
-    .btn-primary {
-      background-color: #AE7B3D;
-      border: none;
-    }
-    .btn-primary:hover {
-      background-color: #A86F2D;
-    }
+
     input[type="radio"] {
     appearance: none;
     border: 2px solid #d3d3d3; 
@@ -32,15 +23,16 @@
     cursor: pointer;
     transition: background-color 0.3s, border-color 0.3s;
     }
+
     input[type="text"] {
       border: 1px solid #AE7B3D;
       border-radius: 13px;
     }
-    input[type="radio"][value="nonaktif"]:checked {
+    input[type="radio"][value="otomatis"]:checked {
         background-color: red;
         border-color: red;
     }
-    input[type="radio"][value="tersedia"]:checked {
+    input[type="radio"][value="manual"]:checked {
         background-color: green;
         border-color: green;
     }
@@ -48,13 +40,8 @@
   </style>
 </head>
 <body>
-  <div class="container text-center mt-5">
-    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#formKandangModal">
-      Tambah Kandang
-    </button>
-  </div>
 
-  <div class="modal fade" id="formKandangModal" tabindex="-1" aria-labelledby="formKandangLabel" aria-hidden="true">
+  <div class="modal fade" id="form_tambah_kandang" tabindex="-1" aria-labelledby="formKandangLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -62,7 +49,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form>
+          <form id="tambahKandangForm">
             <div class="mb-3">
               <label for="namaKandang" class="form-label">Nama Kandang</label>
               <input type="text" class="form-control" id="namaKandang" placeholder="Masukkan nama kandang">
@@ -83,20 +70,60 @@
               <label class="form-label">Status Pakan</label>
               <div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="statusPakan" id="tersedia" value="tersedia">
-                  <label class="form-check-label" for="tersedia" style="color: #AE7B3D;">Tersedia</label>
+                  <input class="form-check-input" type="radio" name="statusPakan" id="manual" value="manual">
+                  <label class="form-check-label" for="manual" style="color: #AE7B3D;">Manual</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="statusPakan" id="nonaktif" value="nonaktif">
-                  <label class="form-check-label" for="nonaktif" style="color: #AE7B3D;">Nonaktif</label>
+                  <input class="form-check-input" type="radio" name="statusPakan" id="otomatis" value="otomatis">
+                  <label class="form-check-label" for="otomatis" style="color: #AE7B3D;">Otomatis</label>
                 </div>
               </div>
             </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Cancel</button>
+              <button type="submit" class="btn btn-primary">Confirm</button>
+            </div>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Cancel</button>
-          <button type="button" class="btn btn-primary">Confirm</button>
+          <script>
+            $(document).ready(function () {
+              $('#tambahKandangForm').on('submit', function (e) {
+                e.preventDefault(); // Prevent default form submission
+
+                // Get form data
+                var formData = {
+                  nama: $('#namaKandang').val(),
+                  kapasitas: $('#kapasitasKandang').val(),
+                  jumlah_ayam: $('#jumlahAyam').val(),
+                  tanggal_pembuatan_kandang: $('#tanggalPembuatanKandang').val(),
+                  status_pakan: $('input[name="statusPakan"]:checked').val()
+                };
+
+                // CSRF token (make sure you have it in your meta tag)
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                  url: '/your-post-route', // Replace with the correct route
+                  method: 'POST',
+                  data: formData,
+                  headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                  },
+                  success: function(response) {
+                    // Handle success
+                    console.log('Data saved successfully', response);
+                    // You can update the UI here or close the modal
+                    $('#formKandangModal').modal('hide');
+                    alert('Kandang added successfully!');
+                  },
+                  error: function(xhr, status, error) {
+                    // Handle error
+                    console.log('An error occurred:', error);
+                    alert('Something went wrong. Please try again.');
+                  }
+                });
+              });
+            });
+          </script>
         </div>
       </div>
     </div>

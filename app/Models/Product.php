@@ -31,8 +31,16 @@ class Product extends Model
     }
 
     public function rasAyam()
-    {
-        return $this->belongsTo(RasAyam::class, 'id_ras_ayam');
-    }
+{
+    return $this->belongsTo(RasAyam::class, 'id_ras_ayam'); 
+}
+
+    public function pakan()
+{
+    return $this->belongsTo(Pakan::class, 'id_pakan'); 
+}
+
+
+
 }
 
