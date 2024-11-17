@@ -18,6 +18,13 @@ class VaksinasiAPIController extends Controller
 
         return response()->json($vaksinasi);
     }
+
+    public function showByIDKandang(string $idProduct)
+    {
+        $vaksinasi = Vaksinasi::where('id_product', $idProduct)->get();    
+        return response()->json($vaksinasi);
+    }
+
     
     public function store(Request $request)
     {
