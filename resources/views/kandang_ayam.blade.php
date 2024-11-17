@@ -100,18 +100,7 @@
   <header class="header">
     <nav class="navbar navbar-expand-lg bg-light rounded shadow">
       <div class="container-fluid">
-        <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>BERANDA</b></span> </a>
-        <!-- searchbar, keanya gausah kali ya? -->
-        <!-- <div class="input-group">
-            <input class="form-control border-end-0 border rounded-pill" type="text" value="search" id="example-search-input">
-            <span class="input-group-append">
-              <a>
-                <button class="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3" type="button">
-                    <img src="../assets/navbar/search_icon.svg">
-                </button>
-              </a>  
-            </span>
-          </div>    -->
+        <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>KANDANG AYAM</b></span> </a>
         <a href="#" class="ms-auto" style="padding-right:0.75rem">
           <button class="btn" id="notif">
             <img src="../assets/navbar/notifications_png.svg">
@@ -200,7 +189,7 @@
               <th>KAPASITAS</th>
               <th>TERAKHIR DIUBAH</th>
               <th>STATUS PAKAN</th>
-              <th></th>
+              <th>OPSI</th>
             </tr>
           </thead>
           <tbody>
@@ -209,21 +198,25 @@
         </table>
       </div>
     </div>
+    <div class="container d-flex justify-content-end">
+      <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#formKandangModal">
+        Tambah Kandang
+      </button>
+    </div>
   </div>
   <script>
     var userId = @json(Auth::id()); // Get the user ID from the server-side variable
     $.ajax({
-        url: "{{ route('kandangku.index') }}" + '/' + userId, // Your protected API route with the userId
+        url: "{{ route('kandangku.index') }}", // Your protected API route with the userId
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
         },
         success: function(response) {
+            console.log(userId);
             console.log('Response:', response); // Log the entire response to verify its structure
-
             // Clear the table body before inserting new rows
             $('#myTable tbody').empty();
-
             // Check if the response is an array (which it should be based on your response)
             if (Array.isArray(response)) {
               let autoIncrement = 1;
@@ -232,11 +225,16 @@
                     var row = `
                         <tr>
                             <td>${autoIncrement}</td>
-                            <td>${product.name}</td>
-                            <td>${product.capacity}</td>
-                            <td>${product.chicken_count}</td>
-                            <td>${product.name}</td>
-                            <td>button</td>
+                            <td>${product.nama}</td>
+                            <td>${product.jumlah_ayam}/${product.kapasitas}</td>
+                            <td>${product.updated_at}</td>
+                            <td>${product.status_kandang}</td>
+                            <td>
+                              <a>
+                              <img src="../assets/edit_button.svg">
+                              <img src="../assets/delete_button.svg">
+                              </a>
+                            </td>
                         </tr>
                     `;
                     $('#myTable tbody').append(row); // Append the row to the table body
