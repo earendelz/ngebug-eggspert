@@ -29,5 +29,10 @@ class Product extends Model
     {
         return $this->hasMany(PanenTelur::class, 'id_kandang');
     }
+
+    public function rasAyam()
+    {
+        return $this->belongsTo(RasAyam::class, 'id_ras_ayam');
+    }
 }
 

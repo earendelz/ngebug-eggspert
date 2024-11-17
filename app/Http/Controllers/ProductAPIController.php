@@ -12,7 +12,6 @@ class ProductAPIController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        //$products = Product::all();
         $products = Product::where('id_peternak', $userId)->get();
         return response()->json($products);
     }

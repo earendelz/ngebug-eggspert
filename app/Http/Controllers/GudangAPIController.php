@@ -23,17 +23,17 @@ class GudangAPIController extends Controller
         $userId = Auth::id();
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'date' => 'required|date',
-            'egg_count' => 'required|integer',
-            'chicken_breed' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
+            'tanggal_pembuatan' => 'required|date',
+            'jumlah_telur' => 'required|integer',
+            'id_ras_ayam' => 'required|exists:ras_ayams,id',
         ]);
 
         $gudang = Gudang::create([
-            'name' => $request->name,
-            'date' => $request->date,
-            'egg_count' => $request->egg_count,
-            'chicken_breed' => $request->chicken_breed,
+            'nama' => $request->nama,
+            'tanggal_pembuatan' => $request->tanggal_pembuatan,
+            'jumlah_telur' => $request->jumlah_telur,
+            'id_ras_ayam' => $request->id_ras_ayam,
             'id_peternak' => $userId,
         ]);
         
@@ -51,10 +51,10 @@ class GudangAPIController extends Controller
         $gudang = Gudang::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'date' => 'required|date',
-            'egg_count' => 'required|integer',
-            'chicken_breed' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
+            'tanggal_pembuatan' => 'required|date',
+            'jumlah_telur' => 'required|integer',
+            'id_ras_ayam' => 'exists:ras_ayams,id',
         ]);
 
         $gudang->update($validated);

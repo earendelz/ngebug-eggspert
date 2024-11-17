@@ -29,6 +29,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource("kandangku", ProductAPIController::class);
     Route::apiResource("pakanku", PakanAPIController::class);
     Route::apiResource("rasayamku", RasAyamAPIController::class);
+    Route::apiResource("vaksinasiku", VaksinasiAPIController::class);
+
 });
 
 Route::apiResource("user", UserAPIController::class);

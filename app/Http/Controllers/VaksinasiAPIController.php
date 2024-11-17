@@ -1,65 +1,80 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Log;
-use App\Models\Vaksinasi;  // Pastikan Anda memiliki model Vaksinasi
+
+use App\Http\Controllers\Controller;
+use App\Models\Vaksinasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VaksinasiAPIController extends Controller
 {
-    // Menampilkan semua data vaksinasi
-    public function index(){
-        $vaksinasi = Vaksinasi::all();    
+    public function index()
+    {
+        $userId = Auth::id();
+        $vaksinasi = Vaksinasi::whereHas('product', function ($query) use ($userId) {
+            $query->where('id_peternak', $userId);
+        })->get();
+
         return response()->json($vaksinasi);
     }
     
-    // Menyimpan data vaksinasi baru
-    public function store(Request $request){
-        $vaksinasi = new Vaksinasi();
-        $vaksinasi->jenis_vaksin = $request->jenis_vaksin; 
-        $vaksinasi->tanggal_vaksinasi = $request->tanggal_vaksinasi;
-        $vaksinasi->id_product = $request->id_product;
-        $vaksinasi->save();
-        return response()->json($vaksinasi);
-    }
-
-    // Menampilkan data vaksinasi berdasarkan ID
-    public function show(string $id){
-        $vaksinasi = Vaksinasi::find($id);
-        if (!$vaksinasi) {
-            return response()->json(['message' => 'Vaksinasi not found'], 404);
-        }
-        return response()->json($vaksinasi);
-    }
-
-    // Mengupdate data vaksinasi
-    public function update(Request $request, string $id) {
-        // Mencari record vaksinasi
-        $vaksinasi = Vaksinasi::find($id);
-        if (!$vaksinasi) {
-            return response()->json(['message' => 'Vaksinasi not found'], 404);
-        }
-
-        // Update data vaksinasi
-        $vaksinasi->jenis_vaksin = $request->jenis_vaksin; 
-        $vaksinasi->tanggal_vaksinasi = $request->tanggal_vaksinasi;
-        $vaksinasi->id_product = $request->id_product;
+    public function store(Request $request)
+    {
+        $userId = Auth::id();
         
-        // Menyimpan perubahan
-        $vaksinasi->save();
-    
-        // Mengembalikan data yang sudah diperbarui
+        $request->validate([
+            'jenis_vaksin' => 'required|string|max:255',
+            'tanggal_vaksinasi' => 'required|date',
+            'id_product' => 'required|exists:products,id'
+        ]);
+
+        $vaksinasi = Vaksinasi::create([
+            'jenis_vaksin' => $request->jenis_vaksin,
+            'tanggal_vaksinasi' => $request->tanggal_vaksinasi,
+            'id_product' => $request->id_product,
+            'id_peternak' => $userId,
+            
+        ]);
+
         return response()->json($vaksinasi);
+
     }
-    
-    // Menghapus data vaksinasi
-    public function destroy(string $id){
-        $vaksinasi = Vaksinasi::find($id);
+
+    public function show(string $id)
+    {
+        $vaksinasi = Vaksinasi::where('id', $id)->first();
         if (!$vaksinasi) {
             return response()->json(['message' => 'Vaksinasi not found'], 404);
         }
-        
+        return response()->json($vaksinasi);
+    }
+
+    public function update(Request $request, string $id) 
+    {
+        $userId = Auth::id();
+        $vaksinasi = Vaksinasi::findOrFail($id);
+
+        $request->validate([
+            'jenis_vaksin' => 'required|string|max:255',
+            'tanggal_vaksinasi' => 'required|date',
+            'id_product' => 'required|exists:products,id'
+        ]);
+
+        $requestData = $request->all();
+        $requestData['id_peternak'] = $userId;
+
+        $vaksinasi->update($requestData);
+
+        return response()->json($vaksinasi);
+
+    }
+    
+    public function destroy(string $id)
+    {
+        $vaksinasi = Vaksinasi::findOrFail($id);
         $vaksinasi->delete();
-        return response()->json(['message' => 'Vaksinasi deleted']);
+
+        return response()->json('successfully deleted', 204);
     }
 }

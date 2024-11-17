@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('gudang', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->date('date');
-            $table->integer('egg_count');
-            $table->string('chicken_breed');
+            $table->string('nama');
+            $table->date('tanggal_pembuatan');
+            $table->integer('jumlah_telur');
+            $table->string('id_ras_ayam');
             $table->unsignedBigInteger('id_peternak');
 
             $table->foreign('id_peternak')
