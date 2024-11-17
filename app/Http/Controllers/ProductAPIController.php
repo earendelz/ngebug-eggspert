@@ -13,7 +13,9 @@ class ProductAPIController extends Controller
     {
         $userId = Auth::id();
         //$products = Product::all();
-        $products = Product::where('id_peternak', $userId)->get();
+        $products = Product::with(['rasAyam:id,nama_ras_ayam', 'pakan:id,jenis_pakan'])
+                        ->where('id_peternak', $userId)
+                        ->get();
         return response()->json($products);
     }
 
