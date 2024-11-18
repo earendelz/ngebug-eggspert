@@ -13,11 +13,17 @@ return new class extends Migration
     {
         Schema::create('laporan_gudang', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_gudang_telur')->constrained('gudang');  // Make sure this line exists
-            $table->string('keterangan');
-            $table->string('nama_laporan_gudang');
-            $table->integer('jumlah_telur');
-            $table->date('tanggal_laporan_gudang');
+            $table->unsignedBigInteger('id_gudang'); // Foreign key to Gudang
+            $table->integer('jumlah_telur'); // The number of eggs reduced
+            $table->string('keterangan'); // Reason for reduction (e.g., broken, rotten, lost)
+            $table->date('tanggal_laporan_gudang'); // Date of the report
+
+            // Foreign Key constraint
+            $table->foreign('id_gudang')
+                ->references('id')
+                ->on('gudang')
+                ->onDelete('cascade'); // Deleting Gudang will delete the related reports
+
             $table->timestamps();
         });
     }
