@@ -260,80 +260,80 @@
         }
     });
         // Step 2: Fetch and populate modal form when "Edit" is clicked
-  $(document).on('click', '.editKandangBtn', function() {
-    var kandangId = $(this).data('id'); // Get the ID of the kandang to edit
+    $(document).on('click', '.editKandangBtn', function() {
+      var kandangId = $(this).data('id'); // Get the ID of the kandang to edit
 
-    // Make AJAX request to fetch kandang details
-    $.ajax({
-      url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`, // Adjust URL if needed
-      type: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
-      },
-      success: function(response) {
-        response = response[0];
-        console.log(response);
-        // Step 3: Populate modal with the fetched data
-        $('#idkandang').val(kandangId);
-        $('#enamaKandang').val(response.nama);
-        $('#ekapasitasKandang').val(response.kapasitas);
-        $('#ejumlahAyam').val(response.jumlah_ayam);
-        $('#ejenisKandang').val(response.jenis_kandang);
-        $('#ras_ayam').val(response.ras_ayam.id); // Populate Ras Ayam dropdown
-        $('#pakan').val(response.pakan.id); // Populate Pakan dropdown
-        $('#etanggalPembuatanKandang').val(response.updated_at);
+      // Make AJAX request to fetch kandang details
+      $.ajax({
+        url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`, // Adjust URL if needed
+        type: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
+        },
+        success: function(response) {
+          response = response[0];
+          console.log(response);
+          // Step 3: Populate modal with the fetched data
+          $('#idkandang').val(kandangId);
+          $('#enamaKandang').val(response.nama);
+          $('#ekapasitasKandang').val(response.kapasitas);
+          $('#ejumlahAyam').val(response.jumlah_ayam);
+          $('#ejenisKandang').val(response.jenis_kandang);
+          $('#ras_ayam').val(response.ras_ayam.id); // Populate Ras Ayam dropdown
+          $('#pakan').val(response.pakan.id); // Populate Pakan dropdown
+          $('#etanggalPembuatanKandang').val(response.updated_at);
 
-        // Set radio button values
-        $("input[name='estatusPakan'][value='" + response.status_pakan + "']").prop('checked', true);
-        $("input[name='estatusKandang'][value='" + response.status_kandang + "']").prop('checked', true);
+          // Set radio button values
+          $("input[name='estatusPakan'][value='" + response.status_pakan + "']").prop('checked', true);
+          $("input[name='estatusKandang'][value='" + response.status_kandang + "']").prop('checked', true);
 
-        // Open the modal
-      },
-      error: function(xhr, status, error) {
-        console.error('Error fetching kandang data:', error);
-        alert('Error fetching kandang data.');
-      }
+          // Open the modal
+        },
+        error: function(xhr, status, error) {
+          console.error('Error fetching kandang data:', error);
+          alert('Error fetching kandang data.');
+        }
+      });
     });
-  });
 
-  // Step 4: Handle form submission for editing kandang
-  $('#editKandangForm').submit(function(e) {
-    e.preventDefault(); // Prevent default form submission
-    var kandangId = $('#idkandang').val(); 
+    // Step 4: Handle form submission for editing kandang
+    $('#editKandangForm').submit(function(e) {
+      e.preventDefault(); // Prevent default form submission
+      var kandangId = $('#idkandang').val(); 
 
-    var formData = {
-      nama: $('#enamaKandang').val(),
-      jenis_kandang: $('#ejenisKandang').val(),
-      kapasitas: parseInt($('#ekapasitasKandang').val()),
-      jumlah_ayam: parseInt($('#ejumlahAyam').val()),
-      id_ras_ayam: parseInt($('#ras_ayam').val()),
-      id_pakan: parseInt($('#pakan').val()),
-      status_pakan: $('input[name="estatusPakan"]:checked').val(),
-      status_kandang: $('input[name="estatusKandang"]:checked').val()
-    };
+      var formData = {
+        nama: $('#enamaKandang').val(),
+        jenis_kandang: $('#ejenisKandang').val(),
+        kapasitas: parseInt($('#ekapasitasKandang').val()),
+        jumlah_ayam: parseInt($('#ejumlahAyam').val()),
+        id_ras_ayam: parseInt($('#ras_ayam').val()),
+        id_pakan: parseInt($('#pakan').val()),
+        status_pakan: $('input[name="estatusPakan"]:checked').val(),
+        status_kandang: $('input[name="estatusKandang"]:checked').val()
+      };
 
-    var jsonData = JSON.stringify(formData);
-    console.log(jsonData);
-    // Step 5: Send updated data to the server
-    $.ajax({
-      url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`, // Send PUT request to update kandang
-      type: 'PUT',
-      data: formData,
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
-      },
-      success: function(response) {
-        console.log('Kandang updated successfully', response);
-        alert('Kandang updated successfully!');
-        $('#form_edit_kandang').modal('hide'); // Close modal
-        location.reload(); // Refresh the page
-      },
-      error: function(xhr, status, error) {
-        console.error('Error updating kandang:', error);
-        alert('Failed to update kandang.');
-      }
+      var jsonData = JSON.stringify(formData);
+      console.log(jsonData);
+      // Step 5: Send updated data to the server
+      $.ajax({
+        url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`, // Send PUT request to update kandang
+        type: 'PUT',
+        data: formData,
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
+        },
+        success: function(response) {
+          console.log('Kandang updated successfully', response);
+          alert('Kandang updated successfully!');
+          $('#form_edit_kandang').modal('hide'); // Close modal
+          location.reload(); // Refresh the page
+        },
+        error: function(xhr, status, error) {
+          console.error('Error updating kandang:', error);
+          alert('Failed to update kandang.');
+        }
+      });
     });
-  });
   </script>
 
 <!-- ngehapus -->
