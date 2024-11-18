@@ -28,8 +28,7 @@ class VaksinasiAPIController extends Controller
     
     public function store(Request $request)
     {
-        $userId = Auth::id();
-        
+
         $request->validate([
             'jenis_vaksin' => 'required|string|max:255',
             'tanggal_vaksinasi' => 'required|date',
@@ -40,7 +39,6 @@ class VaksinasiAPIController extends Controller
             'jenis_vaksin' => $request->jenis_vaksin,
             'tanggal_vaksinasi' => $request->tanggal_vaksinasi,
             'id_product' => $request->id_product,
-            'id_peternak' => $userId,
             
         ]);
 
@@ -59,19 +57,14 @@ class VaksinasiAPIController extends Controller
 
     public function update(Request $request, string $id) 
     {
-        $userId = Auth::id();
         $vaksinasi = Vaksinasi::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'jenis_vaksin' => 'required|string|max:255',
             'tanggal_vaksinasi' => 'required|date',
-            'id_product' => 'required|exists:products,id'
         ]);
 
-        $requestData = $request->all();
-        $requestData['id_peternak'] = $userId;
-
-        $vaksinasi->update($requestData);
+        $vaksinasi->update($validated);
 
         return response()->json($vaksinasi);
 
