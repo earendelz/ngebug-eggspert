@@ -88,7 +88,7 @@
             <div class="mb-3">
               <label for="pakan" class="form-label">Pakan</label>
               <select name="pakan" class="form-control" id="pakan" placeholder="Jenis Pakan">
-                <option value="1">Tanah</option>
+                <option value="1">Rumput</option>
                 <option value="2"></option>
               </select>   
             </div>

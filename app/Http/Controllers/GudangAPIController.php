@@ -13,7 +13,9 @@ class GudangAPIController extends Controller
     public function index(){
 
         $userId = Auth::id();
-        $gudang = Gudang::where('id_peternak', $userId)->get();    
+        $gudang = Gudang::with('rasAyam:id,nama_ras_ayam')
+        ->where('id_peternak', $userId)
+        ->get(); 
         return response()->json($gudang);
     }
     
@@ -42,7 +44,9 @@ class GudangAPIController extends Controller
 
     public function show(string $id)
     {
-        $gudang = Gudang::where('id_peternak', $id)->get();
+        $gudang = Gudang::with('rasAyam:id,nama_ras_ayam')
+        ->where('id', $id)
+        ->get(); 
         return response()->json($gudang);
     }
 

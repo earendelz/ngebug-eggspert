@@ -48,13 +48,8 @@
   </style>
 </head>
 <body>
-  <div class="container text-center mt-5">
-    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#formGudangModal">
-      Edit Gudang
-    </button>
-  </div>
 
-  <div class="modal fade" id="formGudangModal" tabindex="-1" aria-labelledby="formGudangLabel" aria-hidden="true">
+  <div class="modal fade" id="form_edit_gudang" tabindex="-1" aria-labelledby="formGudangLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -62,37 +57,30 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form>
-            <div class="mb-3">
+          <form class="edit_gudang_form">
+          <div class="mb-3">
               <label for="namaGudang" class="form-label">Nama Gudang Telur</label>
-              <input type="text" class="form-control" id="namaGudang" placeholder="Masukkan nama Gudang">
+              <input type="text" class="form-control" id="enamaGudang" placeholder="Masukkan nama Gudang">
             </div>
             <div class="mb-3">
-              <label for="kapasitasGudang" class="form-label">Kapasitas</label>
-              <input type="text" class="form-control" id="kapasitasGudang" placeholder="Masukkan kapasitas Gudang">
+              <label for="jumlahTelur" class="form-label">Jumlah Telur</label>
+              <input type="text" class="form-control" id="ejumlahTelur" placeholder="Masukkan jumlah telur">
             </div>
             <div class="mb-3">
               <label for="tanggalPembuatanGudang" class="form-label">Tanggal Pembuatan Gudang</label>
-              <input type="text" class="form-control" id="tanggalPembuatanGudang" placeholder="Pilih tanggal">
+              <input type="text" class="form-control" id="etanggalPembuatanGudang" placeholder="Pilih tanggal">
             </div>
             <div class="mb-3">
-              <label class="form-label">Status Gudang</label>
-              <div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="statusGudang" id="aktif" value="aktif">
-                  <label class="form-check-label" for="aktif" style="color: #AE7B3D;">Aktif</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="statusGudang" id="nonaktif" value="nonaktif">
-                  <label class="form-check-label" for="nonaktif" style="color: #AE7B3D;">Nonaktif</label>
-                </div>
-              </div>
+              <label for="ras_ayam" class="form-label">Ras Ayam</label>
+              <select name="ras_ayam" class="form-control" id="ras_ayam" placeholder="Ras Ayam">
+                <option value="1">Jago</option>
+              </select>   
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Batal</button>
+              <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Cancel</button>
-          <button type="button" class="btn btn-primary">Confirm</button>
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ class GudangTelurController extends Controller
      */
     public function index()
     {
-        //
+        return view('gudang_telur');
     }
 
     /**
