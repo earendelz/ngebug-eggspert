@@ -10,11 +10,11 @@ class LaporanGudang extends Model
     use HasFactory;
 
     protected $table = 'laporan_gudang';
-    protected $fillable = ['id_gudang_telur', 'keterangan', 'nama_gudang', 'jumlah_telur', 'tanggal_laporan_gudang'];
 
-    // Define the relationship with Gudang
+    protected $fillable = ['id_gudang', 'jumlah_telur', 'keterangan', 'tanggal_laporan_gudang'];
+
     public function gudang()
     {
-        return $this->belongsTo(Gudang::class, 'id_gudang_telur');
+        return $this->belongsTo(Gudang::class, 'id_gudang');
     }
 }
