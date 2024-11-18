@@ -144,7 +144,6 @@
               <th>PAKAN</th>
               <th>STATUS PAKAN</th>
               <th>STATUS KANDANG</th>
-              <th>TERAKHIR DIUBAH</th>
               <th>OPSI</th>
             </tr>
           </thead>
@@ -182,7 +181,6 @@
                             <td>${product.jenis_kandang}</td>
                             <td>${product.ras_ayam.nama_ras_ayam}</td>
                             <td>${product.pakan.jenis_pakan}</td>
-                            <td>${product.jenis_kandang}</td>
                             <td>${product.status_pakan}</td>
                             <td>${product.status_kandang}</td>
                             <td>

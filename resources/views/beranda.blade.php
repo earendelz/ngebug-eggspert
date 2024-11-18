@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="../css/style.css">
 
     <title>Eggspert</title>
@@ -142,63 +143,16 @@
         <div class="card-body ">
           <h5 class="card-title">Kandang</h5>
           <p class="card-text">Daftar Kandang</p>
-          <div class="row">
-            <div class="col-sm-auto">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Kandang</h5>
-                  <p class="card-text">Daftar Kandang</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-auto">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Kandang</h5>
-                  <p class="card-text">Daftar Kandang</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-auto">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Kandang</h5>
-                  <p class="card-text">Daftar Kandang</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-auto">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Kandang</h5>
-                  <p class="card-text">Daftar Kandang</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-auto">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Kandang</h5>
-                  <p class="card-text">Daftar Kandang</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="row" id="kandang-container">
+            
         </div>
       </div>
     </div>
     <div class="col-sm-4">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
+          <h5 class="card-title">Jumlah Penjualan Keseluruhan</h5>
+          </div>
       </div>
     </div>
   </div>
@@ -207,80 +161,85 @@
     <div class="col-sm-4">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <h5 class="card-title">Total Pendapatan</h5>
+          </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Pendapatan Bulan Ini</h5>
         </div>
       </div>
     </div>
     <div class="col-sm-4">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <h5 class="card-title">Total Produksi Telur</h5>
         </div>
       </div>
     </div>
   </div>
-  <!-- Card Third Row -->
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-8">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-  </div>
-    <a>adsjlkasdja tes</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
-    <a>adsjlkasdja</a> <br/>
+
+
 </div>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+<script>
+  var userId = @json(Auth::id()); // Get the user ID from the server-side variable
+
+$.ajax({
+    url: "{{ route('kandangku.index') }}", // Your protected API route with the userId
+    type: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+    },
+    success: function(response) {
+        console.log(userId);
+        console.log('Response:', response); // Log the entire response to verify its structure
+        
+        // Clear the container before inserting new cards
+        $('#kandang-container').empty();
+
+        // Check if the response is an array (which it should be based on your response)
+        if (Array.isArray(response)) {
+            let autoIncrement = 1;
+            response.forEach(function(product) {
+                // Dynamically generate the card for each product
+                var cardHTML = `
+                    <div class="col-sm-auto">
+                        <div class="card" style="width: 9rem; background-color: #F7E2BF">
+                        <a href="{{route('kandang-ayam-dashboard.index')}}" >
+                            <div class="card-body" style="width:9rem;">
+                                <h5 class="card-title" style="color:#151d48">${product.nama}</h5>
+                                <p class="card-text" style="color:#425166">${product.jenis_kandang}</p>
+                                <p class="card-text" style="color:#425166">Jumlah: ${product.jumlah_ayam}/${product.kapasitas}</p>
+                                <p class="card-text me-auto" style="color:#425166">
+                                    ${product.status_kandang === 'tersedia' ? 
+                                        `<svg width="12" height="12" viewBox="0 0 12 12" fill="green"><circle cx="6" cy="6" r="6" /></svg>` : 
+                                        (product.status_kandang === 'tidak tersedia' ? 
+                                            `<svg width="12" height="12" viewBox="0 0 12 12" fill="red"><circle cx="6" cy="6" r="6" /></svg>` : '')}
+                                    
+                                </p>
+                                </div>
+                        </a>
+                        </div>
+                    </div>
+                `;
+                $('#kandang-container').append(cardHTML); // Append the card HTML to the container
+                autoIncrement++;
+            });
+        } else {
+            // If response is not an array, show an error message
+            alert('Unexpected response format. Expected an array of products.');
+        }
+    },
+    error: function(xhr, status, error) {
+        console.error('Error:', xhr.responseText);
+        alert("Failed to fetch data.");
+    }
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../js/sidebar.js"></script>
   </body>
