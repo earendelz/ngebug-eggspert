@@ -96,7 +96,6 @@ class UserAPIController extends Controller
 
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users,username,' . $id,
-            'password' => 'nullable|string|min:8',
             'nama' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'alamat' => 'required|string|max:255',
@@ -110,9 +109,6 @@ class UserAPIController extends Controller
         }
 
         $user->username = $request->username;
-        if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
-        }
         $user->nama = $request->nama;
         $user->email = $request->email;
         $user->alamat = $request->alamat;
@@ -177,4 +173,26 @@ class UserAPIController extends Controller
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Logged out successfully']);
     }
+
+    // Laravel API untuk mengubah password
+    public function changePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:8',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($validated['old_password'], $user->password)) {
+            return response()->json(['message' => 'Password lama salah'], 400);
+        }
+
+        $user->password = Hash::make($validated['new_password']);
+        $user->save();
+
+        return response()->json(['message' => 'Password berhasil diubah']);
+    }
+
 }

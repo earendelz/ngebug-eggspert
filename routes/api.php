@@ -16,8 +16,6 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get("/users", [UserAPIController::class, 'index']);
-Route::get("/users/{id}", [UserAPIController::class, 'show']);
-Route::put("/users/{id}", [UserAPIController::class, 'update']);
 Route::delete("/users/{id}", [UserAPIController::class, 'destroy']);
 
 Route::post('/register', [UserAPIController::class, 'register'])->name('actionRegister');
@@ -25,6 +23,9 @@ Route::post('/login', [UserAPIController::class, 'login'])->name('actionLogin');
 Route::post('/logout', [UserAPIController::class, 'logout'])->middleware('auth:sanctum')->name('actionLogout');
 
 Route::middleware(['auth:sanctum'])->group(function(){
+    Route::put("/users/{id}", [UserAPIController::class, 'update']);
+    Route::get("/users/{id}", [UserAPIController::class, 'show']);
+    Route::put("/change-password", [UserAPIController::class, 'changePassword']);
     Route::apiResource("gudangku", GudangAPIController::class);
     Route::apiResource("kandangku", ProductAPIController::class);
     Route::apiResource("pakanku", PakanAPIController::class);
