@@ -46,3 +46,4 @@ document.addEventListener('DOMContentLoaded', function(){
         link.addEventListener('mouseleave', handleMouseOut);
     })
 })
+document.getElementById('user-id').textContent = Users.id;

@@ -67,7 +67,7 @@
             <div class="col-sm-6">
 
             <li class="nav-item dropdown">
-              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user" style="text-decoration: none; color: black;"><b>Rusdi</b></a>
+            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user" style="text-decoration: none; color: black;"><b>{{$user->username}}</b></a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light">    
                 <li><a class="dropdown-item" href="#">Profile</a></li>
                 <li><a class="dropdown-item" href="#">Setting</a></li>
@@ -132,7 +132,7 @@
 
   <div class="main-content">
     <div class="card bg-light shadow">
-      <div class="card-body">
+      <div class="card-body d-flex flex-wrap">
         <table id="myTable" class="display rounded bg-light">
           <thead>
             <tr>
@@ -195,6 +195,7 @@
                     `;
                     $('#myTable tbody').append(row); // Append the row to the table body
                     autoIncrement++;
+                  
                   });
             } else {
                 // If response is not an array, show an error message

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class KandangAyamController extends Controller
 {
@@ -12,7 +13,8 @@ class KandangAyamController extends Controller
     public function index()
     {
         // return DB::connection()->getdatabasename();
-        return view('kandang_ayam');
+        $user = Auth::user();
+        return view('kandang_ayam', compact('user'));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class GudangTelurController extends Controller
@@ -11,7 +12,8 @@ class GudangTelurController extends Controller
      */
     public function index()
     {
-        return view('gudang_telur');
+        $user = Auth::user();
+        return view('gudang_telur', compact('user'));
     }
 
     /**
