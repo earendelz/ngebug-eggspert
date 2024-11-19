@@ -49,6 +49,7 @@ class LaporanGudangAPIController extends Controller
             'jumlah_telur' => $validated['jumlah_telur'],
             'keterangan' => $validated['keterangan'],
             'tanggal_laporan_gudang' => $validated['tanggal_laporan_gudang'],
+            'id_peternak' => $userId
         ]);
 
         // Mengurangi jumlah telur pada Gudang

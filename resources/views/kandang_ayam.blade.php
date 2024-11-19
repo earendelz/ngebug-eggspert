@@ -404,7 +404,7 @@ $(document).on('click', '.deleteKandangBtn', function(event) {
           </script>
 
 <div class="container-fluid d-flex justify-content-end">
-  <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_kandang">
+  <button type="button" id="buttonTambah" class="btn btn-md mb-3" data-bs-toggle="modal" data-bs-target="#form_tambah_kandang">
     Tambah Kandang
   </button>
 </div>

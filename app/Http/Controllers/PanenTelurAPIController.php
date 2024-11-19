@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gudang;
 use App\Models\PanenTelur;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class PanenTelurAPIController extends Controller
 {
@@ -13,7 +15,9 @@ class PanenTelurAPIController extends Controller
      */
     public function index()
     {
-        $panenTelur = PanenTelur::all();
+        $userId = Auth::id();
+        $panenTelur = PanenTelur::with('kandang','gudang')
+        ->where('id_peternak', $userId);
         return response()->json($panenTelur);
     }
 
@@ -22,6 +26,7 @@ class PanenTelurAPIController extends Controller
      */
     public function store(Request $request)
     {
+        $userId = Auth::id();
         //validasi input yg diterima
         $validated = $request->validate([
             'jumlah_telur' => 'required|integer',
@@ -32,8 +37,21 @@ class PanenTelurAPIController extends Controller
             'memo' => 'nullable|string',
         ]);
 
+        // mengambil gudang yg terkait
+        $gudang = Gudang::findOrFail($validated['id_gudang']);
         //menyimpan data baru
-        $panenTelur = PanenTelur::create($validated);
+        $panenTelur = PanenTelur::create([
+            'id_kandang' => $validated['id_kandang'],
+            'id_gudang' => $validated['id_gudang'],
+            'id_peternak' => $userId,
+            'jumlah_telur' => $validated['jumlah_telur'],
+            'kondisi_telur' => $validated['kondisi_telur'],
+            'tanggal_panen' => $validated['tanggal_panen'],
+            'memo' => $validated['memo']
+        ]);
+
+        $gudang->jumlah_telur += $validated['jumlah_telur'];
+        $gudang->save();
 
         return response()->json($panenTelur, 201); //mengembalikan data yang baru dibuat
     }

@@ -18,6 +18,7 @@ class PanenTelur extends Model
         'memo',
         'id_kandang',
         'id_gudang',
+        'id_peternak'
     ];
 
     /**
@@ -26,5 +27,12 @@ class PanenTelur extends Model
     public function kandang()
     {
         return $this->belongsTo(Product::class, 'id_kandang');
+    }
+    /**
+     * Relasi dengan Gudang
+     */
+    public function gudang()
+    {
+        return $this->belongsTo(Gudang::class, 'id_gudang');
     }
 }

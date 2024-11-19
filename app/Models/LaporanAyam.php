@@ -13,10 +13,15 @@ class LaporanAyam extends Model
 
     // Tambahkan atribut yang bisa diisi (fillable) jika diperlukan
     protected $fillable = [
-        'chicken_count',
-        'date',
-        'live_chicken_count',
-        'dead_chicken_count',
-        'user_id',
+        'jumlah_ayam',
+        'jenis_laporan',
+        'tanggal_peristiwa',
+        'id_kandang',
+        'id_peternak',
     ];
+    public function kandang()
+    {
+        return $this->belongsTo(Product::class, 'id_kandang');
+    }
+
 }

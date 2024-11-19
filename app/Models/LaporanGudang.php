@@ -11,7 +11,7 @@ class LaporanGudang extends Model
 
     protected $table = 'laporan_gudang';
 
-    protected $fillable = ['id_gudang', 'jumlah_telur', 'keterangan', 'tanggal_laporan_gudang'];
+    protected $fillable = ['id_gudang', 'id_peternak', 'jumlah_telur', 'keterangan', 'tanggal_laporan_gudang'];
 
     public function gudang()
     {

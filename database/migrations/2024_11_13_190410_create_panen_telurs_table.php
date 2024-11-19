@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_gudang')->nullable()->constrained('gudang')->onDelete('set null');
             $table->foreignId('id_kandang')->nullable()->constrained('products')->onDelete('set null');
+            $table->foreignId('id_peternak')->nullable()->constrained('users')->onDelete('set null');
             $table->integer('jumlah_telur');
             $table->string('kondisi_telur');
             $table->text('memo')->nullable();

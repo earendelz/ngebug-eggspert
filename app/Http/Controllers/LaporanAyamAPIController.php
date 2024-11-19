@@ -3,36 +3,50 @@
 namespace App\Http\Controllers;
 
 use App\Models\LaporanAyam;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class LaporanAyamAPIController extends Controller
 {
     // Menampilkan semua laporan ayam
     public function index()
     {
-        $laporanAyam = LaporanAyam::all();
-        return response()->json($laporanAyam);
-    }
+        $userId = Auth::id();
+        $laporanAyam = LaporanAyam::with('kandang')
+        ->where('id_peternak', $userId);
+        return response()->json($laporanAyam);}
 
     // Menyimpan laporan ayam baru
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'chicken_count' => 'required|integer',
-        //     'date' => 'required|date',
-        //     'live_chicken_count' => 'required|integer',
-        //     'dead_chicken_count' => 'required|integer',
-        //     'user_id' => 'required|exists:users,id', // Mengganti id_peternak dengan user_id
-        // ]);
+        $userId = Auth::id();
+        $validated = $request -> validate([
+            'jumlah_ayam' => 'required|integer|min:1',
+            'jenis_laporan' => 'required|string|in:kematian,kelahiran',
+            'tanggal_peristiwa' => 'required|date',
+            'id_kandang' => 'required|exists:products,id',
 
-        $laporanAyam = new LaporanAyam();
-        $laporanAyam->chicken_count = $request->chicken_count;
-        $laporanAyam->date = $request->date;
-        $laporanAyam->live_chicken_count = $request->live_chicken_count;
-        $laporanAyam->dead_chicken_count = $request->dead_chicken_count;
-        $laporanAyam->user_id = $request->user_id; // Mengganti id_peternak dengan user_id
-        $laporanAyam->save();
+        ]);
+
+        $kandang = Product::findOrFail($validated['id_kandang']);
+
+        $laporanAyam = LaporanAyam::create([
+            'jumlah_ayam' => $validated['jumlah_ayam'],
+            'jenis_laporan' => $validated['jenis_laporan'],
+            'tanggal_peristiwa' => $validated['tanggal_peristiwa'],
+            'id_kandang' => $validated['id_kandang'],
+            'id_peternak' => $userId
+        ]);
+        $validated['jumlah_ayam'] = $validated['jumlah_ayam'] + 0;
+        if($validated['jenis_laporan'] == "kematian"){
+            $kandang -> jumlah_ayam -= $validated['jumlah_ayam'];   
+        }else{
+            $kandang -> jumlah_ayam += $validated['jumlah_ayam'];
+        };
+
+        $kandang->save();
 
         return response()->json($laporanAyam);
     }

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GudangAPIController;
+use App\Http\Controllers\LaporanAyamAPIController;
 use App\Http\Controllers\UserAPIController;
 use App\Http\Controllers\VaksinasiAPIController;
 use App\Http\Controllers\LaporanGudangAPIController;
@@ -32,6 +33,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource("rasayamku", RasAyamAPIController::class);
     Route::apiResource("vaksinasiku", VaksinasiAPIController::class);
     Route::apiResource("laporangudangku", LaporanGudangAPIController::class);
+    Route::apiResource("laporanayamku", LaporanAyamAPIController::class);
+    Route::apiResource('panentelurku', PanenTelurAPIController::class); 
     Route::get('vaksin/{id}',[VaksinasiAPIController::class, 'showByIDKandang'] );
 
 });
@@ -47,7 +50,6 @@ Route::get('laporan-gudang/getByNama/{nama_laporan_gudang}', [LaporanGudangAPICo
 
 Route::apiResource('ras_ayam', RasAyamAPIController::class); //general route ras ayam
 
-Route::apiResource('panen_telur', PanenTelurAPIController::class); //general route panen telur
 Route::get('panen_telur/kandang/{id_kandang}', [PanenTelurAPIController::class, 'getByKandang']); //get panen telur by id kandang
 Route::get('panen_telur/namaKandang/{name}', [PanenTelurAPIController::class, 'getByNamaKandang']); //get panen telur by nama kandang
 

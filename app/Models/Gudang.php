@@ -17,6 +17,10 @@ class Gudang extends Model
     {
         return $this->hasMany(LaporanGudang::class, 'id_gudang_telur');
     }
+    public function panenTelur()
+    {
+        return $this->hasMany(PanenTelur::class, 'id_gudang');
+    }
 
     public function rasAyam()
     {
