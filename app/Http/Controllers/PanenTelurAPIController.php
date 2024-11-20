@@ -17,7 +17,8 @@ class PanenTelurAPIController extends Controller
     {
         $userId = Auth::id();
         $panenTelur = PanenTelur::with('kandang','gudang')
-        ->where('id_peternak', $userId);
+        ->where('id_peternak', $userId)
+        ->get();
         return response()->json($panenTelur);
     }
 

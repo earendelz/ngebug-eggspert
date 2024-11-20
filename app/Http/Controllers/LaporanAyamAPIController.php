@@ -14,8 +14,9 @@ class LaporanAyamAPIController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $laporanAyam = LaporanAyam::with('kandang')
-        ->where('id_peternak', $userId);
+        $laporanAyam = LaporanAyam::with('kandang:id,nama')
+        ->where('id_peternak', $userId)
+        ->get();
         return response()->json($laporanAyam);}
 
     // Menyimpan laporan ayam baru
