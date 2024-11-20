@@ -10,6 +10,8 @@ use App\Http\Controllers\LaporanGudangAPIController;
 use App\Http\Controllers\PakanAPIController;
 use App\Http\Controllers\RasAyamAPIController;
 use App\Http\Controllers\PanenTelurAPIController;
+use App\Http\Controllers\PenjualanAyamAPIController;
+use App\Http\Controllers\PenjualanTelurAPIController;
 use App\Http\Controllers\ProductAPIController;
 
 Route::get('/user', function (Request $request) {
@@ -34,6 +36,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource("vaksinasiku", VaksinasiAPIController::class);
     Route::apiResource("laporangudangku", LaporanGudangAPIController::class);
     Route::apiResource("laporanayamku", LaporanAyamAPIController::class);
+    Route::apiResource("penjualanayamku", PenjualanAyamAPIController::class);
+    Route::apiResource("penjualantelurku", PenjualanTelurAPIController::class);
     Route::apiResource('panentelurku', PanenTelurAPIController::class); 
     Route::get('vaksin/{id}',[VaksinasiAPIController::class, 'showByIDKandang'] );
 

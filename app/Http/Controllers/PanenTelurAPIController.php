@@ -30,7 +30,7 @@ class PanenTelurAPIController extends Controller
         $userId = Auth::id();
         //validasi input yg diterima
         $validated = $request->validate([
-            'jumlah_telur' => 'required|integer',
+            'jumlah_telur' => 'required|integer|min:1',
             'kondisi_telur' => 'required|string',
             'tanggal_panen' => 'required|date',
             'id_kandang' => 'required|exists:products,id', //validasi foreign key
@@ -62,12 +62,9 @@ class PanenTelurAPIController extends Controller
      */
     public function show(string $id)
     {
-        $panenTelur = PanenTelur::findOrFail($id);
-
-        if(!$panenTelur){
-            return response()->json(['message' => 'Data panen telur tidak ditemukan'], 404);
-        }
-
+        $panenTelur = PanenTelur::with(['products', 'gudang'])
+                        ->where('id', $id)
+                        ->get();
         return response()->json($panenTelur);
     }
 
