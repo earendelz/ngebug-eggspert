@@ -12,34 +12,34 @@ class VaksinasiAPIController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $vaksinasi = Vaksinasi::whereHas('product', function ($query) use ($userId) {
-            $query->where('id_peternak', $userId);
-        })->get();
-
+        $vaksinasi = Vaksinasi::with('kandang')
+        ->where('id_peternak', $userId)
+        ->get();
         return response()->json($vaksinasi);
+
     }
 
-    public function showByIDKandang(string $idProduct)
+    public function showByIDKandang(string $idKandang)
     {
-        $vaksinasi = Vaksinasi::where('id_product', $idProduct)->get();    
+        $vaksinasi = Vaksinasi::where('id_kandang', $idKandang)->get();    
         return response()->json($vaksinasi);
     }
 
     
     public function store(Request $request)
     {
-
-        $request->validate([
+        $userId = Auth::id();
+        $validated = $request->validate([
             'jenis_vaksin' => 'required|string|max:255',
             'tanggal_vaksinasi' => 'required|date',
-            'id_product' => 'required|exists:products,id'
+            'id_kandang' => 'required|exists:products,id'
         ]);
 
         $vaksinasi = Vaksinasi::create([
-            'jenis_vaksin' => $request->jenis_vaksin,
-            'tanggal_vaksinasi' => $request->tanggal_vaksinasi,
-            'id_product' => $request->id_product,
-            
+            'jenis_vaksin' => $validated['jenis_vaksin'],
+            'tanggal_vaksinasi' => $validated['tanggal_vaksinasi'],
+            'id_kandang' => $validated['id_kandang'],
+            'id_peternak' => $userId
         ]);
 
         return response()->json($vaksinasi);

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('jenis_vaksin');
             $table->date('tanggal_vaksinasi');
-            $table->foreignId('id_product')->constrained('products')->onDelete('cascade');
+            $table->foreignId('id_kandang')->constrained('products')->onDelete('cascade');
+            $table->foreignId('id_peternak')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });        
     }

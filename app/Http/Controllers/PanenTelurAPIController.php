@@ -51,6 +51,8 @@ class PanenTelurAPIController extends Controller
             'memo' => $validated['memo']
         ]);
 
+        // convert ke integer
+        $validated['jumlah_telur'] = $validated['jumlah_telur'] + 0;
         $gudang->jumlah_telur += $validated['jumlah_telur'];
         $gudang->save();
 
@@ -62,7 +64,7 @@ class PanenTelurAPIController extends Controller
      */
     public function show(string $id)
     {
-        $panenTelur = PanenTelur::with(['products', 'gudang'])
+        $panenTelur = PanenTelur::with(['kandang', 'gudang'])
                         ->where('id', $id)
                         ->get();
         return response()->json($panenTelur);

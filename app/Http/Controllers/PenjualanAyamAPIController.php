@@ -32,7 +32,7 @@ class PenjualanAyamAPIController extends Controller
         'tanggal_penjualan' => 'date',
         ]);
 
-        $kandang = Product::findOrFail($userId);
+        $kandang = Product::findOrFail($validated['id_kandang']);
         $penjualanAyam = PenjualanAyam::create([
             'jumlah_terjual' => $validated['jumlah_terjual'],
             'harga_perekor' => $validated['harga_perekor'],
@@ -41,6 +41,11 @@ class PenjualanAyamAPIController extends Controller
             'tanggal_penjualan' => $validated['tanggal_penjualan'],
             'id_peternak' => $userId
         ]);
+// convert ke integer
+        $validated['jumlah_terjual'] = $validated['jumlah_terjual'] + 0;
+        if ($kandang->jumlah_ayam < $validated['jumlah_terjual']) {
+            return response()->json(['error' => 'Ayam di dalam kandang tidak mencukupi'], 400);
+        }
         $kandang -> jumlah_ayam -= $validated['jumlah_terjual'];
         $kandang -> save();
 
@@ -52,7 +57,7 @@ class PenjualanAyamAPIController extends Controller
      */
     public function show(string $id)
     {
-        $penjualanAyam = PenjualanAyam::with(['products'])
+        $penjualanAyam = PenjualanAyam::with(['kandang'])
                         ->where('id', $id)
                         ->get();
         return response()->json($penjualanAyam);

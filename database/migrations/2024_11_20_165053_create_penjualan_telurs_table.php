@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('harga_perkilo');
             $table->integer('telur_terjual');
             $table->integer('harga_total');
-            $table->foreignId('id_gudang')->nullable()->constrained('gudangs')->onDelete('set null');
+            $table->foreignId('id_gudang')->nullable()->constrained('gudang')->onDelete('set null');
             $table->date('tanggal_penjualan');
             $table->foreignId('id_peternak')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
