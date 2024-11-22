@@ -12,7 +12,7 @@ class PenjualanTelur extends Model
     protected $table = 'penjualan_telurs';
     protected $fillable = [
         'kondisi_telur',
-        'harga_perkilo',
+        'harga_perbutir',
         'telur_terjual',
         'harga_total',
         'id_gudang',
@@ -30,7 +30,7 @@ class PenjualanTelur extends Model
     parent::boot();
 
     static::saving(function ($penjualanTelur) {
-        $penjualanTelur->harga_total = $penjualanTelur->harga_perkilo * $penjualanTelur->telur_terjual;
+        $penjualanTelur->harga_total = $penjualanTelur->harga_perbutir * $penjualanTelur->telur_terjual;
     });
 }
 

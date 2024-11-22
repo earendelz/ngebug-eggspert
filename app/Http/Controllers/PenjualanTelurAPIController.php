@@ -26,7 +26,7 @@ class PenjualanTelurAPIController extends Controller
         $userId = Auth::id();
         $validated = $request->validate([
             'kondisi_telur' => 'required|string|max:255',
-            'harga_perkilo' => 'required|integer',
+            'harga_perbutir' => 'required|integer',
             'telur_terjual' => 'required|integer|min:1',
             'id_gudang' => 'required|exists:gudang,id',
             'tanggal_penjualan' => 'date'
@@ -35,7 +35,7 @@ class PenjualanTelurAPIController extends Controller
         $gudang = Gudang::findOrFail($validated['id_gudang']);
         $penjualanTelur = PenjualanTelur::create([
             'kondisi_telur' => $validated['kondisi_telur'],
-            'harga_perkilo' => $validated['harga_perkilo'],
+            'harga_perbutir' => $validated['harga_perbutir'],
             'telur_terjual' => $validated['telur_terjual'],
             'id_gudang' => $validated['id_gudang'],
             'tanggal_penjualan' => $validated['tanggal_penjualan'],
@@ -64,7 +64,7 @@ class PenjualanTelurAPIController extends Controller
         try{
             $validated = $request->validate([
                 'kondisi_telur' => 'required|string|max:255',
-                'harga_perkilo' => 'required|integer',
+                'harga_perbutir' => 'required|integer',
                 'telur_terjual' => 'required|integer|min:1',
                 'id_gudang' => 'required|exists:gudang,id',
                 'tanggal_penjualan' => 'data'

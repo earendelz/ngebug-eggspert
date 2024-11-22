@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('penjualan_telurs', function (Blueprint $table) {
             $table->id();
             $table->string('kondisi_telur');
-            $table->integer('harga_perkilo');
+            $table->integer('harga_perbutir');
             $table->integer('telur_terjual');
             $table->integer('harga_total');
             $table->foreignId('id_gudang')->nullable()->constrained('gudang')->onDelete('set null');
