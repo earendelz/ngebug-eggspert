@@ -21,9 +21,6 @@ class PenjualanTelurAPIController extends Controller
         return response()->json($penjualanTelur);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $userId = Auth::id();
@@ -31,7 +28,6 @@ class PenjualanTelurAPIController extends Controller
             'kondisi_telur' => 'required|string|max:255',
             'harga_perkilo' => 'required|integer',
             'telur_terjual' => 'required|integer|min:1',
-            'harga_total' => 'required|integer',
             'id_gudang' => 'required|exists:gudang,id',
             'tanggal_penjualan' => 'date'
         ]);
@@ -41,7 +37,6 @@ class PenjualanTelurAPIController extends Controller
             'kondisi_telur' => $validated['kondisi_telur'],
             'harga_perkilo' => $validated['harga_perkilo'],
             'telur_terjual' => $validated['telur_terjual'],
-            'harga_total' => $validated['harga_total'],
             'id_gudang' => $validated['id_gudang'],
             'tanggal_penjualan' => $validated['tanggal_penjualan'],
             'id_peternak' => $userId
@@ -54,9 +49,6 @@ class PenjualanTelurAPIController extends Controller
         return response()->json($penjualanTelur, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $penjualanTelur = PenjualanTelur::with(['gudang'])
@@ -65,11 +57,6 @@ class PenjualanTelurAPIController extends Controller
         return response()->json($penjualanTelur);
     }
 
-    /**
-    
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $userId = Auth::id();
@@ -79,7 +66,6 @@ class PenjualanTelurAPIController extends Controller
                 'kondisi_telur' => 'required|string|max:255',
                 'harga_perkilo' => 'required|integer',
                 'telur_terjual' => 'required|integer|min:1',
-                'harga_total' => 'required|integer',
                 'id_gudang' => 'required|exists:gudang,id',
                 'tanggal_penjualan' => 'data'
             ]);

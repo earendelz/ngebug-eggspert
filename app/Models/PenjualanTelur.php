@@ -24,4 +24,14 @@ class PenjualanTelur extends Model
     {
         return $this->belongsTo(Gudang::class, 'id_gudang');
     }
+
+    public static function boot()
+{
+    parent::boot();
+
+    static::saving(function ($penjualanTelur) {
+        $penjualanTelur->harga_total = $penjualanTelur->harga_perkilo * $penjualanTelur->telur_terjual;
+    });
+}
+
 }
