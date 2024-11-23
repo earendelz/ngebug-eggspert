@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('laporan_gudang', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_gudang'); // Foreign key to Gudang
+            $table->unsignedBigInteger('id_peternak'); // Foreign key to Gudang
             $table->integer('jumlah_telur'); // The number of eggs reduced
             $table->string('keterangan'); // Reason for reduction (e.g., broken, rotten, lost)
             $table->date('tanggal_laporan_gudang'); // Date of the report
@@ -22,6 +23,10 @@ return new class extends Migration
             $table->foreign('id_gudang')
                 ->references('id')
                 ->on('gudang')
+                ->onDelete('cascade'); // Deleting Gudang will delete the related reports
+            $table->foreign('id_peternak')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade'); // Deleting Gudang will delete the related reports
 
             $table->timestamps();
