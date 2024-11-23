@@ -25,23 +25,59 @@
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto" style="margin-top: 20px;">
-        <li class="nav-item" style="margin-bottom: 30px;">
+        <li class="nav-item">
             <a href="{{route('beranda')}}" class="nav-link" >
-                <img src="../assets/sidebar/hov_beranda.svg" class="nav-img" alt="Beranda">
+                <img src="../assets/sidebar/beranda.svg" class="nav-img" alt="Beranda">
                 Beranda
             </a>
         </li>
-        <li style="margin-bottom: 30px;">
+        <li>
             <a href="{{route('kandang-ayam-dashboard.index')}}" class="nav-link">
                 <img src="../assets/sidebar/kandang_ayam.svg" class="nav-img" alt="Kandang Ayam">
                 Kandang Ayam
             </a>
         </li>
-        <li style="margin-bottom: 30px;">
+        <li>
             <a href="{{route('gudang-telur-dashboard.index')}}" class="nav-link active" aria-current="page">
                 <img src="../assets/sidebar/hov_gudang_telur.svg" class="nav-img" alt="Gudang Telur">
                 Gudang Telur
             </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/panen_telur.svg" class="nav-img" alt="Panen Telur">
+            Panen Telur
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/penjualan_telur.svg" class="nav-img" alt="Penjualan Telur">
+            Penjualan Telur
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/penjualan_ayam.svg" class="nav-img" alt="Penjualan Ayam">
+            Penjualan Ayam
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
+            Vaksinasi Ayam
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
+            Laporan Ayam
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
+            Laporan Gudang
+          </a>
         </li>
     </ul>
     <hr>
@@ -164,35 +200,46 @@
             console.log(userId);
             console.log('Response:', response); // Log the entire response to verify its structure
             // Clear the table body before inserting new rows
-            $('#myTable tbody').empty();
-            // Check if the response is an array (which it should be based on your response)
+           // Check if the response is an array (which it should be based on your response)
             if (Array.isArray(response)) {
-              let autoIncrement = 1;
-                response.forEach(function(gudang) {
-                    // Dynamically generate the table row for each product
-                    var row = `
-                        <tr>
-                            <td>${autoIncrement}</td>
-                            <td>${gudang.nama}</td>
-                            <td>${gudang.tanggal_pembuatan}</td>
-                            <td>${gudang.jumlah_telur}</td>
-                            <td>${gudang.ras_ayam.nama_ras_ayam}</td>
-                            <td>
-                              <a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_gudang" class="editGudangBtn" data-id="${gudang.id}">
-                              <img src="../assets/edit_button.svg">
-                              </a>
-                              <a href="#" class="deleteGudangBtn" data-id="${gudang.id}">
-                              <img src="../assets/delete_button.svg">
-                              </a>
-                            </td>
-                        </tr>
-                    `;
-                    $('#myTable tbody').append(row); // Append the row to the table body
-                    autoIncrement++;
-                  });
+              var filteredData = response.map((gudang, index) => {
+                    return [
+                        index + 1, // Auto-increment ID
+                        gudang.nama, // nama_kandang
+                        gudang.tanggal_pembuatan, // kapasitas
+                        gudang.jumlah_telur, // jenis_kandang
+                        gudang.ras_ayam.nama_ras_ayam, // nama_ras_ayam
+                        `<a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_gudang" class="editGudangBtn" data-id="${gudang.id}">
+                            <img src="../assets/edit_button.svg" alt="Edit">
+                        </a>
+                        <a href="#" class="deleteGudangBtn" data-id="${gudang.id}">
+                            <img src="../assets/delete_button.svg" alt="Delete">
+                        </a>`
+                    ];
+                });
+
+                // Define the table column headings
+                var headings = [
+                    "NO", // Auto-increment
+                    "Nama Gudang",
+                    "Tanggal Pembuatan",
+                    "Jumlah Telur",
+                    "Nama Ras Ayam",
+                    "Opsi"
+                ];
+                // Initialize the DataTable
+                window.datatable = new window.simpleDatatables.DataTable("#myTable", {
+                    searchable: false,
+                    data: {
+                        headings: headings, // Table column headings
+                        data: filteredData // Table data
+                    }
+                }
+              );
+              document.getElementById("print").addEventListener("click", () => datatable.print());
             } else {
                 // If response is not an array, show an error message
-                alert('Unexpected response format. Expected an array of gudang.');
+                alert('Unexpected response format. Expected an array of products.');
             }
         },
         error: function(xhr, status, error) {
@@ -387,7 +434,7 @@ $(document).on('click', '.deleteGudangBtn', function(event) {
 
 <div class="container-fluid d-flex justify-content-end">
   <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_gudang">
-    Tambah Kandang
+    Tambah Gudang
   </button>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
