@@ -14,6 +14,7 @@ use App\Http\Controllers\LaporanAyamController;
 use App\Http\Controllers\LaporanGudangController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\FileImportExportController;
 
 
 use App\Models\User;
@@ -39,4 +40,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/', [BerandaController::class, 'index']);
 });
 
+Route::get('/file-import-export', [FileImportExportController::class, 'index']);
+    Route::post('/file-import', [FileImportExportController::class, 'import'])->name('file.import');
+    Route::get('/file-export', [FileImportExportController::class, 'export'])->name('file.export');
 
