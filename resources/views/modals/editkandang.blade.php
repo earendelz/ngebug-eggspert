@@ -80,14 +80,14 @@
             </div>
             <div class="mb-3">
               <label for="ras_ayam" class="form-label">Ras Ayam</label>
-              <select name="ras_ayam" class="form-control" id="ras_ayam" placeholder="Ras Ayam">
+              <select name="ras_ayam" class="form-select" id="eras_ayam" placeholder="Ras Ayam">
                 <option value="1">Jago</option>
                 <option value="2"></option>
               </select>   
             </div>
             <div class="mb-3">
               <label for="pakan" class="form-label">Pakan</label>
-              <select name="pakan" class="form-control" id="pakan" placeholder="Jenis Pakan">
+              <select name="pakan" class="form-select" id="epakan" placeholder="Jenis Pakan">
                 <option value="1">Rumput</option>
                 <option value="2"></option>
               </select>   

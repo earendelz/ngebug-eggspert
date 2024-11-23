@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PenjualanTelurController extends Controller
 {
@@ -11,7 +12,8 @@ class PenjualanTelurController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        return view('penjualan_telur', compact('user'));
     }
 
     /**

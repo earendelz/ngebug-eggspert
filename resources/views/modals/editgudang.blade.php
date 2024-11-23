@@ -71,8 +71,8 @@
               <input type="text" class="form-control" id="etanggalPembuatanGudang" placeholder="Pilih tanggal">
             </div>
             <div class="mb-3">
-              <label for="ras_ayam" class="form-label">Ras Ayam</label>
-              <select name="ras_ayam" class="form-control" id="ras_ayam" placeholder="Ras Ayam">
+              <label for="eras_ayam" class="form-label">Ras Ayam</label>
+              <select name="ras_ayam" class="form-select" id="eras_ayam" placeholder="Ras Ayam">
                 <option value="1">Jago</option>
               </select>   
             </div>

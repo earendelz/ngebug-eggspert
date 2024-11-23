@@ -1,5 +1,5 @@
-@include ('modals.tambahkandang')
-@include ('modals.editkandang')
+@include ('modals.tambahpanentelur')
+@include ('modals.editpanentelur')
 
 
 <!DOCTYPE html>
@@ -32,8 +32,8 @@
             </a>
         </li>
         <li>
-            <a href="{{route('kandang-ayam-dashboard.index')}}" class="nav-link active" aria-current="page">
-                <img src="../assets/sidebar/hov_kandang_ayam.svg" class="nav-img" alt="Kandang Ayam">
+            <a href="{{route('kandang-ayam-dashboard.index')}}" class="nav-link">
+                <img src="../assets/sidebar/kandang_ayam.svg" class="nav-img" alt="Kandang Ayam">
                 Kandang Ayam
             </a>
         </li>
@@ -44,13 +44,13 @@
             </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
-            <img src="../assets/sidebar/panen_telur.svg" class="nav-img" alt="Panen Telur">
+          <a href="{{route('panen-telur-dashboard.index')}}" class="nav-link active" aria-current="page">
+            <img src="../assets/sidebar/hov_panen_telur.svg" class="nav-img" alt="Panen Telur">
             Panen Telur
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('penjualan-telur-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/penjualan_telur.svg" class="nav-img" alt="Penjualan Telur">
             Penjualan Telur
           </a>
@@ -88,7 +88,7 @@
   <header class="header">
     <nav class="navbar navbar-expand-lg bg-light rounded shadow">
       <div class="container-fluid">
-        <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>KANDANG AYAM</b></span> </a>
+        <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>GUDANG TELUR</b></span> </a>
         <a href="#" class="ms-auto" style="padding-right:0.75rem">
           <button class="btn" id="notif">
             <img src="../assets/navbar/notifications_png.svg">
@@ -168,18 +168,15 @@
 
   <div class="main-content">
     <div class="card bg-light shadow">
-      <div class="card-body d-flex flex-wrap">
+      <div class="card-body">
         <table id="myTable" class="display rounded bg-light">
           <thead>
             <tr>
               <th>ID</th>
-              <th>NAMA KANDANG</th>
-              <th>KAPASITAS</th>
-              <th>JENIS KANDANG</th>
+              <th>NAMA GUDANG</th>
+              <th>TANGGAL PEMBUATAN</th>
+              <th>JUMLAH TELUR</th>
               <th>RAS AYAM</th>
-              <th>PAKAN</th>
-              <th>STATUS PAKAN</th>
-              <th>STATUS KANDANG</th>
               <th>OPSI</th>
             </tr>
           </thead>
@@ -189,87 +186,38 @@
         </table>
       </div>
     </div>
-    <button id="print">Print </button>
   </div>
 
 
-<!-- display data ras ayam -->
+<!-- display data kandang -->
 <script>
   // Function to fetch and populate Pakan data into the select dropdown
-  function loadRasAyamData(selectedId) {
+  function loadKandangData(selectedId) {
     $.ajax({
-      url: 'http://127.0.0.1:8000/api/rasayamku',  // The API endpoint to fetch pakan data
+      url: 'http://127.0.0.1:8000/api/kandangku',  // The API endpoint to fetch pakan data
       method: 'GET',      // Request method
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
       },
       success: function(response) {
+        console.log(response);
         if (Array.isArray(response)) {
           // Clear any existing options
-          $('#eras_ayam').empty();
-          $('#ras_ayam').empty();
-          // Add a default option (optional)
-          $('#eras_ayam').append('<option value="">Pilih Ras Ayam</option>');
-          $('#ras_ayam').append('<option value="">Pilih Ras Ayam</option>');
-          const responseArray = Object.values(response);
-          $(document).ready(function() {
-          responseArray.forEach(function(ras_ayam) {
-            
-            // Append each pakan to the select element
-            $('#eras_ayam').append(`
-              <option value="${ras_ayam.id}" ${ras_ayam.id == selectedId ? 'selected' : ''}>
-                ${ras_ayam.nama_ras_ayam}
-              </option>
-            `);
-            $('#ras_ayam').append(`
-              <option value="${ras_ayam.id}">
-                ${ras_ayam.nama_ras_ayam}
-              </option>
-            `);
-          })});
-        } else {
-          console.error('Expected response to be an array');
-        }
-        
-      },
-      error: function(error) {
-        console.error('Error fetching pakan data:', error);
-      }
-    });
-  }
+          $('#kandang').empty();
+          $('#ekandang').empty();
 
-  // Call the function to load Pakan data when the page loads
-  loadRasAyamData();
-</script>
-
-<!-- Display data pakan ayam -->
-<script>
-  // Function to fetch and populate Pakan data into the select dropdown
-  function loadPakanData(selectedId) {
-    $.ajax({
-      url: 'http://127.0.0.1:8000/api/pakanku',  // The API endpoint to fetch pakan data
-      method: 'GET',      // Request method
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
-      },
-      success: function(response) {
-        if (Array.isArray(response)) {
-          // Clear any existing options
-          $('#epakan').empty();
-          $('#pakan').empty();
-
-          // Add a default option (optional)
-          $('#epakan').append('<option value="">Pilih Jenis Pakan</option>');
-          $('#pakan').append('<option value="">Pilih Jenis Pakan</option>');
+          $('#ekandang').append('<option value="">Pilih Kandang</option>');
+          $('#kandang').append('<option value="">Pilih Kandang</option>');
+          
           const responseArray = Object.values(response);
           // Loop through the response and append each item to the select
-          responseArray.forEach(function(pakan) {
-            // Append each pakan to the select element
-            $('#epakan').append(`
-               <option value="${pakan.id}" ${pakan.id === selectedId ? 'selected' : ''}>${pakan.jenis_pakan}</option>
+          responseArray.forEach(function(kandang) {
+            // Append each kandang to the select element
+            $('#ekandang').append(`
+               <option value="${kandang.id}" ${kandang.id === selectedId ? 'selected' : ''}>${kandang.nama}</option>
             `);
-            $('#pakan').append(`
-               <option value="${pakan.id}">${pakan.jenis_pakan}</option>
+            $('#kandang').append(`
+              <option value="${kandang.id}">${kandang.nama}</option>
             `);
           });
         } else {
@@ -283,7 +231,52 @@
   }
 
   // Call the function to load Pakan data when the page loads
-  loadPakanData();
+  loadKandangData();
+</script>
+
+<!-- display data gudang -->
+<script>
+  // Function to fetch and populate Pakan data into the select dropdown
+  function loadGudangData(selectedId) {
+    $.ajax({
+      url: 'http://127.0.0.1:8000/api/gudangku',  // The API endpoint to fetch pakan data
+      method: 'GET',      // Request method
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+      },
+      success: function(response) {
+        console.log(response);
+        if (Array.isArray(response)) {
+          // Clear any existing options
+          $('#gudang').empty();
+          $('#egudang').empty();
+
+          $('#egudang').append('<option value="">Pilih Gudang</option>');
+          $('#gudang').append('<option value="">Pilih Gudang</option>');
+          
+          const responseArray = Object.values(response)
+          // Loop through the response and append each item to the select
+          responseArray.forEach(function(gudang) {
+            // Append each pakan to the select element
+            $('#egudang').append(`
+               <option value="${gudang.id}" ${gudang.id === selectedId ? 'selected' : ''}>${gudang.nama}</option>
+            `);
+            $('#gudang').append(`
+              <option value="${gudang.id}">${gudang.nama}</option>
+            `);
+          });
+        } else {
+          console.error('Expected response to be an array');
+        }
+      },
+      error: function(error) {
+        console.error('Error fetching pakan data:', error);
+      }
+    });
+  }
+
+  // Call the function to load Pakan data when the page loads
+  loadGudangData();
 </script>
 
 
@@ -291,7 +284,7 @@
   <script>
     var userId = @json(Auth::id()); // Get the user ID from the server-side variable
     $.ajax({
-        url: "{{ route('kandangku.index') }}", // Your protected API route with the userId
+        url: "{{ route('panentelurku.index') }}", // Your protected API route with the userId
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
@@ -300,21 +293,21 @@
             console.log(userId);
             console.log('Response:', response); // Log the entire response to verify its structure
             // Clear the table body before inserting new rows
-            // Check if the response is an array (which it should be based on your response)
+           // Check if the response is an array (which it should be based on your response)
             if (Array.isArray(response)) {
-              var filteredData = response.map((product, index) => {
+              var filteredData = response.map((panentelurku, index) => {
                     return [
                         index + 1, // Auto-increment ID
-                        product.nama, // nama_kandang
-                        product.kapasitas, // kapasitas
-                        product.jenis_kandang, // jenis_kandang
-                        product.ras_ayam.nama_ras_ayam, // nama_ras_ayam
-                        product.pakan.jenis_pakan, // jenis_pakan
-                        product.status_pakan, // status_pakan
-                        `<a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_kandang" class="editKandangBtn" data-id="${product.id}">
+                        panentelurku.kandang.nama, 
+                        panentelurku.gudang.nama, 
+                        panentelurku.jumlah_telur,
+                        panentelurku.kondisi_telur, 
+                        panentelurku.tanggal_panen, 
+                        panentelurku.memo, 
+                        `<a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_panentelur" class="editPanentelurBtn" data-id="${panentelurku.id}">
                             <img src="../assets/edit_button.svg" alt="Edit">
                         </a>
-                        <a href="#" class="deleteKandangBtn" data-id="${product.id}">
+                        <a href="#" class="deletePanentelurBtn" data-id="${panentelurku.id}">
                             <img src="../assets/delete_button.svg" alt="Delete">
                         </a>`
                     ];
@@ -324,11 +317,11 @@
                 var headings = [
                     "NO", // Auto-increment
                     "Nama Kandang",
-                    "Kapasitas",
-                    "Jenis Kandang",
-                    "Nama Ras Ayam",
-                    "Jenis Pakan",
-                    "Status Pakan",
+                    "Nama Gudang",
+                    "Jumlah Telur",
+                    "Kondisi Telur",
+                    "Tanggal Panen",
+                    "Keterangan",
                     "Opsi"
                 ];
                 // Initialize the DataTable
@@ -354,39 +347,30 @@
   </script>
   <script>
         // Step 2: Fetch and populate modal form when "Edit" is clicked
-    $(document).on('click', '.editKandangBtn', function() {
-      var kandangId = $(this).data('id'); // Get the ID of the kandang to edit
+    $(document).on('click', '.editPanentelurBtn', function() {
+      var panentelurId = $(this).data('id'); // Get the ID of the kandang to edit
 
       // Make AJAX request to fetch kandang details
       $.ajax({
-        url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`, // Adjust URL if needed
+        url: `http://127.0.0.1:8000/api/panentelurku/${panentelurId}`, // Adjust URL if needed
         type: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
         },
         success: function(response) {
-          kandangData = response[0];
+          response = response[0];
           console.log(response);
           // Step 3: Populate modal with the fetched data
-          $('#idkandang').val(kandangId);
-          $('#enamaKandang').val(kandangData.nama);
-          $('#ekapasitasKandang').val(kandangData.kapasitas);
-          $('#ejumlahAyam').val(kandangData.jumlah_ayam);
-          $('#ejenisKandang').val(kandangData.jenis_kandang);
-          $('#etanggalPembuatanKandang').val(kandangData.updated_at);
-
-          // Set radio button values
-          $("input[name='estatusPakan'][value='" + kandangData.status_pakan + "']").prop('checked', true);
-          $("input[name='estatusKandang'][value='" + kandangData.status_kandang + "']").prop('checked', true);
-
-          // Populate Ras Ayam dropdown dynamically and select the correct item
-          loadRasAyamData(kandangData.ras_ayam.id);
-
-          // Populate Pakan dropdown dynamically and select the correct item
-          loadPakanData(kandangData.pakan.id);
+          loadKandangData(response.kandang.id);
+          loadGudangData(response.gudang.id);
+          $('#ejumlahTelur').val(response.jumlah_telur);
+          $('#ekondisiTelur').val(response.kondisi_telur);
+          $('#etanggalPanen').val(response.tanggal_panen);
+          $('#ememo').val(response.memo);
+          $('#etanggalPembuatanGudang').val(response.tanggal_pembuatan);
+          $('#ras_ayam').val(response.ras_ayam.id); // Populate Ras Ayam dropdown
 
           // Open the modal
-          $('#form_edit_kandang').modal('show');
         },
         error: function(xhr, status, error) {
           console.error('Error fetching kandang data:', error);
@@ -396,40 +380,36 @@
     });
 
     // Step 4: Handle form submission for editing kandang
-    $('#editKandangForm').submit(function(e) {
+    $('#edit_gudang_form').submit(function(e) {
       e.preventDefault(); // Prevent default form submission
-      var kandangId = $('#idkandang').val(); 
+      var panentelurId = $('#idGudang').val(); 
 
       var formData = {
-        nama: $('#enamaKandang').val(),
-        jenis_kandang: $('#ejenisKandang').val(),
-        kapasitas: parseInt($('#ekapasitasKandang').val()),
-        jumlah_ayam: parseInt($('#ejumlahAyam').val()),
+        nama: $('#enamaGudang').val(),
+        jumlah_telur : $('#ejumlahTelur').val(),
+        tanggal_pembuatan : parseInt($('#etanggalPembuatanGudang').val()),
         id_ras_ayam: parseInt($('#ras_ayam').val()),
-        id_pakan: parseInt($('#pakan').val()),
-        status_pakan: $('input[name="estatusPakan"]:checked').val(),
-        status_kandang: $('input[name="estatusKandang"]:checked').val()
       };
 
       var jsonData = JSON.stringify(formData);
       console.log(jsonData);
       // Step 5: Send updated data to the server
       $.ajax({
-        url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`, // Send PUT request to update kandang
+        url: `http://127.0.0.1:8000/api/panentelurku/${panentelurId}`, // Send PUT request to update kandang
         type: 'PUT',
         data: formData,
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
         },
         success: function(response) {
-          console.log('Kandang updated successfully', response);
-          alert('Kandang updated successfully!');
-          $('#form_edit_kandang').modal('hide'); // Close modal
-          location.reload(); // Refresh the page
+          console.log('Panen Telur updated successfully', response);
+          alert('Panen Telur updated successfully!');
+          $('#form_edit_panentelur').modal('hide'); // Close modal
+          // location.reload(); // Refresh the page
         },
         error: function(xhr, status, error) {
           console.error('Error updating kandang:', error);
-          alert('Failed to update kandang.');
+          alert('Failed to update data panen telur.');
         }
       });
     });
@@ -437,29 +417,29 @@
 
 <!-- ngehapus -->
 <script>
-$(document).on('click', '.deleteKandangBtn', function(event) {
+$(document).on('click', '.deletePanentelurBtn', function(event) {
     event.preventDefault();  // Prevent the default anchor behavior
 
     // Get the ID of the kandang to delete
-    var kandangId = $(this).data('id');
+    var panentelurId = $(this).data('id');
 
     // Confirm with the user before deleting
-    if (confirm('Are you sure you want to delete this kandang?')) {
+    if (confirm('Anda yakin ingin menghapus data panen telur ini?')) {
         // Send AJAX request to delete the kandang
         $.ajax({
-            url: `http://127.0.0.1:8000/api/kandangku/${kandangId}`,  // Adjust the URL if necessary
+            url: `http://127.0.0.1:8000/api/panentelurku/${panentelurId}`,  // Adjust the URL if necessary
             type: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('bearer_token')  // Include Bearer token if necessary
             },
             success: function(response) {
                 // Handle the response after successful deletion
-                console.log('Kandang deleted:', response);
+                console.log('gudang deleted:', response);
 
                 // Optionally, you can remove the row from the table without reloading
-                $(`a[data-id="${kandangId}"]`).closest('tr').remove();
+                $(`a[data-id="${panentelurId}"]`).closest('tr').remove();
                 
-                alert('Kandang has been deleted successfully!');
+                alert('Gudang telah berhasil dihapus!');
             },
             error: function(xhr, status, error) {
                 console.error('Error deleting kandang:', error);
@@ -470,9 +450,10 @@ $(document).on('click', '.deleteKandangBtn', function(event) {
 });
 </script>
 
+
 <div class="container-fluid d-flex justify-content-end">
-  <button type="button" id="buttonTambah" class="btn btn-md mb-3" data-bs-toggle="modal" data-bs-target="#form_tambah_kandang">
-    Tambah Kandang
+  <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_panentelur">
+    Tambah Panen Telur
   </button>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

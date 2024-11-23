@@ -44,7 +44,7 @@
             </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('panen-telur-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/panen_telur.svg" class="nav-img" alt="Panen Telur">
             Panen Telur
           </a>
@@ -187,6 +187,60 @@
       </div>
     </div>
   </div>
+
+  
+<!-- display data ras ayam -->
+<script>
+  // Function to fetch and populate Pakan data into the select dropdown
+  function loadRasAyamData(selectedId) {
+    $.ajax({
+      url: 'http://127.0.0.1:8000/api/rasayamku',  // The API endpoint to fetch pakan data
+      method: 'GET',      // Request method
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+      },
+      success: function(response) {
+        console.log(response);
+        if (Array.isArray(response)) {
+          // Clear any existing options
+          $('#eras_ayam').empty();
+          $('#ras_ayam').empty();
+
+          // Add a default option (optional)
+          $('#ras_ayam').append('<option value="">Pilih Ras Ayam</option>');
+          $('#eras_ayam').append('<option value="">Pilih Ras Ayam</option>');
+          const responseArray = Object.values(response);
+          $(document).ready(function() {
+          // Loop through the response and append each item to the select
+          response.forEach(function(ras_ayam) {
+            // Append each pakan to the select element
+            $('#eras_ayam').append(`
+              <option value="${ras_ayam.id}" ${ras_ayam.id == selectedId ? 'selected' : ''}>
+                ${ras_ayam.nama_ras_ayam}
+              </option>
+            `);
+            $('#ras_ayam').append(`
+              <option value="${ras_ayam.id}">
+                ${ras_ayam.nama_ras_ayam}
+              </option>
+            `);
+          })});
+        } else {
+          console.error('Expected response to be an array');
+        }
+      },
+      error: function(error) {
+        console.error('Error fetching pakan data:', error);
+      }
+    });
+  }
+
+  // Call the function to load Pakan data when the page loads
+  loadRasAyamData();
+</script>
+
+
+
   <!-- import data kandangnya -->
   <script>
     var userId = @json(Auth::id()); // Get the user ID from the server-side variable
@@ -247,6 +301,8 @@
             alert("Failed to fetch data.");
         }
     });
+  </script>
+  <script>
         // Step 2: Fetch and populate modal form when "Edit" is clicked
     $(document).on('click', '.editGudangBtn', function() {
       var gudangId = $(this).data('id'); // Get the ID of the kandang to edit
@@ -260,13 +316,12 @@
         },
         success: function(response) {
           response = response[0];
-          console.log(response);
           // Step 3: Populate modal with the fetched data
           $('#idkandang').val(gudangId);
           $('#enamaGudang').val(response.nama);
           $('#ejumlahTelur').val(response.jumlah_telur);
           $('#etanggalPembuatanGudang').val(response.tanggal_pembuatan);
-          $('#ras_ayam').val(response.ras_ayam.id); // Populate Ras Ayam dropdown
+          loadRasAyamData(response.ras_ayam.id);
 
           // Open the modal
         },
@@ -325,7 +380,7 @@ $(document).on('click', '.deleteGudangBtn', function(event) {
     if (confirm('Anda yakin ingin menghapus gudang ini?')) {
         // Send AJAX request to delete the kandang
         $.ajax({
-            url: `http://127.0.0.1:8000/api/kandangku/${gudangId}`,  // Adjust the URL if necessary
+            url: `http://127.0.0.1:8000/api/gudangku/${gudangId}`,  // Adjust the URL if necessary
             type: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('bearer_token')  // Include Bearer token if necessary
@@ -347,90 +402,6 @@ $(document).on('click', '.deleteGudangBtn', function(event) {
     }
 });
 </script>
-
-<!-- display data ras ayam create -->
-<script>
-            $(document).ready(function() {
-            // Function to fetch and populate Pakan data into the select dropdown
-            function loadRasAyamData() {
-              $.ajax({
-                url: 'http://127.0.0.1:8000/api/rasayamku',  // The API endpoint to fetch pakan data
-                method: 'GET',      // Request method
-                headers: {
-                  'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
-                },
-                success: function(response) {
-                  console.log(response);
-                  if (Array.isArray(response)) {
-                    // Clear any existing options
-                    $('#ras_ayam').empty();
-
-                    // Add a default option (optional)
-                    $('#ras_ayam').append('<option value="">Pilih Ras Ayam</option>');
-
-                    // Loop through the response and append each item to the select
-                    response.forEach(function(ras_ayam) {
-                      // Append each pakan to the select element
-                      $('#ras_ayam').append(`
-                        <option value="${ras_ayam.id}">${ras_ayam.nama_ras_ayam}</option>
-                      `);
-                    });
-                  } else {
-                    console.error('Expected response to be an array');
-                  }
-                },
-                error: function(error) {
-                  console.error('Error fetching pakan data:', error);
-                }
-              });
-            }
-
-            // Call the function to load Pakan data when the page loads
-            loadRasAyamData();
-          });
-</script>
-
-<!-- Display data pakan ayam create -->
-<script>
-            $(document).ready(function() {
-            // Function to fetch and populate Pakan data into the select dropdown
-            function loadPakanData() {
-              $.ajax({
-                url: 'http://127.0.0.1:8000/api/pakanku',  // The API endpoint to fetch pakan data
-                method: 'GET',      // Request method
-                headers: {
-                  'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
-                },
-                success: function(response) {
-                  console.log(response);
-                  if (Array.isArray(response)) {
-                    // Clear any existing options
-                    $('#pakan').empty();
-
-                    // Add a default option (optional)
-                    $('#pakan').append('<option value="">Pilih Jenis Pakan</option>');
-
-                    // Loop through the response and append each item to the select
-                    response.forEach(function(pakan) {
-                      // Append each pakan to the select element
-                      $('#pakan').append(`
-                        <option value="${pakan.id}">${pakan.jenis_pakan}</option>
-                      `);
-                    });
-                  } else {
-                    console.error('Expected response to be an array');
-                  }
-                },
-                error: function(error) {
-                  console.error('Error fetching pakan data:', error);
-                }
-              });
-            }
-
-            // Call the function to load Pakan data when the page loads
-            loadPakanData();
-          });
-          </script>
 
 <div class="container-fluid d-flex justify-content-end">
   <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_gudang">

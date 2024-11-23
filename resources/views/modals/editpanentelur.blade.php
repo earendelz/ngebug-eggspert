@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gudang Telur</title>
+  <title>Panen Telur</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Flatpickr CSS -->
@@ -50,32 +50,42 @@
 </head>
 <body>
 
-  <div class="modal fade" id="form_tambah_gudang" tabindex="-1" aria-labelledby="formGudangLabel" aria-hidden="true">
+  <div class="modal fade" id="form_edit_panentelur" tabindex="-1" aria-labelledby="formPanentelurLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="formGudangLabel" style="color: #AE7B3D;">Tambah Gudang Telur</h4>
+          <h4 class="modal-title" id="formPanentelurLabel" style="color: #AE7B3D;">Edit Panen Telur</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="tambahGudangForm">
+          <form id="editPanentelurForm">
             <div class="mb-3">
-              <label for="namaGudang" class="form-label">Nama Gudang Telur</label>
-              <input type="text" class="form-control" id="namaGudang" placeholder="Masukkan nama Gudang">
-            </div>
-            <div class="mb-3">
-              <label for="jumlahTelur" class="form-label">Jumlah Telur</label>
-              <input type="text" class="form-control" id="jumlahTelur" placeholder="Masukkan jumlah telur">
-            </div>
-            <div class="mb-3">
-              <label for="tanggalPembuatanGudang" class="form-label">Tanggal Pembuatan Gudang</label>
-              <input type="text" class="form-control" id="tanggalPembuatanGudang" placeholder="Pilih tanggal">
-            </div>
-            <div class="mb-3">
-              <label for="ras_ayam" class="form-label">Ras Ayam</label>
-              <select name="ras_ayam" class="form-select" id="ras_ayam" placeholder="Ras Ayam">
+              <label for="ekandang" class="form-label">Kandang</label>
+              <select name="kandang" class="form-control" id="ekandang" placeholder="Pilih Kandang">
                 <option value="1"></option>
               </select>   
+            </div>
+            <div class="mb-3">
+              <label for="egudang" class="form-label">Gudang</label>
+              <select name="gudang" class="form-control" id="egudang" placeholder="Pilih Gudang">
+                <option value="1"></option>
+              </select>   
+            </div>
+            <div class="mb-3">
+              <label for="ejumlahTelur" class="form-label">Jumlah Telur</label>
+              <input type="text" class="form-control" id="ejumlahTelur" placeholder="Masukkan jumlah telur">
+            </div>
+            <div class="mb-3">
+              <label for="ekondisiTelur" class="form-label">Kondisi Telur</label>
+              <input type="text" class="form-control" id="ekondisiTelur" placeholder="Masukkan Kondisi Telur">
+            </div>
+            <div class="mb-3">
+              <label for="etanggalPanen" class="form-label">Tanggal Panen Telur</label>
+              <input type="text" class="form-control" id="etanggalPanen" placeholder="Pilih tanggal">
+            </div>
+            <div class="mb-3">
+              <label for="ememo" class="form-label">Keterangan</label>
+              <textarea class="form-control" id="ememo" name="ememo" placeholder="Tambahkan Keterangan" oninput="adjustTextareaHeight(this)"></textarea>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Batal</button>
@@ -141,7 +151,7 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     
-    flatpickr("#tanggalPembuatanGudang", {
+    flatpickr("#tanggalPanen", {
       dateFormat: "Y-m-d", // This ensures the date is formatted as YYYY-MM-DD
       allowInput: true
     });
