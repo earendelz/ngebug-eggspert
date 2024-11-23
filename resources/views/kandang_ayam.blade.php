@@ -25,23 +25,59 @@
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto" style="margin-top: 20px;">
-        <li class="nav-item" style="margin-bottom: 30px;">
+        <li class="nav-item">
             <a href="{{route('beranda')}}" class="nav-link" >
                 <img src="../assets/sidebar/beranda.svg" class="nav-img" alt="Beranda">
                 Beranda
             </a>
         </li>
-        <li style="margin-bottom: 30px;">
+        <li>
             <a href="{{route('kandang-ayam-dashboard.index')}}" class="nav-link active" aria-current="page">
                 <img src="../assets/sidebar/hov_kandang_ayam.svg" class="nav-img" alt="Kandang Ayam">
                 Kandang Ayam
             </a>
         </li>
-        <li style="margin-bottom: 30px;">
+        <li>
             <a href="{{route('gudang-telur-dashboard.index')}}" class="nav-link">
                 <img src="../assets/sidebar/gudang_telur.svg" class="nav-img" alt="Gudang Telur">
                 Gudang Telur
             </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/panen_telur.svg" class="nav-img" alt="Panen Telur">
+            Panen Telur
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/penjualan_telur.svg" class="nav-img" alt="Penjualan Telur">
+            Penjualan Telur
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/penjualan_ayam.svg" class="nav-img" alt="Penjualan Ayam">
+            Penjualan Ayam
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
+            Vaksinasi Ayam
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
+            Laporan Ayam
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
+            Laporan Gudang
+          </a>
         </li>
     </ul>
     <hr>
@@ -153,6 +189,7 @@
         </table>
       </div>
     </div>
+    <button id="print">Print </button>
   </div>
   <!-- import data kandangnya -->
   <script>
@@ -167,36 +204,47 @@
             console.log(userId);
             console.log('Response:', response); // Log the entire response to verify its structure
             // Clear the table body before inserting new rows
-            $('#myTable tbody').empty();
             // Check if the response is an array (which it should be based on your response)
             if (Array.isArray(response)) {
-              let autoIncrement = 1;
-                response.forEach(function(product) {
-                    // Dynamically generate the table row for each product
-                    var row = `
-                        <tr>
-                            <td>${autoIncrement}</td>
-                            <td>${product.nama}</td>
-                            <td>${product.jumlah_ayam}/${product.kapasitas}</td>
-                            <td>${product.jenis_kandang}</td>
-                            <td>${product.ras_ayam.nama_ras_ayam}</td>
-                            <td>${product.pakan.jenis_pakan}</td>
-                            <td>${product.status_pakan}</td>
-                            <td>${product.status_kandang}</td>
-                            <td>
-                              <a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_kandang" class="editKandangBtn" data-id="${product.id}">
-                              <img src="../assets/edit_button.svg">
-                              </a>
-                              <a href="#" class="deleteKandangBtn" data-id="${product.id}">
-                              <img src="../assets/delete_button.svg">
-                              </a>
-                            </td>
-                        </tr>
-                    `;
-                    $('#myTable tbody').append(row); // Append the row to the table body
-                    autoIncrement++;
-                  
-                  });
+              var filteredData = response.map((product, index) => {
+                    return [
+                        index + 1, // Auto-increment ID
+                        product.nama, // nama_kandang
+                        product.kapasitas, // kapasitas
+                        product.jenis_kandang, // jenis_kandang
+                        product.ras_ayam.nama_ras_ayam, // nama_ras_ayam
+                        product.pakan.jenis_pakan, // jenis_pakan
+                        product.status_pakan, // status_pakan
+                        `<a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_kandang" class="editKandangBtn" data-id="${product.id}">
+                            <img src="../assets/edit_button.svg" alt="Edit">
+                        </a>
+                        <a href="#" class="deleteKandangBtn" data-id="${product.id}">
+                            <img src="../assets/delete_button.svg" alt="Delete">
+                        </a>`
+                    ];
+                });
+
+                // Define the table column headings
+                var headings = [
+                    "NO", // Auto-increment
+                    "Nama Kandang",
+                    "Kapasitas",
+                    "Jenis Kandang",
+                    "Nama Ras Ayam",
+                    "Jenis Pakan",
+                    "Status Pakan",
+                    "Opsi"
+                ];
+                // Initialize the DataTable
+                window.datatable = new window.simpleDatatables.DataTable("#myTable", {
+                    searchable: false,
+                    data: {
+                        headings: headings, // Table column headings
+                        data: filteredData // Table data
+                    }
+                }
+              );
+              document.getElementById("print").addEventListener("click", () => datatable.print());
             } else {
                 // If response is not an array, show an error message
                 alert('Unexpected response format. Expected an array of products.');

@@ -18,23 +18,59 @@
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto" style="margin-top: 20px;">
-        <li class="nav-item" style="margin-bottom: 30px;">
+        <li class="nav-item">
             <a href="#" class="nav-link active" aria-current="page">
                 <img src="../assets/sidebar/hov_beranda.svg" class="nav-img" alt="Beranda">
                 Beranda
             </a>
         </li>
-        <li style="margin-bottom: 30px;">
+        <li>
             <a href="{{route('kandang-ayam-dashboard.index')}}" class="nav-link">
                 <img src="../assets/sidebar/kandang_ayam.svg" class="nav-img" alt="Kandang Ayam">
                 Kandang Ayam
             </a>
         </li>
-        <li style="margin-bottom: 30px;">
+        <li>
             <a href="{{route('gudang-telur-dashboard.index')}}" class="nav-link">
                 <img src="../assets/sidebar/gudang_telur.svg" class="nav-img" alt="Gudang Telur">
                 Gudang Telur
             </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/panen_telur.svg" class="nav-img" alt="Panen Telur">
+            Panen Telur
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/penjualan_telur.svg" class="nav-img" alt="Penjualan Telur">
+            Penjualan Telur
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/penjualan_ayam.svg" class="nav-img" alt="Penjualan Ayam">
+            Penjualan Ayam
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
+            Vaksinasi Ayam
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
+            Laporan Ayam
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
+            Laporan Gudang
+          </a>
         </li>
     </ul>
     <hr>
