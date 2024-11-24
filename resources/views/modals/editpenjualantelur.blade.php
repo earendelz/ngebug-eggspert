@@ -54,12 +54,13 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="formPenjualantelurLabel" style="color: #AE7B3D;">Tambah Penjualan Telur</h4>
+          <h4 class="modal-title" id="formPenjualantelurLabel" style="color: #AE7B3D;">Edit Penjualan Telur</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="editPenjualantelurForm">
+          <form id="edit_penjualantelur_form">
             <div class="mb-3">
+            <input type="text" class="form-control" id="idPenjualantelur" hidden>
               <label for="gudang" class="form-label">Gudang</label>
               <select name="gudang" class="form-control" id="egudang" placeholder="Pilih Gudang">
                 <option value="1"></option>

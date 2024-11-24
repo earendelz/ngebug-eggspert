@@ -359,7 +359,7 @@
         },
         success: function(response) {
           response = response[0];
-          console.log(response);
+          $('#idPanentelur').val(panentelurId)
           // Step 3: Populate modal with the fetched data
           loadKandangData(response.kandang.id);
           loadGudangData(response.gudang.id);
@@ -380,15 +380,18 @@
     });
 
     // Step 4: Handle form submission for editing kandang
-    $('#edit_gudang_form').submit(function(e) {
+    $('#edit_panentelur_form').submit(function(e) {
       e.preventDefault(); // Prevent default form submission
-      var panentelurId = $('#idGudang').val(); 
-
+      var panentelurId = $('#idPanentelur').val(); 
+      var date = new Date($('#etanggalPanen').val());
+      var formattedDate = date.toISOString().split('T')[0]; // Outputs in YYYY-MM-DD format
       var formData = {
-        nama: $('#enamaGudang').val(),
+        id_kandang: $('#ekandang').val(),
+        id_gudang: $('#egudang').val(),
+        kondisi_telur: $('#ekondisiTelur').val(),
         jumlah_telur : $('#ejumlahTelur').val(),
-        tanggal_pembuatan : parseInt($('#etanggalPembuatanGudang').val()),
-        id_ras_ayam: parseInt($('#ras_ayam').val()),
+        tanggal_panen : formattedDate,
+        memo : $('#ememo').val(),
       };
 
       var jsonData = JSON.stringify(formData);
@@ -405,7 +408,9 @@
           console.log('Panen Telur updated successfully', response);
           alert('Panen Telur updated successfully!');
           $('#form_edit_panentelur').modal('hide'); // Close modal
-          // location.reload(); // Refresh the page
+          setTimeout(function() {
+              location.reload(); // Refresh the page
+          }, 1000);
         },
         error: function(xhr, status, error) {
           console.error('Error updating kandang:', error);

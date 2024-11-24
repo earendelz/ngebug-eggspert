@@ -290,12 +290,12 @@
                     }
                 }
               );
-              document.getElementById("print").addEventListener("click", () => datatable.print());
             } else {
-                // If response is not an array, show an error message
-                alert('Unexpected response format. Expected an array of products.');
+              // If response is not an array, show an error message
+              alert('Unexpected response format. Expected an array of products.');
             }
-        },
+            document.getElementById("print").addEventListener("click", () => datatable.print());
+          },
         error: function(xhr, status, error) {
             console.error('Error:', xhr.responseText);
             alert("Failed to fetch data.");
@@ -317,7 +317,7 @@
         success: function(response) {
           response = response[0];
           // Step 3: Populate modal with the fetched data
-          $('#idkandang').val(gudangId);
+          $('#idGudang').val(gudangId);
           $('#enamaGudang').val(response.nama);
           $('#ejumlahTelur').val(response.jumlah_telur);
           $('#etanggalPembuatanGudang').val(response.tanggal_pembuatan);
@@ -333,19 +333,22 @@
     });
 
     // Step 4: Handle form submission for editing kandang
-    $('#edit_gudang_form').submit(function(e) {
+    $('.edit_gudang_form').submit(function(e) {
       e.preventDefault(); // Prevent default form submission
-      var kandangId = $('#idGudang').val(); 
+      var gudangId = $('#idGudang').val(); 
+      var date = new Date($('#etanggalPembuatanGudang').val());
+      var formattedDate = date.toISOString().split('T')[0]; // Outputs in YYYY-MM-DD format
+
 
       var formData = {
         nama: $('#enamaGudang').val(),
         jumlah_telur : $('#ejumlahTelur').val(),
-        tanggal_pembuatan : parseInt($('#etanggalPembuatanGudang').val()),
-        id_ras_ayam: parseInt($('#ras_ayam').val()),
+        tanggal_pembuatan : formattedDate,
+        id_ras_ayam: parseInt($('#eras_ayam').val()),
       };
 
       var jsonData = JSON.stringify(formData);
-      console.log(jsonData);
+      console.log("jsondata: " + jsonData);
       // Step 5: Send updated data to the server
       $.ajax({
         url: `http://127.0.0.1:8000/api/gudangku/${gudangId}`, // Send PUT request to update kandang
@@ -358,7 +361,9 @@
           console.log('Kandang updated successfully', response);
           alert('Kandang updated successfully!');
           $('#form_edit_kandang').modal('hide'); // Close modal
-          // location.reload(); // Refresh the page
+          setTimeout(function() {
+              location.reload(); // Refresh the page
+          }, 1000);
         },
         error: function(xhr, status, error) {
           console.error('Error updating kandang:', error);

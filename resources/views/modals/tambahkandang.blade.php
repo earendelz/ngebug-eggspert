@@ -185,7 +185,7 @@
   <script>
     
     flatpickr("#tanggalPembuatanKandang", {
-      dateFormat: "m/d/Y",
+      dateFormat: "Y-m-d",
       allowInput: true 
     });
   </script>

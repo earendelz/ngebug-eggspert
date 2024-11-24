@@ -59,6 +59,7 @@
         <div class="modal-body">
           <form class="edit_gudang_form">
           <div class="mb-3">
+          <input type="text" class="form-control" id="idGudang" hidden>
               <label for="namaGudang" class="form-label">Nama Gudang Telur</label>
               <input type="text" class="form-control" id="enamaGudang" placeholder="Masukkan nama Gudang">
             </div>
@@ -92,8 +93,8 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     
-    flatpickr("#tanggalPembuatanGudang", {
-      dateFormat: "m/d/Y",
+    flatpickr("#etanggalPembuatanGudang", {
+      dateFormat: "Y-m-d",
       allowInput: true 
     });
   </script>

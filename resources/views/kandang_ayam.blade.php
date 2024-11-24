@@ -303,10 +303,11 @@
             // Check if the response is an array (which it should be based on your response)
             if (Array.isArray(response)) {
               var filteredData = response.map((product, index) => {
+                    kapasitas = product.jumlah_ayam + "/" + product.kapasitas
                     return [
                         index + 1, // Auto-increment ID
                         product.nama, // nama_kandang
-                        product.kapasitas, // kapasitas
+                        kapasitas, // kapasitas
                         product.jenis_kandang, // jenis_kandang
                         product.ras_ayam.nama_ras_ayam, // nama_ras_ayam
                         product.pakan.jenis_pakan, // jenis_pakan
@@ -366,14 +367,17 @@
         },
         success: function(response) {
           kandangData = response[0];
-          console.log(response);
+          date = new Date(kandangData.updated_at);
+          // const date = new Date();
+          // Format it to just 'YYYY-MM-DD'
+          const formattedDate = date.toLocaleDateString('en-CA');
           // Step 3: Populate modal with the fetched data
           $('#idkandang').val(kandangId);
           $('#enamaKandang').val(kandangData.nama);
           $('#ekapasitasKandang').val(kandangData.kapasitas);
           $('#ejumlahAyam').val(kandangData.jumlah_ayam);
           $('#ejenisKandang').val(kandangData.jenis_kandang);
-          $('#etanggalPembuatanKandang').val(kandangData.updated_at);
+          $('#etanggalPembuatanKandang').val(formattedDate);
 
           // Set radio button values
           $("input[name='estatusPakan'][value='" + kandangData.status_pakan + "']").prop('checked', true);
@@ -405,8 +409,8 @@
         jenis_kandang: $('#ejenisKandang').val(),
         kapasitas: parseInt($('#ekapasitasKandang').val()),
         jumlah_ayam: parseInt($('#ejumlahAyam').val()),
-        id_ras_ayam: parseInt($('#ras_ayam').val()),
-        id_pakan: parseInt($('#pakan').val()),
+        id_ras_ayam: parseInt($('#eras_ayam').val()),
+        id_pakan: parseInt($('#epakan').val()),
         status_pakan: $('input[name="estatusPakan"]:checked').val(),
         status_kandang: $('input[name="estatusKandang"]:checked').val()
       };
@@ -425,7 +429,9 @@
           console.log('Kandang updated successfully', response);
           alert('Kandang updated successfully!');
           $('#form_edit_kandang').modal('hide'); // Close modal
-          location.reload(); // Refresh the page
+          setTimeout(function() {
+              location.reload(); // Refresh the page
+          }, 1000);
         },
         error: function(xhr, status, error) {
           console.error('Error updating kandang:', error);

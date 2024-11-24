@@ -359,7 +359,7 @@
         },
         success: function(response) {
           response = response[0];
-          console.log(response);
+          $('#idPenjualantelur').val(penjualantelurId);
           // Step 3: Populate modal with the fetched data
          loadGudangData(response.gudang.id);
           $('#ejumlahTelur').val(response.telur_terjual);
@@ -378,22 +378,26 @@
     });
 
     // Step 4: Handle form submission for editing kandang
-    $('#edit_gudang_form').submit(function(e) {
+    $('#edit_penjualantelur_form').submit(function(e) {
       e.preventDefault(); // Prevent default form submission
-      var panentelurId = $('#idGudang').val(); 
+      var penjualantelurId = $('#idPenjualantelur').val(); 
+      var date = new Date($('#etanggalPenjualan').val());
+      var formattedDate = date.toISOString().split('T')[0]; // Outputs in YYYY-MM-DD format
 
       var formData = {
-        nama: $('#enamaGudang').val(),
-        jumlah_telur : $('#ejumlahTelur').val(),
-        tanggal_pembuatan : parseInt($('#etanggalPembuatanGudang').val()),
-        id_ras_ayam: parseInt($('#ras_ayam').val()),
+        id_gudang: $('#egudang').val(),
+        telur_terjual: $('#ejumlahTelur').val(),
+        kondisi_telur: $('#ekondisiTelur').val(),
+        harga_perbutir: $('#ehargaTelur').val(),
+        tanggal_penjualan: formattedDate,
       };
-
+      console.log(formData.id_gudang);
+      console.log(formData);
       var jsonData = JSON.stringify(formData);
       console.log(jsonData);
       // Step 5: Send updated data to the server
       $.ajax({
-        url: `http://127.0.0.1:8000/api/panentelurku/${panentelurId}`, // Send PUT request to update kandang
+        url: `http://127.0.0.1:8000/api/penjualantelurku/${penjualantelurId}`, // Send PUT request to update kandang
         type: 'PUT',
         data: formData,
         headers: {
@@ -403,7 +407,9 @@
           console.log('Panen Telur updated successfully', response);
           alert('Panen Telur updated successfully!');
           $('#form_edit_panentelur').modal('hide'); // Close modal
-          // location.reload(); // Refresh the page
+          setTimeout(function() {
+              location.reload(); // Refresh the page
+          }, 1000);
         },
         error: function(xhr, status, error) {
           console.error('Error updating kandang:', error);

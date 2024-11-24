@@ -54,7 +54,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="formPenjualantelurLabel" style="color: #AE7B3D;">Tambah Penjualan Telur</h4>
+          <h4 class="modal-title" id="formPenjualantelurLabel" style="color: #AE7B3D;">Tambah Panen Telur</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -94,18 +94,20 @@
           </form>
           <script>
             $(document).ready(function () {
-              $('#tambahGudangForm').on('submit', function (e) {
+              $('#tambahPanentelurForm').on('submit', function (e) {
                 e.preventDefault(); // Prevent default form submission
-                var date = new Date($('#tanggalPembuatanGudang').val());
+                var date = new Date($('#tanggalPanen').val());
                 var formattedDate = date.toISOString().split('T')[0]; // Outputs in YYYY-MM-DD format
 
                 // Get form data
                 var formData = {
-                  nama: $('#namaGudang').val(),
-                  tanggal_pembuatan: formattedDate,
-                  jumlah_telur: parseInt($('#jumlahTelur').val()),
-                  id_ras_ayam: parseInt($('#ras_ayam').val()),
-                  };
+                  id_kandang: $('#kandang').val(),
+                  id_gudang: $('#gudang').val(),
+                  kondisi_telur: $('#kondisiTelur').val(),
+                  jumlah_telur : $('#jumlahTelur').val(),
+                  tanggal_panen : formattedDate,
+                  memo : $('#memo').val(),
+                };
                 console.log(formData);  
                 // CSRF token (make sure you have it in your meta tag)
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -113,7 +115,7 @@
                 var jsonData = JSON.stringify(formData);
                 console.log(jsonData)
                 $.ajax({
-                  url: 'http://127.0.0.1:8000/api/gudangku', // Replace with the correct route
+                  url: 'http://127.0.0.1:8000/api/panentelurku', // Replace with the correct route
                   method: 'POST',
                   data: jsonData,
                   contentType: 'application/json',
@@ -124,8 +126,8 @@
                     // Handle success
                     console.log('Data saved successfully', response);
                     // You can update the UI here or close the modal
-                    $('#formGudangModal').modal('hide');
-                    alert('Gudang added successfully!');
+                    $('#formPanentelurModal').modal('hide');
+                    alert('Data Panen Telur berhasil ditambahkan!');
                     setTimeout(function() {
                       location.reload();
                     }, 1000);

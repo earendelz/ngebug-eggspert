@@ -88,17 +88,18 @@
           </form>
           <script>
             $(document).ready(function () {
-              $('#tambahGudangForm').on('submit', function (e) {
+              $('#tambahPenjualantelurForm').on('submit', function (e) {
                 e.preventDefault(); // Prevent default form submission
-                var date = new Date($('#tanggalPembuatanGudang').val());
+                var date = new Date($('#tanggalPenjualan').val());
                 var formattedDate = date.toISOString().split('T')[0]; // Outputs in YYYY-MM-DD format
 
                 // Get form data
                 var formData = {
-                  nama: $('#namaGudang').val(),
-                  tanggal_pembuatan: formattedDate,
-                  jumlah_telur: parseInt($('#jumlahTelur').val()),
-                  id_ras_ayam: parseInt($('#ras_ayam').val()),
+                  id_gudang: $('#gudang').val(),
+                  telur_terjual: $('#jumlahTelur').val(),
+                  kondisi_telur: $('#kondisiTelur').val(),
+                  harga_perbutir: $('#hargaTelur').val(),
+                  tanggal_penjualan: formattedDate,
                   };
                 console.log(formData);  
                 // CSRF token (make sure you have it in your meta tag)
@@ -107,7 +108,7 @@
                 var jsonData = JSON.stringify(formData);
                 console.log(jsonData)
                 $.ajax({
-                  url: 'http://127.0.0.1:8000/api/gudangku', // Replace with the correct route
+                  url: 'http://127.0.0.1:8000/api/penjualantelurku', // Replace with the correct route
                   method: 'POST',
                   data: jsonData,
                   contentType: 'application/json',
@@ -119,7 +120,7 @@
                     console.log('Data saved successfully', response);
                     // You can update the UI here or close the modal
                     $('#formGudangModal').modal('hide');
-                    alert('Gudang added successfully!');
+                    alert('Data Penjualan Telur berhasil ditambahkan!');
                     setTimeout(function() {
                       location.reload();
                     }, 1000);
@@ -145,7 +146,7 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     
-    flatpickr("#tanggalPanen", {
+    flatpickr("#tanggalPenjualan", {
       dateFormat: "Y-m-d", // This ensures the date is formatted as YYYY-MM-DD
       allowInput: true
     });

@@ -58,8 +58,9 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="editPanentelurForm">
+          <form id="edit_panentelur_form">
             <div class="mb-3">
+            <input type="text" class="form-control" id="idPanentelur" hidden>
               <label for="ekandang" class="form-label">Kandang</label>
               <select name="kandang" class="form-control" id="ekandang" placeholder="Pilih Kandang">
                 <option value="1"></option>
@@ -89,7 +90,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Batal</button>
-              <button type="submit" class="btn btn-primary">Simpan</button>
+              <button type="submit" class="btn btn-primary" id="editPanentelurBtn">Simpan</button>
             </div>
           </form>
           <script>
@@ -151,7 +152,7 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     
-    flatpickr("#tanggalPanen", {
+    flatpickr("#etanggalPanen", {
       dateFormat: "Y-m-d", // This ensures the date is formatted as YYYY-MM-DD
       allowInput: true
     });

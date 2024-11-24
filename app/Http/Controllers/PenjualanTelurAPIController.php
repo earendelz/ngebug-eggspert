@@ -67,7 +67,7 @@ class PenjualanTelurAPIController extends Controller
                 'harga_perbutir' => 'required|integer',
                 'telur_terjual' => 'required|integer|min:1',
                 'id_gudang' => 'required|exists:gudang,id',
-                'tanggal_penjualan' => 'data'
+                'tanggal_penjualan' => 'date'
             ]);
 
             $validated['id_peternak'] = $userId;
