@@ -189,7 +189,14 @@
         </table>
       </div>
     </div>
-    <button id="print">Print </button>
+    <div class="d-flex justify-content-between">
+      <button type="button" id="print" class="btn btn-md">
+        Ekspor PDF
+      </button>
+      <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_kandang">
+        Tambah Kandang
+      </button>
+    </div>
   </div>
 
 
@@ -476,11 +483,6 @@ $(document).on('click', '.deleteKandangBtn', function(event) {
 });
 </script>
 
-<div class="container-fluid d-flex justify-content-end">
-  <button type="button" id="buttonTambah" class="btn btn-md mb-3" data-bs-toggle="modal" data-bs-target="#form_tambah_kandang">
-    Tambah Kandang
-  </button>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/simple-datatables@9.2.1/dist/umd/simple-datatables.js"></script>

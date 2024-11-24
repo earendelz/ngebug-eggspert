@@ -1,5 +1,5 @@
-@include ('modals.tambahpanentelur')
-@include ('modals.editpanentelur')
+@include ('modals.tambahvaksinasi')
+@include ('modals.editvaksinasi')
 
 
 <!DOCTYPE html>
@@ -44,8 +44,8 @@
             </a>
         </li>
         <li>
-          <a href="{{route('panen-telur-dashboard.index')}}" class="nav-link active" aria-current="page">
-            <img src="../assets/sidebar/hov_panen_telur.svg" class="nav-img" alt="Panen Telur">
+          <a href="{{route('panen-telur-dashboard.index')}}" class="nav-link">
+            <img src="../assets/sidebar/panen_telur.svg" class="nav-img" alt="Panen Telur">
             Panen Telur
           </a>
         </li>
@@ -56,14 +56,14 @@
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('penjualan-ayam-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/penjualan_ayam.svg" class="nav-img" alt="Penjualan Ayam">
             Penjualan Ayam
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
-            <img src="../assets/sidebar/vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
+          <a href="{{route('vaksinasi-ayam-dashboard.index')}}" class="nav-link active" aria-current="page">
+            <img src="../assets/sidebar/hov_vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
             Vaksinasi Ayam
           </a>
         </li>
@@ -88,7 +88,7 @@
   <header class="header">
     <nav class="navbar navbar-expand-lg bg-light rounded shadow">
       <div class="container-fluid">
-        <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>GUDANG TELUR</b></span> </a>
+        <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>VAKSINASI AYAM</b></span> </a>
         <a href="#" class="ms-auto" style="padding-right:0.75rem">
           <button class="btn" id="notif">
             <img src="../assets/navbar/notifications_png.svg">
@@ -186,14 +186,14 @@
         </table>
       </div>
     </div>
-    <div class="d-flex justify-content-between">
-      <button type="button" id="print" class="btn btn-md">
+    <div class="container-fluid d-flex justify-content-between">
+    <button type="button" id="print" class="btn btn-md">
         Ekspor PDF
       </button>
-      <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_panentelur">
-        Tambah Data Panen Telur
-      </button>
-    </div>
+    <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_vaksinasi">
+    Tambah Vaksinasi Ayam
+  </button>
+</div>
   </div>
 
 
@@ -202,7 +202,7 @@
   // Function to fetch and populate Pakan data into the select dropdown
   function loadKandangData(selectedId) {
     $.ajax({
-      url: 'http://127.0.0.1:8000/api/kandangku',  // The API endpoint to fetch pakan data
+      url: 'http://127.0.0.1:8000/api/vaksinasiku',  // The API endpoint to fetch pakan data
       method: 'GET',      // Request method
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
@@ -292,7 +292,7 @@
   <script>
     var userId = @json(Auth::id()); // Get the user ID from the server-side variable
     $.ajax({
-        url: "{{ route('panentelurku.index') }}", // Your protected API route with the userId
+        url: "{{ route('vaksinasiku.index') }}", // Your protected API route with the userId
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
@@ -303,19 +303,16 @@
             // Clear the table body before inserting new rows
            // Check if the response is an array (which it should be based on your response)
             if (Array.isArray(response)) {
-              var filteredData = response.map((panentelurku, index) => {
+              var filteredData = response.map((vaksinasiku, index) => {
                     return [
                         index + 1, // Auto-increment ID
-                        panentelurku.kandang.nama, 
-                        panentelurku.gudang.nama, 
-                        panentelurku.jumlah_telur,
-                        panentelurku.kondisi_telur, 
-                        panentelurku.tanggal_panen, 
-                        panentelurku.memo, 
-                        `<a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_panentelur" class="editPanentelurBtn" data-id="${panentelurku.id}">
+                        vaksinasiku.kandang.nama, 
+                        vaksinasiku.jenis_vaksin,
+                        vaksinasiku.tanggal_vaksinasi,
+                        `<a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_vaksinasi" class="editVaksinasiBtn" data-id="${vaksinasiku.id}">
                             <img src="../assets/edit_button.svg" alt="Edit">
                         </a>
-                        <a href="#" class="deletePanentelurBtn" data-id="${panentelurku.id}">
+                        <a href="#" class="deleteVaksinasiBtn" data-id="${vaksinasiku.id}">
                             <img src="../assets/delete_button.svg" alt="Delete">
                         </a>`
                     ];
@@ -325,11 +322,8 @@
                 var headings = [
                     "NO", // Auto-increment
                     "Nama Kandang",
-                    "Nama Gudang",
-                    "Jumlah Telur",
-                    "Kondisi Telur",
-                    "Tanggal Panen",
-                    "Keterangan",
+                    "Jenis Vaksin",
+                    "Tanggal Vaksinasi",
                     "Opsi"
                 ];
                 // Initialize the DataTable
@@ -355,30 +349,27 @@
   </script>
   <script>
         // Step 2: Fetch and populate modal form when "Edit" is clicked
-    $(document).on('click', '.editPanentelurBtn', function() {
-      var panentelurId = $(this).data('id'); // Get the ID of the kandang to edit
+    $(document).on('click', '.editVaksinasiBtn', function() {
+      var vaksinasiId = $(this).data('id'); // Get the ID of the kandang to edit
 
       // Make AJAX request to fetch kandang details
       $.ajax({
-        url: `http://127.0.0.1:8000/api/panentelurku/${panentelurId}`, // Adjust URL if needed
+        url: `http://127.0.0.1:8000/api/vaksinasiku/${vaksinasiId}`, // Adjust URL if needed
         type: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
         },
-        success: function(response) {
-          response = response[0];
-          $('#idPanentelur').val(panentelurId)
+        success: function(response){
+          console.log(response);
+          console.log(response.kandang);
+          $('#idVaksinasi').val(vaksinasiId);
           // Step 3: Populate modal with the fetched data
-          loadKandangData(response.kandang.id);
-          loadGudangData(response.gudang.id);
-          $('#ejumlahTelur').val(response.jumlah_telur);
-          $('#ekondisiTelur').val(response.kondisi_telur);
-          $('#etanggalPanen').val(response.tanggal_panen);
-          $('#ememo').val(response.memo);
-          $('#etanggalPembuatanGudang').val(response.tanggal_pembuatan);
-          $('#ras_ayam').val(response.ras_ayam.id); // Populate Ras Ayam dropdown
-
+         loadKandangData(response.kandang.id);
+          $('#ejenisVaksin').val(response.jenis_vaksin);
+          $('#etanggalVaksinasi').val(response.tanggal_vaksinasi);
+          
           // Open the modal
+
         },
         error: function(xhr, status, error) {
           console.error('Error fetching kandang data:', error);
@@ -388,34 +379,31 @@
     });
 
     // Step 4: Handle form submission for editing kandang
-    $('#edit_panentelur_form').submit(function(e) {
+    $('#edit_vaksinasi_form').submit(function(e) {
       e.preventDefault(); // Prevent default form submission
-      var panentelurId = $('#idPanentelur').val(); 
-      var date = new Date($('#etanggalPanen').val());
+      var vaksinasiId = $('#idVaksinasi').val(); 
+      var date = new Date($('#etanggalVaksinasi').val());
       var formattedDate = date.toISOString().split('T')[0]; // Outputs in YYYY-MM-DD format
-      var formData = {
-        id_kandang: $('#ekandang').val(),
-        id_gudang: $('#egudang').val(),
-        kondisi_telur: $('#ekondisiTelur').val(),
-        jumlah_telur : $('#ejumlahTelur').val(),
-        tanggal_panen : formattedDate,
-        memo : $('#ememo').val(),
-      };
 
+      var formData = {
+                      id_kandang: $('#ekandang').val(),
+                      jenis_vaksin: $('#ejenisVaksin').val(),
+                      tanggal_vaksinasi: formattedDate,
+                      };
       var jsonData = JSON.stringify(formData);
       console.log(jsonData);
       // Step 5: Send updated data to the server
       $.ajax({
-        url: `http://127.0.0.1:8000/api/panentelurku/${panentelurId}`, // Send PUT request to update kandang
+        url: `http://127.0.0.1:8000/api/vaksinasiku/${vaksinasiId}`, // Send PUT request to update kandang
         type: 'PUT',
         data: formData,
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
         },
         success: function(response) {
-          console.log('Panen Telur updated successfully', response);
-          alert('Panen Telur updated successfully!');
-          $('#form_edit_panentelur').modal('hide'); // Close modal
+          console.log('Vaksinasi Ayam updated successfully', response);
+          alert('Vaksinasi Ayam updated successfully!');
+          $('#form_edit_vaksinasi').modal('hide'); // Close modal
           setTimeout(function() {
               location.reload(); // Refresh the page
           }, 1000);
@@ -430,29 +418,29 @@
 
 <!-- ngehapus -->
 <script>
-$(document).on('click', '.deletePanentelurBtn', function(event) {
+$(document).on('click', '.deleteVaksinasiBtn', function(event) {
     event.preventDefault();  // Prevent the default anchor behavior
 
     // Get the ID of the kandang to delete
-    var panentelurId = $(this).data('id');
+    var vaksinasiId = $(this).data('id');
 
     // Confirm with the user before deleting
-    if (confirm('Anda yakin ingin menghapus data panen telur ini?')) {
+    if (confirm('Anda yakin ingin menghapus data vaksinasi ayam ini?')) {
         // Send AJAX request to delete the kandang
         $.ajax({
-            url: `http://127.0.0.1:8000/api/panentelurku/${panentelurId}`,  // Adjust the URL if necessary
+            url: `http://127.0.0.1:8000/api/vaksinasiku/${vaksinasiId}`,  // Adjust the URL if necessary
             type: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('bearer_token')  // Include Bearer token if necessary
             },
             success: function(response) {
                 // Handle the response after successful deletion
-                console.log('gudang deleted:', response);
+                console.log('data penjualan ayam deleted:', response);
 
                 // Optionally, you can remove the row from the table without reloading
-                $(`a[data-id="${panentelurId}"]`).closest('tr').remove();
+                $(`a[data-id="${vaksinasiId}"]`).closest('tr').remove();
                 
-                alert('Gudang telah berhasil dihapus!');
+                alert('Data Vaksinasi Ayam telah berhasil dihapus!');
             },
             error: function(xhr, status, error) {
                 console.error('Error deleting kandang:', error);
@@ -462,6 +450,7 @@ $(document).on('click', '.deletePanentelurBtn', function(event) {
     }
 });
 </script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

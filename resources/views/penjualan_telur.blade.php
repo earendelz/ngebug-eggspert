@@ -56,7 +56,7 @@
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('penjualan-ayam-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/penjualan_ayam.svg" class="nav-img" alt="Penjualan Ayam">
             Penjualan Ayam
           </a>
@@ -186,6 +186,14 @@
         </table>
       </div>
     </div>
+    <div class="container-fluid d-flex justify-content-between">
+    <button type="button" id="print" class="btn btn-md">
+        Ekspor PDF
+      </button>
+    <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_penjualantelur">
+    Tambah Penjualan Telur
+  </button>
+</div>
   </div>
 
 
@@ -421,17 +429,17 @@
 
 <!-- ngehapus -->
 <script>
-$(document).on('click', '.deletePanentelurBtn', function(event) {
+$(document).on('click', '.deletePenjualantelurBtn', function(event) {
     event.preventDefault();  // Prevent the default anchor behavior
 
     // Get the ID of the kandang to delete
-    var panentelurId = $(this).data('id');
+    var penjualantelurId = $(this).data('id');
 
     // Confirm with the user before deleting
     if (confirm('Anda yakin ingin menghapus data panen telur ini?')) {
         // Send AJAX request to delete the kandang
         $.ajax({
-            url: `http://127.0.0.1:8000/api/panentelurku/${panentelurId}`,  // Adjust the URL if necessary
+            url: `http://127.0.0.1:8000/api/penjualantelurku/${penjualantelurId}`,  // Adjust the URL if necessary
             type: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('bearer_token')  // Include Bearer token if necessary
@@ -441,9 +449,9 @@ $(document).on('click', '.deletePanentelurBtn', function(event) {
                 console.log('gudang deleted:', response);
 
                 // Optionally, you can remove the row from the table without reloading
-                $(`a[data-id="${panentelurId}"]`).closest('tr').remove();
+                $(`a[data-id="${penjualantelurId}"]`).closest('tr').remove();
                 
-                alert('Gudang telah berhasil dihapus!');
+                alert('Data penjualan telur telah berhasil dihapus!');
             },
             error: function(xhr, status, error) {
                 console.error('Error deleting kandang:', error);
@@ -455,11 +463,6 @@ $(document).on('click', '.deletePanentelurBtn', function(event) {
 </script>
 
 
-<div class="container-fluid d-flex justify-content-end">
-  <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_penjualantelur">
-    Tambah Penjualan Telur
-  </button>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/simple-datatables@9.2.1/dist/umd/simple-datatables.js"></script>

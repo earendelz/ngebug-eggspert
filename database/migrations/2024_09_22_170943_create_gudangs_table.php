@@ -24,6 +24,11 @@ return new class extends Migration
                     ->on('users')
                     ->onDelete('no action')
                     ->onUpdate('no action');
+            $table->foreign('id_ras_ayam')
+                    ->references('id')
+                    ->on('ras_ayams')
+                    ->onDelete('no action')
+                    ->onUpdate('no action');
                     
             $table->timestamps();
         });
