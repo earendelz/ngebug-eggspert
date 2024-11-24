@@ -6,6 +6,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
     <title>Eggspert</title>
 </head>
@@ -184,10 +186,11 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-12">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Jumlah Penjualan Keseluruhan</h5>
+          <canvas id="penjualanChart"></canvas>
           </div>
       </div>
     </div>
@@ -278,5 +281,79 @@ $.ajax({
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../js/sidebar.js"></script>
+
+    <script>
+      // Ambil data penjualan Telur dan Ayam dari backend atau gunakan data statis untuk percakapan ini
+      const penjualanTelur = @json($penjualanTelurData); // Data Penjualan Telur dalam format JSON
+      const penjualanAyam = @json($penjualanAyamData);   // Data Penjualan Ayam dalam format JSON
+
+      // Bulan untuk sumbu x (x-axis)
+      const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+      const penjualanTelurAdjusted = [];
+      const penjualanAyamAdjusted = [];
+
+      for (let i = 0; i < 12; i++) {
+        penjualanTelurAdjusted.push(penjualanTelur[i + 1] || 0); // Menggunakan 0 jika tidak ada data
+        penjualanAyamAdjusted.push(penjualanAyam[i + 1] || 0);   // Menggunakan 0 jika tidak ada data
+      }
+
+      // Menyiapkan data untuk grafik
+      const data = {
+        labels: bulan,
+        datasets: [
+          {
+            label: 'Penjualan Telur',
+            data: penjualanTelurAdjusted, // Data penjualan telur, misalnya [10, 20, 30, ...]
+            borderColor: 'rgba(54, 162, 235, 1)', // Warna biru
+            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Warna biru transparan
+            fill: false,
+            tension: 0.1
+          },
+          {
+            label: 'Penjualan Ayam',
+            data: penjualanAyamAdjusted, // Data penjualan ayam, misalnya [5, 15, 25, ...]
+            borderColor: 'rgba(75, 192, 192, 1)', // Warna hijau
+            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Warna hijau transparan
+            fill: false,
+            tension: 0.1
+          }
+        ]
+      };
+
+      // Konfigurasi grafik
+      const config = {
+        type: 'line', // Jenis grafik garis
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem) {
+                  return tooltipItem.raw + ' unit';
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true, // Memulai sumbu Y dari 0
+            }
+          }
+        }
+      };
+
+      // Membuat grafik
+      const penjualanChart = new Chart(
+        document.getElementById('penjualanChart'), // Mengarah ke elemen canvas
+        config
+      );
+    </script>
+
+
   </body>
 </html>
