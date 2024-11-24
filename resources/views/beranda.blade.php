@@ -195,15 +195,16 @@
       </div>
     </div>
   </div>
-  <!-- Card Second Row -->
-  <div class="row">
-    <div class="col-sm-4">
+  <div class="col-sm-8">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Total Pendapatan</h5>
+          <h5 class="card-title">Jumlah Pendapatan</h5>
+          <canvas id="pendapatanChart"></canvas>
           </div>
       </div>
     </div>
+  </div>
+  <!-- Card Second Row -->
     <div class="col-sm-4">
       <div class="card">
         <div class="card-body">
@@ -304,17 +305,17 @@ $.ajax({
         datasets: [
           {
             label: 'Penjualan Telur',
-            data: penjualanTelurAdjusted, // Data penjualan telur, misalnya [10, 20, 30, ...]
-            borderColor: 'rgba(54, 162, 235, 1)', // Warna biru
-            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Warna biru transparan
+            data: penjualanTelurAdjusted, 
+            borderColor: 'rgba(255, 206, 86, 1)',
+            backgroundColor: 'rgba(255, 206, 86, 1)',
             fill: false,
             tension: 0.1
           },
           {
             label: 'Penjualan Ayam',
-            data: penjualanAyamAdjusted, // Data penjualan ayam, misalnya [5, 15, 25, ...]
-            borderColor: 'rgba(75, 192, 192, 1)', // Warna hijau
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Warna hijau transparan
+            data: penjualanAyamAdjusted,
+            borderColor: 'rgba(75, 192, 192, 1)', 
+            backgroundColor: 'rgba(75, 192, 192, 1)', 
             fill: false,
             tension: 0.1
           }
@@ -353,7 +354,68 @@ $.ajax({
         config
       );
     </script>
+    <script>
+        // Ambil data dari controller yang dikirim ke view
+        var pendapatanTelurData = @json($pendapatanTelurData);
+        var pendapatanAyamData = @json($pendapatanAyamData);
 
+        // Siapkan data untuk grafik
+        var bulanPendapatan = [];
+        var totalTelur = [];
+        var totalAyam = [];
+
+        var bulanNama = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        // Mengisi data bulan dan total
+        for (var i = 0; i < 12; i++) {
+            var bulanIndex = i + 1; // Menyesuaikan indeks bulan 1-12
+            bulanPendapatan.push(bulanNama[i]); // Menambahkan nama bulan sesuai dengan index
+        
+            // Cek apakah data ada untuk bulan ini, jika tidak, masukkan 0
+            var totalTelurBulan = pendapatanTelurData[bulanIndex] || 0;
+            var totalAyamBulan = pendapatanAyamData[bulanIndex] || 0;
+
+            totalTelur.push(totalTelurBulan); 
+            totalAyam.push(totalAyamBulan); 
+        }
+
+        // Membuat grafik batang
+        var ctx = document.getElementById('pendapatanChart').getContext('2d');
+        var pendapatanChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: bulanPendapatan, // Sumbu X
+                datasets: [
+                    {
+                        label: 'Pendapatan Telur',
+                        data: totalTelur, // Data Pendapatan Telur
+                        backgroundColor: 'rgba(255, 206, 86, 1)', 
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Pendapatan Ayam',
+                        data: totalAyam, // Data Pendapatan Ayam
+                        backgroundColor: 'rgba(75, 192, 192, 1)', 
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 100000, // Langkah sumbu Y
+                            min: 0, // Mulai dari 0
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 
   </body>
 </html>

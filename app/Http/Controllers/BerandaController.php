@@ -28,7 +28,21 @@ class BerandaController extends Controller
             ->pluck('total', 'bulan')
             ->toArray();
 
+        $pendapatanTelurData = PenjualanTelur::where('id_peternak', $userId)
+            ->selectRaw('MONTH(tanggal_penjualan) as bulan, SUM(harga_total) as total')
+            ->groupBy('bulan')
+            ->pluck('total', 'bulan')
+            ->toArray();
+        
+
+        $pendapatanAyamData = PenjualanAyam::where('id_peternak', $userId)
+            ->selectRaw('MONTH(tanggal_penjualan) as bulan, SUM(harga_total) as total')
+            ->groupBy('bulan')
+            ->pluck('total', 'bulan')
+            ->toArray();
+        
+
         // Kirim data ke view beranda
-        return view('beranda', compact('user', 'penjualanTelurData', 'penjualanAyamData'));
+        return view('beranda', compact('user', 'penjualanTelurData', 'penjualanAyamData', 'pendapatanTelurData', 'pendapatanAyamData'));
     }
 }
