@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+        Schema::disableForeignKeyConstraints();
+
         Schema::create('gudang', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
             $table->date('tanggal_pembuatan');
             $table->integer('jumlah_telur');
-            $table->string('id_ras_ayam');
+            $table->unsignedBigInteger('id_ras_ayam');
             $table->unsignedBigInteger('id_peternak');
 
             $table->foreign('id_peternak')
@@ -24,6 +27,7 @@ return new class extends Migration
                     ->on('users')
                     ->onDelete('no action')
                     ->onUpdate('no action');
+                    
             $table->foreign('id_ras_ayam')
                     ->references('id')
                     ->on('ras_ayams')
@@ -32,6 +36,8 @@ return new class extends Migration
                     
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints(); 
     }
 
     /**
@@ -39,6 +45,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         Schema::dropIfExists('gudang');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 };
