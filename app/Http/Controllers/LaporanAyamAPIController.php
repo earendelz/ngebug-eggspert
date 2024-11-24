@@ -55,37 +55,25 @@ class LaporanAyamAPIController extends Controller
     // Menampilkan laporan ayam berdasarkan ID
     public function show(string $id)
     {
-        $laporanAyam = LaporanAyam::where('id_peternak',$id)->firstOrFail();
+        $laporanAyam = LaporanAyam::with('kandang')
+                        ->where('id_kandang', $id)
+                        ->get();
         return response()->json($laporanAyam);
     }
 
     // Mengupdate laporan ayam berdasarkan ID
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'chicken_count' => 'integer',
-            'date' => 'date',
-            'live_chicken_count' => 'integer',
-            'dead_chicken_count' => 'integer',
-            'user_id' => 'exists:users,id', // Mengganti id_peternak dengan user_id
+        $laporanAyam = LaporanAyam::findOrFail($id);
+
+        $validated = $request->validate([
+            'jumlah_ayam' => 'required|integer|min:1',
+            'jenis_laporan' => 'required|string|in:kematian,kelahiran',
+            'tanggal_peristiwa' => 'required|date',
+            'id_kandang' => 'required|exists:products,id',
         ]);
 
-        // Temukan catatan LaporanAyam
-        $laporanAyam = LaporanAyam::find($id);
-
-        // Jika catatan tidak ditemukan
-        if (!$laporanAyam) {
-            return response()->json(['message' => 'Laporan Ayam not found'], 404);
-        }
-
-        $laporanAyam->chicken_count = $request->chicken_count;
-        $laporanAyam->date = $request->date;
-        $laporanAyam->live_chicken_count = $request->live_chicken_count;
-        $laporanAyam->dead_chicken_count = $request->dead_chicken_count;
-        $laporanAyam->user_id = $request->user_id; // Mengganti id_peternak dengan user_id
-
-        // Simpan catatan yang diperbarui
-        $laporanAyam->save();
+        $laporanAyam->update($validated);
 
         // Kembalikan catatan yang diperbarui
         return response()->json($laporanAyam);

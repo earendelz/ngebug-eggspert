@@ -61,9 +61,26 @@ class LaporanGudangAPIController extends Controller
 
     public function show($id)
     {
-        $laporan = LaporanGudang::with('gudang:id,nama')
-            ->findOrFail($id);
+        $laporan = LaporanGudang::with('gudang')
+            ->where('id_gudang', $id)
+            ->get();
         return response()->json($laporan);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $laporanGudang = LaporanGudang::findOrFail($id);
+        
+        $validated = $request->validate([
+            'jumlah_telur' => 'required|integer',
+            'keterangan' => 'required|string|max:255',
+            'tanggal_laporan_gudang' => 'required|date',
+        ]);
+
+        $laporanGudang->update($validated);
+
+        // Kembalikan catatan yang diperbarui
+        return response()->json($laporanGudang);
     }
 
     public function destroy($id)
