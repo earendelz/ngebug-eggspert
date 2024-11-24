@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vaksinasi Ayam</title>
+  <title>Laporan Ayam</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Flatpickr CSS -->
@@ -37,40 +37,38 @@
       border: 1px solid #AE7B3D;
       border-radius: 13px;
     }
-    input[type="radio"][value="nonaktif"]:checked {
-        background-color: red;
-        border-color: red;
-    }
-    input[type="radio"][value="aktif"]:checked {
-        background-color: green;
-        border-color: green;
-    }
+ 
     
   </style>
 </head>
 <body>
 
-  <div class="modal fade" id="form_tambah_vaksinasi" tabindex="-1" aria-labelledby="formVaksinasiLabel" aria-hidden="true">
+  <div class="modal fade" id="form_edit_laporangudang" tabindex="-1" aria-labelledby="formLaporangudangLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="formVaksinasiLabel" style="color: #AE7B3D;">Tambah Vaksinasi Ayam</h4>
+          <h4 class="modal-title" id="formLaporangudangLabel" style="color: #AE7B3D;">Edit Laporan Gudang</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="tambahVaksinasiForm">
+          <form id="edit_laporangudang_form">
             <div class="mb-3">
-              <label for="kandang" class="form-label">Kandang</label>
-              <select name="kandang" class="form-control" id="kandang" placeholder="Pilih Kandang">
+              <input type="text" class="form-control" id="idLaporangudang" hidden>
+              <label for="gudang" class="form-label">Gudang</label>
+              <select name="gudang" class="form-control" id="egudang" placeholder="Pilih Gudang">
                 <option value="1"></option>
               </select>   
             </div>
             <div class="mb-3">
-              <label for="jenisVaksin" class="form-label">Jenis Vaksin</label>
-              <input type="text" class="form-control" id="jenisVaksin" placeholder="Masukkan jenis vaksin">
+              <label for="jumlahTelur" class="form-label">Jumlah Telur</label>
+              <input type="text" class="form-control" id="ejumlahTelur" placeholder="Masukkan jumlah telur">
             </div>
-              <label for="tanggalVaksinasi" class="form-label">Tanggal Vaksinasi</label>
-              <input type="text" class="form-control" id="tanggalVaksinasi" placeholder="Pilih tanggal">
+            <div class="mb-3">
+              <label for="keterangan" class="form-label">Keterangan</label>
+              <input type="text" class="form-control" id="eketerangan" placeholder="Masukkan keterangan">
+            </div>
+              <label for="tanggalLaporanGudang" class="form-label">Tanggal Laporan Gudang</label>
+              <input type="text" class="form-control" id="etanggalLaporanGudang" placeholder="Pilih tanggal laporan gudang">
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Batal</button>
@@ -80,16 +78,17 @@
           </div>
           <script>
             $(document).ready(function () {
-              $('#tambahVaksinasiForm').on('submit', function (e) {
+              $('#editLaporanayamForm').on('submit', function (e) {
                 e.preventDefault(); // Prevent default form submission
-                var date = new Date($('#tanggalVaksinasi').val());
+                var date = new Date($('#tanggalPeristiwa').val());
                 var formattedDate = date.toISOString().split('T')[0]; // Outputs in YYYY-MM-DD format
 
                 // Get form data
                 var formData = {
                   id_kandang: $('#kandang').val(),
-                  jenis_vaksin: $('#jenisVaksin').val(),
-                  tanggal_vaksinasi: formattedDate,
+                  jenis_laporan: $('#ejenisLaporan').val(),
+                  jumlah_ayam: $('#ejumlahAyam').val(),
+                  tanggal_peristiwa: formattedDate,
                 };
                 console.log(formData);  
                 // CSRF token (make sure you have it in your meta tag)
@@ -98,7 +97,7 @@
                 var jsonData = JSON.stringify(formData);
                 console.log(jsonData)
                 $.ajax({
-                  url: 'http://127.0.0.1:8000/api/vaksinasiku', // Replace with the correct route
+                  url: 'http://127.0.0.1:8000/api/laporanayamku', // Replace with the correct route
                   method: 'POST',
                   data: jsonData,
                   contentType: 'application/json',
@@ -109,8 +108,8 @@
                     // Handle success
                     console.log('Data saved successfully', response);
                     // You can update the UI here or close the modal
-                    $('#formVaksinasikuModal').modal('hide');
-                    alert('Data Panen Telur berhasil ditambahkan!');
+                    $('#form_tambah_laporanayam').modal('hide');
+                    alert('Data Laporan Ayam berhasil ditambahkan!');
                     setTimeout(function() {
                       location.reload();
                     }, 1000);
@@ -136,7 +135,7 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     
-    flatpickr("#tanggalVaksinasi", {
+    flatpickr("#etanggalPeristiwa", {
       dateFormat: "Y-m-d", // This ensures the date is formatted as YYYY-MM-DD
       allowInput: true
     });

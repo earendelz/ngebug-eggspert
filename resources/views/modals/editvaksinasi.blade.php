@@ -60,22 +60,18 @@
         <div class="modal-body">
           <form id="edit_vaksinasi_form">
             <div class="mb-3">
-            <input type="text" class="form-control" id="idVaksinasi" hidden>
-              <label for="ekandang" class="form-label">Kandang</label>
-              <select name="ekandang" class="form-control" id="ekandang" placeholder="Pilih Kandang">
+              <input type="text" class="form-control" id="idVaksinasi" hidden>
+              <label for="kandang" class="form-label">Kandang</label>
+              <select name="kandang" class="form-control" id="ekandang" placeholder="Pilih Kandang">
                 <option value="1"></option>
               </select>   
-            <div class="mb-3">
-              <label for="ejumlahTerjual" class="form-label">Jumlah Ayam Terjual</label>
-              <input type="text" class="form-control" id="ejumlahTerjual" placeholder="Masukkan jumlah ayam terjual">
             </div>
             <div class="mb-3">
-              <label for="ehargaPerekor" class="form-label">Harga Ayam per Ekor</label>
-              <input type="text" class="form-control" id="ehargaPerekor" placeholder="Masukkan Harga Ayam per Ekor">
+              <label for="jenisVaksin" class="form-label">Jenis Vaksin</label>
+              <input type="text" class="form-control" id="ejenisVaksin" placeholder="Masukkan jenis vaksin">
             </div>
-            <div class="mb-3">
-              <label for="etanggalPenjualan" class="form-label">Tanggal Penjualan Ayam</label>
-              <input type="text" class="form-control" id="etanggalPenjualan" placeholder="Pilih tanggal">
+              <label for="tanggalVaksinasi" class="form-label">Tanggal Vaksinasi</label>
+              <input type="text" class="form-control" id="etanggalVaksinasi" placeholder="Pilih tanggal">
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="color: #AE7B3D;">Batal</button>

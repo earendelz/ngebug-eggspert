@@ -1,5 +1,5 @@
-@include ('modals.tambahvaksinasi')
-@include ('modals.editvaksinasi')
+@include ('modals.tambahlaporanayam')
+@include ('modals.editlaporanayam')
 
 
 <!DOCTYPE html>
@@ -62,19 +62,19 @@
           </a>
         </li>
         <li>
-          <a href="{{route('vaksinasi-ayam-dashboard.index')}}" class="nav-link active" aria-current="page">
+          <a href="{{route('vaksinasi-ayam-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/hov_vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
             Vaksinasi Ayam
           </a>
         </li>
         <li>
-          <a href="{{route('laporan-ayam-dashboard.index')}}" class="nav-link">
-            <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
+          <a href="{{route('laporan-ayam-dashboard.index')}}" class="nav-link active" aria-current="page">
+            <img src="../assets/sidebar/hov_laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
             Laporan Ayam
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('laporan-gudang-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
             Laporan Gudang
           </a>
@@ -190,8 +190,8 @@
     <button type="button" id="print" class="btn btn-md">
         Ekspor PDF
       </button>
-    <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_vaksinasi">
-    Tambah Vaksinasi Ayam
+    <button type="button" id="buttonTambah" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#form_tambah_laporanayam">
+    Tambah Laporan Ayam
   </button>
 </div>
   </div>
@@ -292,7 +292,7 @@
   <script>
     var userId = @json(Auth::id()); // Get the user ID from the server-side variable
     $.ajax({
-        url: "{{ route('vaksinasiku.index') }}", // Your protected API route with the userId
+        url: "{{ route('laporanayamku.index') }}", // Your protected API route with the userId
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
@@ -303,16 +303,17 @@
             // Clear the table body before inserting new rows
            // Check if the response is an array (which it should be based on your response)
             if (Array.isArray(response)) {
-              var filteredData = response.map((vaksinasiku, index) => {
+              var filteredData = response.map((laporanayamku, index) => {
                     return [
                         index + 1, // Auto-increment ID
-                        vaksinasiku.kandang.nama, 
-                        vaksinasiku.jenis_vaksin,
-                        vaksinasiku.tanggal_vaksinasi,
-                        `<a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_vaksinasi" class="editVaksinasiBtn" data-id="${vaksinasiku.id}">
+                        laporanayamku.kandang.nama, 
+                        laporanayamku.jenis_laporan, 
+                        laporanayamku.jumlah_ayam,
+                        laporanayamku.tanggal_peristiwa,
+                        `<a href="#" data-bs-toggle="modal" data-bs-target="#form_edit_laporanayam" class="editLaporanayamBtn" data-id="${laporanayamku.id}">
                             <img src="../assets/edit_button.svg" alt="Edit">
                         </a>
-                        <a href="#" class="deleteVaksinasiBtn" data-id="${vaksinasiku.id}">
+                        <a href="#" class="deleteLaporanayamBtn" data-id="${laporanayamku.id}">
                             <img src="../assets/delete_button.svg" alt="Delete">
                         </a>`
                     ];
@@ -322,8 +323,9 @@
                 var headings = [
                     "NO", // Auto-increment
                     "Nama Kandang",
-                    "Jenis Vaksin",
-                    "Tanggal Vaksinasi",
+                    "Jenis Laporan",
+                    "Jumlah Ayam",
+                    "Tanggal Peristiwa",
                     "Opsi"
                 ];
                 // Initialize the DataTable
@@ -349,23 +351,31 @@
   </script>
   <script>
         // Step 2: Fetch and populate modal form when "Edit" is clicked
-    $(document).on('click', '.editVaksinasiBtn', function() {
-      var vaksinasiId = $(this).data('id'); // Get the ID of the kandang to edit
+    $(document).on('click', '.editLaporanayamBtn', function() {
+      var laporanayamId = $(this).data('id'); // Get the ID of the kandang to edit
 
       // Make AJAX request to fetch kandang details
       $.ajax({
-        url: `http://127.0.0.1:8000/api/vaksinasiku/${vaksinasiId}`, // Adjust URL if needed
+        url: `http://127.0.0.1:8000/api/laporanayamku/${laporanayamId}`, // Adjust URL if needed
         type: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
         },
         success: function(response){
           response = response[0];
-          $('#idVaksinasi').val(vaksinasiId);
+          $('#idLaporanayam').val(laporanayamId);
           // Step 3: Populate modal with the fetched data
-         loadKandangData(response.kandang.id);
-          $('#ejenisVaksin').val(response.jenis_vaksin);
-          $('#etanggalVaksinasi').val(response.tanggal_vaksinasi);
+          loadKandangData(response.kandang.id);
+          var jenisLaporan = response.jenis_laporan.trim().toLowerCase();
+          if (jenisLaporan === "kelahiran") {
+            console.log("kel check")
+            $('#kelahiran').prop('checked', true);
+          } else if (jenisLaporan === "kematian") {
+            console.log("kem check")
+            $('#kematian').attr('checked', true);
+          };
+          $('#ejumlahAyam').val(response.jumlah_ayam);
+          $('#etanggalPeristiwa').val(response.tanggal_peristiwa);
           
           // Open the modal
 
@@ -378,31 +388,32 @@
     });
 
     // Step 4: Handle form submission for editing kandang
-    $('#edit_vaksinasi_form').submit(function(e) {
+    $('#edit_laporanayam_form').submit(function(e) {
       e.preventDefault(); // Prevent default form submission
-      var vaksinasiId = $('#idVaksinasi').val(); 
-      var date = new Date($('#etanggalVaksinasi').val());
+      var laporanayamId = $('#idLaporanayam').val(); 
+      var date = new Date($('#etanggalPeristiwa').val());
       var formattedDate = date.toISOString().split('T')[0]; // Outputs in YYYY-MM-DD format
 
       var formData = {
                       id_kandang: $('#ekandang').val(),
-                      jenis_vaksin: $('#ejenisVaksin').val(),
-                      tanggal_vaksinasi: formattedDate,
+                      jenis_laporan: $('input[name="ejenisLaporan"]:checked').val(),
+                      jumlah_ayam: parseInt($('#ejumlahAyam').val()),
+                      tanggal_peristiwa: formattedDate,
                       };
       var jsonData = JSON.stringify(formData);
       console.log(jsonData);
       // Step 5: Send updated data to the server
       $.ajax({
-        url: `http://127.0.0.1:8000/api/vaksinasiku/${vaksinasiId}`, // Send PUT request to update kandang
+        url: `http://127.0.0.1:8000/api/laporanayamku/${laporanayamId}`, // Send PUT request to update kandang
         type: 'PUT',
         data: formData,
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
         },
         success: function(response) {
-          console.log('Vaksinasi Ayam updated successfully', response);
-          alert('Vaksinasi Ayam updated successfully!');
-          $('#form_edit_vaksinasi').modal('hide'); // Close modal
+          console.log('Laporan Ayam updated successfully', response);
+          alert('Laporan Ayam updated successfully!');
+          $('#form_edit_laporanayam').modal('hide'); // Close modal
           setTimeout(function() {
               location.reload(); // Refresh the page
           }, 1000);
@@ -417,29 +428,29 @@
 
 <!-- ngehapus -->
 <script>
-$(document).on('click', '.deleteVaksinasiBtn', function(event) {
+$(document).on('click', '.deleteLaporanayamBtn', function(event) {
     event.preventDefault();  // Prevent the default anchor behavior
 
     // Get the ID of the kandang to delete
-    var vaksinasiId = $(this).data('id');
+    var laporanayamId = $(this).data('id');
 
     // Confirm with the user before deleting
-    if (confirm('Anda yakin ingin menghapus data vaksinasi ayam ini?')) {
+    if (confirm('Anda yakin ingin menghapus data laporan ayam ini?')) {
         // Send AJAX request to delete the kandang
         $.ajax({
-            url: `http://127.0.0.1:8000/api/vaksinasiku/${vaksinasiId}`,  // Adjust the URL if necessary
+            url: `http://127.0.0.1:8000/api/laporanayamku/${laporanayamId}`,  // Adjust the URL if necessary
             type: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('bearer_token')  // Include Bearer token if necessary
             },
             success: function(response) {
                 // Handle the response after successful deletion
-                console.log('data penjualan ayam deleted:', response);
+                console.log('data laporan ayam deleted:', response);
 
                 // Optionally, you can remove the row from the table without reloading
-                $(`a[data-id="${vaksinasiId}"]`).closest('tr').remove();
+                $(`a[data-id="${laporanayamId}"]`).closest('tr').remove();
                 
-                alert('Data Vaksinasi Ayam telah berhasil dihapus!');
+                alert('Data Laporan Ayam telah berhasil dihapus!');
             },
             error: function(xhr, status, error) {
                 console.error('Error deleting kandang:', error);

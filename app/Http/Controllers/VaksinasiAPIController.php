@@ -48,10 +48,9 @@ class VaksinasiAPIController extends Controller
 
     public function show(string $id)
     {
-        $vaksinasi = Vaksinasi::where('id', $id)->first();
-        if (!$vaksinasi) {
-            return response()->json(['message' => 'Vaksinasi not found'], 404);
-        }
+        $vaksinasi = Vaksinasi::with('kandang')
+        ->where('id', $id)
+        ->get();
         return response()->json($vaksinasi);
     }
 
