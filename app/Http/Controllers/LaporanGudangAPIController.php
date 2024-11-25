@@ -95,4 +95,13 @@ class LaporanGudangAPIController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function showByIDLaporan(string $id)
+    {
+        $laporanGudang = LaporanGudang::with('gudang')
+                        ->where('id', $id)
+                        ->get();
+        return response()->json($laporanGudang);
+    }
+
 }

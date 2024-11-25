@@ -115,4 +115,12 @@ class LaporanAyamAPIController extends Controller
         return response()->json($laporanAyams);
     }
 
+    public function showByIDLaporan(string $id)
+    {
+        $laporanAyam = LaporanAyam::with('kandang')
+                        ->where('id', $id)
+                        ->get();
+        return response()->json($laporanAyam);
+    }
+
 }

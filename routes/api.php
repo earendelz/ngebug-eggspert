@@ -40,6 +40,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource("penjualantelurku", PenjualanTelurAPIController::class);
     Route::apiResource('panentelurku', PanenTelurAPIController::class); 
     Route::get('vaksin/{id}',[VaksinasiAPIController::class, 'showByIDKandang'] );
+    Route::get('laporan-ayam/{id}',[LaporanAyamAPIController::class, 'showByIDLaporan'] );
+    Route::get('laporan-gudang/{id}',[LaporanGudangAPIController::class, 'showByIDLaporan'] );
 
 });
 
