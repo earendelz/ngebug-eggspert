@@ -204,22 +204,6 @@
       </div>
     </div>
   </div>
-  <!-- Card Second Row -->
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Pendapatan Bulan Ini</h5>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Total Produksi Telur</h5>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
 </div>
