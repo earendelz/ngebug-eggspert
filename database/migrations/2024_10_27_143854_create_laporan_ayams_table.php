@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('laporan_ayams', function (Blueprint $table) {
             $table->id(); // Primary key
             $table->integer('jumlah_ayam'); // Total number of chickens
-            $table->enum('jenis_laporan', ['kelahiran', 'kematian']);
+            $table->enum('jenis_laporan', ['Kelahiran', 'Kematian']);
             $table->date('tanggal_peristiwa'); // Date of the report
             $table->foreignId('id_kandang')->constrained('products'); // Foreign key referencing the users table
             $table->foreignId('id_peternak')->constrained('users'); // Foreign key referencing the users table

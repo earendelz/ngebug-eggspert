@@ -56,7 +56,7 @@ class LaporanAyamAPIController extends Controller
     public function show(string $id)
     {
         $laporanAyam = LaporanAyam::with('kandang')
-                        ->where('id', $id)
+                        ->where('id_kandang', $id)
                         ->get();
         return response()->json($laporanAyam);
     }
