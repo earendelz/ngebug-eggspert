@@ -98,7 +98,7 @@
                 var jsonData = JSON.stringify(formData);
                 console.log(jsonData)
                 $.ajax({
-                  url: 'http://127.0.0.1:8000/api/vaksinasiku', // Replace with the correct route
+                  url: 'https://eggspert.site/api/vaksinasiku', // Replace with the correct route
                   method: 'POST',
                   data: jsonData,
                   contentType: 'application/json',
@@ -110,7 +110,7 @@
                     console.log('Data saved successfully', response);
                     // You can update the UI here or close the modal
                     $('#formVaksinasikuModal').modal('hide');
-                    alert('Data Panen Telur berhasil ditambahkan!');
+                    alert('Data Vaksinasi berhasil ditambahkan!');
                     setTimeout(function() {
                       location.reload();
                     }, 1000);

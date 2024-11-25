@@ -112,7 +112,7 @@
                 var jsonData = JSON.stringify(formData);
                 console.log(jsonData)
                 $.ajax({
-                  url: 'http://127.0.0.1:8000/api/laporanayamku', // Replace with the correct route
+                  url: 'https://eggspert.site/api/laporanayamku', // Replace with the correct route
                   method: 'POST',
                   data: jsonData,
                   contentType: 'application/json',
