@@ -104,7 +104,7 @@
                 var jsonData = JSON.stringify(formData);
                 console.log(jsonData)
                 $.ajax({
-                  url: 'http://127.0.0.1:8000/api/penjualanayamku', // Replace with the correct route
+                  url: 'https://eggspert.site/api/penjualanayamku', // Replace with the correct route
                   method: 'POST',
                   data: jsonData,
                   contentType: 'application/json',
@@ -116,7 +116,7 @@
                     console.log('Data saved successfully', response);
                     // You can update the UI here or close the modal
                     $('#formPenjualanayamModal').modal('hide');
-                    alert('Data Penjualan Telur berhasil ditambahkan!');
+                    alert('Data Penjualan Ayam berhasil ditambahkan!');
                     setTimeout(function() {
                       location.reload();
                     }, 1000);

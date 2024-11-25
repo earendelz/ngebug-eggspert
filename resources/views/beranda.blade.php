@@ -21,7 +21,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto" style="margin-top: 20px;">
         <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
+            <a href="{{route('beranda')}}" class="nav-link active" aria-current="page">
                 <img src="../assets/sidebar/hov_beranda.svg" class="nav-img" alt="Beranda">
                 Beranda
             </a>
@@ -39,37 +39,37 @@
             </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('panen-telur-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/panen_telur.svg" class="nav-img" alt="Panen Telur">
             Panen Telur
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('penjualan-telur-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/penjualan_telur.svg" class="nav-img" alt="Penjualan Telur">
             Penjualan Telur
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('penjualan-ayam-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/penjualan_ayam.svg" class="nav-img" alt="Penjualan Ayam">
             Penjualan Ayam
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('vaksinasi-ayam-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
             Vaksinasi Ayam
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('laporan-ayam-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
             Laporan Ayam
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('laporan-gudang-dashboard.index')}}  " class="nav-link">
             <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
             Laporan Gudang
           </a>

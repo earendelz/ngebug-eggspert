@@ -50,31 +50,31 @@
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('penjualan-telur-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/penjualan_telur.svg" class="nav-img" alt="Penjualan Telur">
             Penjualan Telur
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('penjualan-ayam-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/penjualan_ayam.svg" class="nav-img" alt="Penjualan Ayam">
             Penjualan Ayam
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('vaksinasi-ayam-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/vaksinasi_ayam.svg" class="nav-img" alt="Vaksinasi Ayam">
             Vaksinasi Ayam
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('laporan-ayam-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
             Laporan Ayam
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link">
+          <a href="{{route('laporan-gudang-dashboard.index')}}" class="nav-link">
             <img src="../assets/sidebar/laporan_ayam.svg" class="nav-img" alt="Laporan Ayam">
             Laporan Gudang
           </a>
@@ -202,7 +202,7 @@
   // Function to fetch and populate Pakan data into the select dropdown
   function loadRasAyamData(selectedId) {
     $.ajax({
-      url: 'http://127.0.0.1:8000/api/rasayamku',  // The API endpoint to fetch pakan data
+      url: 'https://eggspert.site/api/rasayamku',  // The API endpoint to fetch pakan data
       method: 'GET',      // Request method
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
@@ -317,7 +317,7 @@
 
       // Make AJAX request to fetch kandang details
       $.ajax({
-        url: `http://127.0.0.1:8000/api/gudangku/${gudangId}`, // Adjust URL if needed
+        url: `https://eggspert.site/api/gudangku/${gudangId}`, // Adjust URL if needed
         type: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach Bearer token
@@ -359,7 +359,7 @@
       console.log("jsondata: " + jsonData);
       // Step 5: Send updated data to the server
       $.ajax({
-        url: `http://127.0.0.1:8000/api/gudangku/${gudangId}`, // Send PUT request to update kandang
+        url: `https://eggspert.site/api/gudangku/${gudangId}`, // Send PUT request to update kandang
         type: 'PUT',
         data: formData,
         headers: {
@@ -393,7 +393,7 @@ $(document).on('click', '.deleteGudangBtn', function(event) {
     if (confirm('Anda yakin ingin menghapus gudang ini?')) {
         // Send AJAX request to delete the kandang
         $.ajax({
-            url: `http://127.0.0.1:8000/api/gudangku/${gudangId}`,  // Adjust the URL if necessary
+            url: `https://eggspert.site/api/gudangku/${gudangId}`,  // Adjust the URL if necessary
             type: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('bearer_token')  // Include Bearer token if necessary
