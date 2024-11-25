@@ -25,7 +25,7 @@ class LaporanAyamAPIController extends Controller
         $userId = Auth::id();
         $validated = $request -> validate([
             'jumlah_ayam' => 'required|integer|min:1',
-            'jenis_laporan' => 'required|string|in:kematian,kelahiran',
+            'jenis_laporan' => 'required|string|in:Kematian,Kelahiran',
             'tanggal_peristiwa' => 'required|date',
             'id_kandang' => 'required|exists:products,id',
 
@@ -41,7 +41,7 @@ class LaporanAyamAPIController extends Controller
             'id_peternak' => $userId
         ]);
         $validated['jumlah_ayam'] = $validated['jumlah_ayam'] + 0;
-        if($validated['jenis_laporan'] == "kematian"){
+        if($validated['jenis_laporan'] == "Kematian"){
             $kandang -> jumlah_ayam -= $validated['jumlah_ayam'];   
         }else{
             $kandang -> jumlah_ayam += $validated['jumlah_ayam'];
@@ -56,7 +56,7 @@ class LaporanAyamAPIController extends Controller
     public function show(string $id)
     {
         $laporanAyam = LaporanAyam::with('kandang')
-                        ->where('id_kandang', $id)
+                        ->where('id', $id)
                         ->get();
         return response()->json($laporanAyam);
     }
@@ -68,7 +68,7 @@ class LaporanAyamAPIController extends Controller
 
         $validated = $request->validate([
             'jumlah_ayam' => 'required|integer|min:1',
-            'jenis_laporan' => 'required|string|in:kematian,kelahiran',
+            'jenis_laporan' => 'required|string|in:Kematian,Kelahiran',
             'tanggal_peristiwa' => 'required|date',
             'id_kandang' => 'required|exists:products,id',
         ]);

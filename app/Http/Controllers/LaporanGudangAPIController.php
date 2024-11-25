@@ -62,7 +62,7 @@ class LaporanGudangAPIController extends Controller
     public function show($id)
     {
         $laporan = LaporanGudang::with('gudang')
-            ->where('id_gudang', $id)
+            ->where('id', $id)
             ->get();
         return response()->json($laporan);
     }
