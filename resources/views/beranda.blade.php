@@ -1,15 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <title>Eggspert</title>
+    @include ('modals.tambahpakan')
+    @include ('modals.tambahras')
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="../css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-    <title>Eggspert</title>
+    
+    
 </head>
 <body>
   <header class="sidebar">
@@ -82,7 +85,7 @@
 
   <!-- Navbar -->
   <header class="header">
-    <nav class="navbar navbar-expand-lg bg-light rounded">
+    <nav class="navbar navbar-expand-lg bg-light rounded shadow">
         <div class="container-fluid">
           <a href="#"> <span class="fs-4" style="color: #61431F; padding-left: 10px;"><b>BERANDA</b></span> </a>
           <!-- searchbar, keanya gausah kali ya? -->
@@ -101,6 +104,11 @@
                 <img src="../assets/navbar/notifications_png.svg">
                 </button>
             </a>
+            @if(Auth::check() && Auth::user()->username == 'admin')
+            <a href="/file-import-export" class="btn btn-primary btn-md rounded-pill px-4 py-2 shadow" style="background-color:#E59D2A; margin-right:20px; border:none">
+                USER ADMIN
+            </a>
+            @endif
             
             <div class="row me-2">
                 <div class="col-sm-6">
@@ -177,7 +185,7 @@
   <!-- Card First Row -->
   <div class="row">
     <div class="col-sm-8">
-      <div class="card">
+      <div class="card shadow">
         <div class="card-body ">
           <h5 class="card-title">Kandang</h5>
           <p class="card-text">Daftar Kandang</p>
@@ -186,8 +194,45 @@
         </div>
       </div>
     </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Pakan Ayam</h5>
+          <div id="data-list">
+            <ul id="data-items" class="list-group">
+             
+            </ul>
+            <div class="text-center mt-3">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#form_tambah_pakan" class="btn tambahPakanBtn" data-id="">
+                <img src="../assets/add_button_beranda.svg" alt="Tambah">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Ras Ayam</h5>
+          <div id="data-list">
+            <ul id="data-itemsRas" class="list-group">
+             
+            </ul>
+            <div class="text-center mt-3">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#form_tambah_ras" class="btn tambahRasBtn" data-id="">
+                <img src="../assets/add_button_beranda.svg" alt="Tambah">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-sm-12">
-      <div class="card">
+      <div class="card shadow">
         <div class="card-body">
           <h5 class="card-title">Jumlah Penjualan Keseluruhan</h5>
           <canvas id="penjualanChart"></canvas>
@@ -195,19 +240,19 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-8">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Jumlah Pendapatan</h5>
-          <canvas id="pendapatanChart"></canvas>
-          </div>
+  <div class="row">
+    <div class="col-sm-12">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">Jumlah Pendapatan</h5>
+            <canvas id="pendapatanChart"></canvas>
+            </div>
+        </div>
       </div>
-    </div>
   </div>
-
-
 </div>
 
+<!-- Kandang -->
 <script>
   var userId = @json(Auth::id()); // Get the user ID from the server-side variable
 
@@ -263,6 +308,83 @@ $.ajax({
     }
 });
 </script>
+
+<!-- Pakan -->
+ <script>
+  $.ajax({
+    url: "{{ route('pakanku.index') }}", // Your protected API route for pakanku
+    type: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+    },
+    success: function(response) {
+        console.log('Response:', response); // Log the entire response to verify its structure
+        
+        // Clear the container before inserting new items
+        $('#data-items').empty();
+
+        // Check if the response is an array (which it should be based on your response)
+        if (Array.isArray(response)) {
+            response.forEach(function(product) {
+                // Dynamically create a list item for each product name
+                var listItem = `
+                    <li class="list-group-item">
+                        ${product.jenis_pakan} <!-- Display the pakanku nama -->
+                    </li>
+                `;
+
+                // Append the list item to the list
+                $('#data-items').append(listItem);
+            });
+        } else {
+            console.log("The response is not an array");
+        }
+    },
+    error: function(xhr, status, error) {
+        console.error('Error:', error);
+    }
+});
+
+ </script>
+
+<!-- Ras -->
+ <script>
+  $.ajax({
+    url: "{{ route('rasayamku.index') }}", // Your protected API route for pakanku
+    type: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('bearer_token') // Attach the Bearer token
+    },
+    success: function(response) {
+        console.log('Response:', response); // Log the entire response to verify its structure
+        
+        // Clear the container before inserting new items
+        $('#data-itemsRas').empty();
+
+        // Check if the response is an array (which it should be based on your response)
+        if (Array.isArray(response)) {
+            response.forEach(function(product) {
+                // Dynamically create a list item for each product name
+                var listItem = `
+                    <li class="list-group-item">
+                        ${product.nama_ras_ayam} <!-- Display the pakanku nama -->
+                    </li>
+                `;
+
+                // Append the list item to the list
+                $('#data-itemsRas').append(listItem);
+            });
+        } else {
+            console.log("The response is not an array");
+        }
+    },
+    error: function(xhr, status, error) {
+        console.error('Error:', error);
+    }
+});
+
+ </script>
+
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../js/sidebar.js"></script>

@@ -1,7 +1,16 @@
-/* button {
-    /* border:none;
-    color:purple
-} */
+.list-group{
+    border: 1px solid #cbba9d; /* Outer border */
+    border-radius: .25rem; /* Optional: rounded corners for outer border */
+    padding: 0; /* Optional: remove any padding from the list group */
+--bs-list-group-bg: #F7E2BF;
+--bs-list-group-border-color: #cbba9d;
+}
+
+.list-group-item{
+    border:none;
+    color: #425166;
+}
+
 li{
     list-style-type: none;
     height:10%;
